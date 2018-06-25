@@ -1,9 +1,9 @@
 package service;
 
 public class Teacher {
-	public int teacherNo;
-	public String teacherName;
-	public String teacherAge;
+	private int teacherNo;
+	private String teacherName;
+	private int teacherAge;
 	
 	public int getTeacherNo() {
 		return teacherNo;
@@ -17,10 +17,10 @@ public class Teacher {
 	public void setTeacherName(String teacherName) {
 		this.teacherName = teacherName;
 	}
-	public String getTeacherAge() {
+	public int getTeacherAge() {
 		return teacherAge;
 	}
-	public void setTeacherAge(String teacherAge) {
+	public void setTeacherAge(int teacherAge) {
 		this.teacherAge = teacherAge;
 	}
 }

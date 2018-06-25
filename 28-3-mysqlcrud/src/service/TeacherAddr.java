@@ -1,19 +1,20 @@
 package service;
 
 public class TeacherAddr {
-	public int teacherAddrNo;
-	public String teacherNo;
+	private int teacherAddrNo;
+	private int teacherNo;
 	public String teacherAddrContent;
+	
 	public int getTeacherAddrNo() {
 		return teacherAddrNo;
 	}
 	public void setTeacherAddrNo(int teacherAddrNo) {
 		this.teacherAddrNo = teacherAddrNo;
 	}
-	public String getTeacherNo() {
+	public int getTeacherNo() {
 		return teacherNo;
 	}
-	public void setTeacherNo(String teacherNo) {
+	public void setTeacherNo(int teacherNo) {
 		this.teacherNo = teacherNo;
 	}
 	public String getTeacherAddrContent() {
