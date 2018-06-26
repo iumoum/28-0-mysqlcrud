@@ -1,3 +1,4 @@
+<!-- 2018.06.26 김지완 -->
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <%@ page import="service.*" %>
 <!DOCTYPE html>
@@ -40,20 +41,7 @@
 		
 			// teacherDAO 내부의 insert 메서드 호출
 			// 매개변수로 teacher 객체의 참조 값 전달
-			teacherDao.teacherInsert(teacher);
-			
-			// teacherAddr DTO 내부 멤버변수에 set메서드를 통하여 값 대입
-			// !!!!!! teacherAddressNo은  teacherAddrDAO 내부의 메서드에서 대입(자동증가 옵션을 자바로 구현) !!!!!!
-			teacherAddr.setTeacherNo(teacher.getTeacherNo());
-			teacherAddr.setTeacherAddrContent(teacherAddress);
-			
-			// teacherAddr DTO 내부 멤버변수들의 값 출력 (테스트)
-			System.out.println("TeacherNo from teacherAddrDTO : " + teacherAddr.getTeacherNo() );
-			System.out.println("TeacherAddrContent from teacherAddrDTO : " + teacherAddr.getTeacherAddrContent() );
-			
-			// teacherAddrDAO 내부의 insert 메서드 호출
-			// 매개변수로 teacherAddr 객체의 참조값 전달.
-			teacherAddrDao.teacherAddressInsert(teacherAddr);
+			teacherDao.insertTeacher(teacher);
 			
 			// teacherInsertForm.jsp 화면으로 이동
 			response.sendRedirect(request.getContextPath() + "/teacher/teacherInsertForm.jsp");

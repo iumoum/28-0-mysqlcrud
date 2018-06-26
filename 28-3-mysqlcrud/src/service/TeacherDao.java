@@ -1,58 +1,88 @@
+// 2018.06.26
 package service;
 
 import service.Teacher;
 import java.sql.*;
 
-
 public class TeacherDao {
-	// °´Ã¼ÂüÁ¶º¯¼ö ¼±¾ð
-	Connection conn = null;
-	PreparedStatement pstmt = null;
-	ResultSet rsSelectForCount = null;
 	
-	public void teacherInsert(Teacher teacher) throws ClassNotFoundException, SQLException {
-		// mysql µå¶óÀÌ¹ö ·Îµù
-		Class.forName("com.mysql.jdbc.Driver");
+	/*CREATE TABLE `teacher` (
+			`teacher_no` INT(10) NOT NULL,
+			`teacher_name` VARCHAR(50) NOT NULL,
+			`teacher_age` INT(10) NOT NULL,
+			PRIMARY KEY (`teacher_no`)
+	  ) <========= */
+	
+	// teacher í…Œì´ë¸”ì— í•œ í–‰ì„ ì¶”ê°€í•˜ëŠ” ë©”ì„œë“œ
+	// ë§¤ê°œë³€ìˆ˜ë¡œ teacher í…Œì´ë¸”ì— ì¶”ê°€í•  í•œ í–‰ì˜ ë ˆì½”ë“œë¥¼ ì „ë‹¬
+	// ë¦¬í„´ ë°ì´í„° íƒ€ìž…ì€ ì—†ìŒ executeUpdateì˜ ê²°ê³¼ ê°’ì„ insert ë©”ì„œë“œì—ì„œ ì¶œë ¥ì‹œì¼°ìŒ.
+	public void insertTeacher(Teacher teacher) {
+		// ê°ì²´ì°¸ì¡°ë³€ìˆ˜ ì„ ì–¸
+		Connection conn = null;
+		PreparedStatement pstmt1 = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rsSelectForCount = null;
 		
-		// DB ¿¬°á 
-		// ÀÌºÎºÐÀ» Å¬·¡½º¸¦ ÅëÇØ °´Ã¼·Î ¸¸µé¾î¼­ ±¸Çö ÇÒ ¼öµµ ÀÖÁö ¾ÊÀ»±î ?
-		String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
-		String dbUser = "root";
-		String dbPw = "java0000";
-		conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
-		
-		// teacher_no¸¦ ÀÚµ¿Áõ°¡½ÃÅ°±â À§ÇØ »ç¿ëÇÏ·Á´Â Äõ¸®
-		// teacher_noÀÇ ÃÖ´ñ°ªÀ» Á¶È¸
-		String sqlSelectForMaxTeacher = "SELECT MAX(teacher_no) as max_teacher FROM teacher";
-		pstmt = conn.prepareStatement(sqlSelectForMaxTeacher);
-		
-		// À§ÀÇ Äõ¸® ½ÇÇà
-		rsSelectForCount = pstmt.executeQuery();
-		
-		// µ¥ÀÌÅÍ¸¦ °¡Á®¿À±â À§ÇØ Ä¿¼­¸¦ ³Ñ±è
-		rsSelectForCount.next();
-		
-		// teacher_noÀÇ ÃÖ´ñ°ª¿¡¼­ +1À» ÇÔÀ¸·Î ÀÚµ¿Áõ°¡ ±¸Çö
-		// auto_increament°¡ Á¶±Ý »ç¿ëÇÏ±â ºÒÆíÇØ¼­ ÀÌ·¸°Ô ¸¸µé¾ú´Ù.
-		teacher.setTeacherNo(rsSelectForCount.getInt("max_teacher") + 1);
-		
-		// teacherNo ¾ÈÀÇ °ª Å×½ºÆ®
-		System.out.println("teacherNo from teacherDTO: " + teacher.getTeacherNo());
-		
-		// teacher Å×ÀÌºí¿¡ ·¹ÄÚµå¸¦ »ðÀÔÇÏ´Â Äõ¸® ÁØºñ
-		String sqlInsertTeacher = "INSERT INTO teacher(teacher_no,teacher_name,teacher_age) VALUES(?,?,?)";
-		pstmt = conn.prepareStatement(sqlInsertTeacher);
-		
-		// ?¿¡ °ª ´ëÀÔ
-		pstmt.setInt(1, teacher.getTeacherNo());
-		pstmt.setString(2, teacher.getTeacherName());
-		pstmt.setInt(3, teacher.getTeacherAge());
-		
-		// ·¹ÄÚµå »ðÀÔ Äõ¸® ½ÇÇà
-		// ½ÇÇà ÈÄ ¹ÝÈ¯ µÇ´Â °ªÀº ÇØ´ç Äõ¸®·Î ÀÎÇØ º¯µ¿µÇ´Â(?) ÇàÀÇ °¹¼ö (¿¹¸¦ µé¾î »ðÀÔµÇ´Â ÇàÀÇ °¹¼ö)
-		int resultUpdate = pstmt.executeUpdate();
-		
-		// »ðÀÔµÇ´Â ·¹ÄÚµåÀÇ °¹¼ö Ãâ·Â
-		System.out.println("teacher Å×ÀÌºí¿¡ »ðÀÔµÈ Çà °¹¼ö : " + resultUpdate);
+		try {
+			// mysql ë“œë¼ì´ë²„ ë¡œë”©
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			// DB ì—°ê²° 
+			// ì´ë¶€ë¶„ì„ í´ëž˜ìŠ¤ë¥¼ í†µí•´ ê°ì²´ë¡œ ë§Œë“¤ì–´ì„œ êµ¬í˜„ í•  ìˆ˜ë„ ìžˆì§€ ì•Šì„ê¹Œ ?
+			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPw = "java0000";
+			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
+			
+			// teacher_noë¥¼ ìžë™ì¦ê°€ì‹œí‚¤ê¸° ìœ„í•´ ì‚¬ìš©í•˜ë ¤ëŠ” ì¿¼ë¦¬
+			// teacher_noì˜ ìµœëŒ“ê°’ì„ ì¡°íšŒ
+			String sqlSelectForMaxTeacher = "SELECT MAX(teacher_no) as max_teacher FROM teacher";
+			pstmt1 = conn.prepareStatement(sqlSelectForMaxTeacher);
+			
+			// ìœ„ì˜ ì¿¼ë¦¬ ì‹¤í–‰
+			rsSelectForCount = pstmt1.executeQuery();
+			
+			// ë°ì´í„°ë¥¼ ê°€ì ¸ì˜¤ê¸° ìœ„í•´ ì»¤ì„œë¥¼ ë„˜ê¹€
+			rsSelectForCount.next();
+			
+			// teacher_noì˜ ìµœëŒ“ê°’ì—ì„œ +1ì„ í•¨ìœ¼ë¡œ ìžë™ì¦ê°€ êµ¬í˜„
+			// auto_increamentê°€ ì¡°ê¸ˆ ì‚¬ìš©í•˜ê¸° ë¶ˆíŽ¸í•´ì„œ ì´ë ‡ê²Œ ë§Œë“¤ì—ˆë‹¤.
+			if(rsSelectForCount.getInt("max_teacher") == 0) {
+				teacher.setTeacherNo(1);
+			}
+			teacher.setTeacherNo(rsSelectForCount.getInt("max_teacher") + 1);
+			
+			// teacherNo ì•ˆì˜ ê°’ í…ŒìŠ¤íŠ¸
+			System.out.println("teacherNo from teacherDTO: " + teacher.getTeacherNo());
+			
+			// teacher í…Œì´ë¸”ì— ë ˆì½”ë“œë¥¼ ì‚½ìž…í•˜ëŠ” ì¿¼ë¦¬ ì¤€ë¹„
+			String sqlInsertTeacher = "INSERT INTO teacher(teacher_no,teacher_name,teacher_age) VALUES(?,?,?)";
+			pstmt2 = conn.prepareStatement(sqlInsertTeacher);
+			
+			// ?ì— ê°’ ëŒ€ìž…
+			pstmt2.setInt(1, teacher.getTeacherNo());
+			pstmt2.setString(2, teacher.getTeacherName());
+			pstmt2.setInt(3, teacher.getTeacherAge());
+			
+			// ë ˆì½”ë“œ ì‚½ìž… ì¿¼ë¦¬ ì‹¤í–‰
+			// ì‹¤í–‰ í›„ ë°˜í™˜ ë˜ëŠ” ê°’ì€ í•´ë‹¹ ì¿¼ë¦¬ë¡œ ì¸í•´ ë³€ë™ë˜ëŠ”(?) í–‰ì˜ ê°¯ìˆ˜ (ì˜ˆë¥¼ ë“¤ì–´ ì‚½ìž…ë˜ëŠ” í–‰ì˜ ê°¯ìˆ˜)
+			int resultUpdate = pstmt2.executeUpdate();
+			
+			// ì‚½ìž…ë˜ëŠ” ë ˆì½”ë“œì˜ ê°¯ìˆ˜ ì¶œë ¥
+			System.out.println("teacher í…Œì´ë¸”ì— ì‚½ìž…ëœ í–‰ ê°¯ìˆ˜ : " + resultUpdate);
+			
+		} catch(ClassNotFoundException classException){
+			System.out.println("í•´ë‹¹ DB Driver í´ëž˜ìŠ¤ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+		} catch(SQLException sqlException){
+			System.out.println("SQL ì˜¤ë¥˜ê°€ ìƒê²¼ìŠµë‹ˆë‹¤.");
+			sqlException.printStackTrace();
+		} finally {
+			// ê°ì²´ ì¢…ë£Œ
+			// close í• ë•Œ catchë¬¸ì— SQLException í•„ìš”í•œ ì´ìœ ë¥¼ ì•„ì§ ëª¨ë¦„
+			if(rsSelectForCount != null) try {rsSelectForCount.close();} catch(SQLException sqlException) {}
+			if(pstmt1 != null) try {pstmt1.close();} catch(SQLException sqlException) {}
+			if(pstmt2 != null) try {pstmt2.close();} catch(SQLException sqlException) {}
+			if(conn != null) try {conn.close();} catch(SQLException sqlException) {}
+		}
 	}
 }
