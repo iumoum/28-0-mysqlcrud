@@ -12,6 +12,7 @@ public class StudentDao {
 	
 	public Student insertStudent(Student stu){
 	//student 리턴 타입으로 insertStudent 메서드를 선언한 후에 student 클래스 데이터 타입 으로 만들어진 변수 stu를 선언한다.	
+	//student==Student.java 내에 스트링 변수 name과 인트 변수 age가 set, geter 되어있는 클래스.
 		int countNo = 0;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
