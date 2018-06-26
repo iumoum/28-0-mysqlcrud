@@ -1,4 +1,4 @@
-//±èÁ¤¿¬
+//ê¹€ì •ì—°
 package service;
 
 import java.sql.Connection;
@@ -15,25 +15,18 @@ public class StudentAddrDao {
 		PreparedStatement pstmt2 = null;
 		ResultSet rs = null;
 		int countNo = 0;
-		//ÃÊ±â°ª ÁöÁ¤.
+		//ì´ˆê¸°ê°’ ì§€ì •
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			//µå¶óÀÌ¹ö ·Îµù
-		} catch (ClassNotFoundException e) {
-			//Å¬·¡½º¸¦ Ã£Áö ¸øÇßÀ»¶§¿¡. ¿¹¿ÜÃ³¸®.
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 		String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
 		String dbUser = "sqlidkjy";
 		String dbPass = "sqlpwkjy";
 		
-		//db¿¬°áÀ» À§ÇÑ µ¥ÀÌÅÍµé º¯¼ö¿¡ ´ëÀÔ
-		try {
+		
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
-			//conn
 			pstmt = conn.prepareStatement("select student_no from student ORDER BY student_no DESC LIMIT 1;");
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
@@ -47,7 +40,10 @@ public class StudentAddrDao {
 			pstmt2.executeUpdate();
 			
 		}catch (SQLException e) {
-			System.out.println("sql¹® ¿À·ù³²");
+			System.out.println("sql ì˜¤ë¥˜ë‹¤.");
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			try {
