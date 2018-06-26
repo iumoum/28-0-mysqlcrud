@@ -1,4 +1,4 @@
-//김정연
+//김정연 test
 package service;
 
 import java.sql.Connection;
@@ -28,7 +28,7 @@ public class StudentDao {
 			String dbPass = "sqlpwkjy";
 			//db연결을 위한 데이터들을 각각의 String 변수들에 대입한다.
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
-			pstmt = conn.prepareStatement("ELECT COUNT(*) as countNo  FROM student");
+			pstmt = conn.prepareStatement("SELECT COUNT(*) as countNo  FROM student");
 			//prepareStatement 객체를 이용한 쿼리문......을 PreparedStatement 객체로 생성된 객체참조변수 pstmt에 대입한다.
 			rs = pstmt.executeQuery();
 			//쿼리 실행
@@ -49,17 +49,20 @@ public class StudentDao {
 			
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-		//예외처리. 오류 반환시 throw 시킨다.
+		//예외처리. 오류 반환시 처리.
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		//클래스를 찾지 못했을때의 오류반환 시 처리.
 		
 		} finally {
 			if (rs != null) try { rs.close(); } catch(SQLException e1) {}
 			if (pstmt != null) try { pstmt.close(); } catch(SQLException e1) {}
 			if (pstmt2 != null) try { pstmt2.close(); } catch(SQLException e1) {}
 			if (conn != null) try { conn.close(); } catch(SQLException e1) {}
+		//객체 종료.	
 		}
 		return stu;
+		//리턴 stu. finally 안에 있으면 경고가 발생해서 밖으로 빼두었다!
 	}
 }
