@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <%@ page import="java.sql.*" %>
-<%@ page import="service.student" %>
-<%@ page import="service.studentDao" %>
-<%@ page import="service.studentAddr" %>
-<%@ page import="service.studentAddrDao" %>
+<%@ page import="service.Student" %>
+<%@ page import="service.StudentDao" %>
+<%@ page import="service.StudentAddr" %>
+<%@ page import="service.StudentAddrDao" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -13,24 +13,20 @@
 	<body>
 	<%
 		request.setCharacterEncoding("euc-kr");
-	
-		student st = new student();
-		studentAddr sa = new studentAddr();
+			
+		Student st = new Student();
+		StudentAddr sa = new StudentAddr();
 		
-	
+			
 		st.setName(request.getParameter("name"));
 		st.setAge(Integer.parseInt(request.getParameter("age")));
 		sa.setAddr(request.getParameter("addr"));
 		
-		studentDao stdao = new studentDao();
+		StudentDao stdao = new StudentDao();
 		stdao.insertStudent(st);
 		
-		studentAddrDao sadao = new studentAddrDao();
+		StudentAddrDao sadao = new StudentAddrDao();
 		sadao.insertStudentAddr(sa);
-		
-			
-		
-		
 	%>
 	</body>
 </html>
