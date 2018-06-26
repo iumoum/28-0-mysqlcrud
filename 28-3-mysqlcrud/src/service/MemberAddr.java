@@ -1,9 +1,9 @@
 package service;
 
 public class MemberAddr {
-	public int member_addr_no;
-	public int member_no;
-	public String member_addr_content;
+	private int member_addr_no;
+	private int member_no;
+	private String member_addr_content;
 	
 	public int getMember_addr_no() {
 		return member_addr_no;

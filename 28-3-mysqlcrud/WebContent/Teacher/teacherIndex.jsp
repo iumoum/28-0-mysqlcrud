@@ -8,16 +8,16 @@
 	<body>
 		<table border="1" width="1300px" height="700px">
 			<tr>
-				<td colspan="2">28기 3조 팀프로젝트</td>
+				<td colspan="2"><a href="../index.jsp">28기 3조 팀프로젝트</a></td>
 			</tr>
 			<tr>
-				<td colspan="2">Member Page</td>
+				<td colspan="2">Teacher Page</td>
 			</tr>
 			<tr>
-				<td rowspan="2">member</td> <td><a href="./mInsertForm.jsp">mInsertForm으로 이동</a></td>
+				<td rowspan="2">Teacher</td> <td><a href="./mInsert/mInsertForm.jsp">teacherInsertForm으로 이동</a></td>
 			</tr>
 			<tr>
-				<td><a href="#">mSelectForm으로 이동</a></td>
+				<td><a href="#">teacherList로 이동</a></td>
 			</tr>
 		</table>
 	</body>
