@@ -1,0 +1,62 @@
+package service;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.DriverManager;
+import service.studentAddr;
+import java.sql.ResultSet;
+public class studentAddrDao {
+	
+	public studentAddr insertStudentAddr(studentAddr sa) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		int countNo = 0;
+		
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
+		String dbUser = "sqlidkjy";
+		String dbPass = "sqlpwkjy";
+		try {
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+			
+			pstmt = conn.prepareStatement("select student_no from student ORDER BY student_no DESC LIMIT 1;");
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				countNo = rs.getInt("student_no");
+				System.out.println(countNo);
+			}
+			pstmt2 = conn.prepareStatement("INSERT INTO student_address(student_no, student_address_content) values(?, ?)");
+			pstmt2.setInt(1,countNo);
+			pstmt2.setString(2, sa.getAddr());
+			System.out.println(pstmt2);
+			pstmt2.executeUpdate();
+			
+		}catch (SQLException e) {
+			
+		}finally {
+			try {
+				rs.close();
+				pstmt.close();
+				pstmt2.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		
+		}
+		return sa;
+		
+	}
+}
