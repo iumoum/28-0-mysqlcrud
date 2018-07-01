@@ -1,4 +1,4 @@
-// 2018.06.26
+// 2018.06.26 김지완
 package service;
 
 import service.Teacher;
@@ -11,11 +11,11 @@ public class TeacherDao {
 			`teacher_name` VARCHAR(50) NOT NULL,
 			`teacher_age` INT(10) NOT NULL,
 			PRIMARY KEY (`teacher_no`)
-	  ) <========= */
+	  )  */
 	
 	// teacher 테이블에 한 행을 추가하는 메서드
 	// 매개변수로 teacher 테이블에 추가할 한 행의 레코드를 전달
-	// 리턴 데이터 타입은 없음 executeUpdate의 결과 값을 insert 메서드에서 출력시켰음.
+	// 리턴 데이터 타입은 void로 정했다. 
 	public void insertTeacher(Teacher teacher) {
 		// 객체참조변수 선언
 		Connection conn = null;
@@ -71,18 +71,58 @@ public class TeacherDao {
 			// 삽입되는 레코드의 갯수 출력
 			System.out.println("teacher 테이블에 삽입된 행 갯수 : " + resultUpdate);
 			
+		// 예외가 발생한다면 아래의 catch 블록 내부의 명령 실행.
+			
+		// ClassNotFoundException 은 Class.forName() 메서드에 매개변수로 대입된 클래스를 찾을 수 없을 때
 		} catch(ClassNotFoundException classException){
 			System.out.println("해당 DB Driver 클래스를 찾을 수 없습니다.");
+		
+		// SQLException 은 데이터베이스와 관련된 오류가 있을 때
 		} catch(SQLException sqlException){
 			System.out.println("SQL 오류가 생겼습니다.");
 			sqlException.printStackTrace();
 		} finally {
-			// 객체 종료
-			// close 할때 catch문에 SQLException 필요한 이유를 아직 모름
-			if(rsSelectForCount != null) try {rsSelectForCount.close();} catch(SQLException sqlException) {}
-			if(pstmt1 != null) try {pstmt1.close();} catch(SQLException sqlException) {}
-			if(pstmt2 != null) try {pstmt2.close();} catch(SQLException sqlException) {}
-			if(conn != null) try {conn.close();} catch(SQLException sqlException) {}
+			// 객체를 종료하는 부분
+			if(rsSelectForCount != null) {
+				try {
+					rsSelectForCount.close();
+				} catch (SQLException sqlException){
+					System.out.println("rsSelectForCount 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+			if(pstmt1 != null) {
+				try {
+					pstmt1.close();
+				} catch (SQLException sqlException){
+					System.out.println("pstmt1 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+			if(pstmt2 != null) {
+				try {
+					pstmt2.close();
+				} catch (SQLException sqlException){
+					System.out.println("pstmt2 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException sqlException){
+					System.out.println("conn 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
 		}
 	}
 }

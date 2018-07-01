@@ -1,3 +1,4 @@
+<!-- 2018.06.26 김지완 -->
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <!DOCTYPE html>
 <html>
@@ -14,7 +15,7 @@
 				<td colspan="2">Teacher Page</td>
 			</tr>
 			<tr>
-				<td rowspan="2">Teacher</td> <td><a href="./mInsert/mInsertForm.jsp">teacherInsertForm으로 이동</a></td>
+				<td rowspan="2">Teacher</td> <td><a href="./tInsert/teacherInsertForm.jsp">teacherInsertForm으로 이동</a></td>
 			</tr>
 			<tr>
 				<td><a href="#">teacherList로 이동</a></td>
