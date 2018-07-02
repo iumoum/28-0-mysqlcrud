@@ -7,7 +7,7 @@
 	<title>Teacher Insert Form</title>
 </head>
 	<body>
-		<form action="./teacherInsertAction.jsp" method="post">
+		<form action="<%= request.getContextPath() %>/Teacher/tInsert/teacherInsertAction.jsp" method="post">
 			<table border="1">
 				<tr>
 					<td colspan="2">Teacher</td>

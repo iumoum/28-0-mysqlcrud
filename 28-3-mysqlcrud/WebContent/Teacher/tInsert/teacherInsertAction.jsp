@@ -44,7 +44,7 @@
 			teacherDao.insertTeacher(teacher);
 			
 			// teacherInsertForm.jsp 화면으로 이동
-			response.sendRedirect(request.getContextPath() + "/teacher/teacherInsertForm.jsp");
+			response.sendRedirect(request.getContextPath() + "/Teacher/tInsert/teacherInsertForm.jsp");
 		%>
 	</body>
 </html>
