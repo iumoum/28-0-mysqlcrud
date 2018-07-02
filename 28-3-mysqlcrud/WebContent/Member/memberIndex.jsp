@@ -14,10 +14,10 @@
 				<td colspan="2">Member Page</td>
 			</tr>
 			<tr>
-				<td rowspan="2">member</td> <td><a href="./mInsertForm.jsp">mInsertForm으로 이동</a></td>
+				<td rowspan="2">member</td> <td><a href="./mInsert/memberInsertForm.jsp">mInsertForm으로 이동</a></td>
 			</tr>
 			<tr>
-				<td><a href="./mList/mList.jsp">memberList로 이동</a></td>
+				<td><a href="./mList/memberList.jsp">memberList로 이동</a></td>
 			</tr>
 		</table>
 	</body>

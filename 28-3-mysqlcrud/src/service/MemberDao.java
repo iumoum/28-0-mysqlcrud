@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.sql.ResultSet;
 import service.Member;	// 위의 페이지들을 import하여 안에 있는 메서드나 변수 사용
 
@@ -48,15 +49,18 @@ public class MemberDao {	// 클래스명
 				
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace(); // 오류 발생 시 오류를 출력하는 메서드
+				System.out.println("JDBC 시작을 할 수 없습니다 확인해주세요.");
 			}	
 			catch (SQLException e) {
 				e.printStackTrace(); // 오류 발생 시 오류를 출력하는 메서드
+				System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요.");
 			} finally{
 				if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
 				if (conn != null) try { conn.close(); } catch(SQLException ex) {}
 				// pstmt,Connection 객체 종료(close())
 			}
 	}
+	
 	public int maxNum() {
 		Connection conn = null;
 		PreparedStatement pstmtMaxNo = null;
@@ -89,13 +93,97 @@ public class MemberDao {	// 클래스명
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace(); // 오류 발생 시 오류를 출력하는 메서드
+			System.out.println("JDBC 시작을 할 수 없습니다 확인해주세요.");
 		} 
 		catch (SQLException e) {
 			e.printStackTrace(); // 오류 발생 시 오류를 출력하는 메서드
+			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요.");
+		}  finally{
+			if (pstmtMaxNo != null) try { pstmtMaxNo.close(); } catch(SQLException ex) {}
+			if (conn != null) try { conn.close(); } catch(SQLException ex) {}
+			// pstmt,Connection 객체 종료(close())
 		}
 		
 		
 		return Num;
 	}
+	
+	public ArrayList<Member> selectMemberAll(int startPage, int pagePerRow) {
+		ArrayList<Member> list = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		/*ArrayList<Member> selectMemberPage();*/
+		String sql = "SELECT member_no, member_name, member_age FROM member ORDER BY member_no LIMIT ?, ?";
+				
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
+			
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass); 
+						
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, startPage);
+			pstmt.setInt(2, pagePerRow);
+			
+			resultSet = pstmt.executeQuery();
+			
+			while(resultSet.next()){
+				Member m = new Member();
+				int dbno = resultSet.getInt("member_no");
+				String dbname = resultSet.getString("member_name");
+				int dbage = resultSet.getInt("member_age");
+				
+		
+				m.setMemberNo(dbno);
+				m.setMemberName(dbname);
+				m.setMemberAge(dbage);
+				list.add(m);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("JDBC 시작을 할 수 없습니다 확인해주세요.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요.");
+		}
+		
+		return list;
+	}
+	
+	public int totalRow() {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		String sql = "SELECT COUNT(member_no) FROM member";
+		int totalRow = 0;
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
+			
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass); 
+						
+			pstmt = conn.prepareStatement(sql);
+			resultSet = pstmt.executeQuery();
+			if(resultSet.next()){
+				totalRow=resultSet.getInt("COUNT(notice_no)");
+			}
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return totalRow;		
+	}
+	
+
 }
 
