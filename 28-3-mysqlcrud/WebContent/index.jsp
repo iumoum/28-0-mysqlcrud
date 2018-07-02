@@ -21,7 +21,7 @@
 				<td>Student Area</td> <td colspan="2"><a href="./Student/studentIndex.jsp">Student Index로 이동</a></td>
 			</tr>
 			<tr>
-				<td>Employee Area</td> <td colspan="2"><a href="./Eployee/employeeIndex.jsp">Employee Index로 이동</a></td>
+				<td>Employee Area</td> <td colspan="2"><a href="./Employee/employeeIndex.jsp">Employee Index로 이동</a></td>
 			</tr>
 		</table>
 	</body>

@@ -35,26 +35,30 @@ public class EmployeeAddrDao {
 			EmployeeAddr.setEmployeeAddrNo(rs.getInt("Employee_address_no")+1);	
 					
 			System.out.println(EmployeeAddr.getEmployeeNo());
+			//pstmt1에 insert 쿼리문 준비
 			pstmt1 = conn.prepareStatement("INSERT INTO Employee_address(Employee_address_no, Employee_no, Employee_address_content) VALUES (?,?,?)");
+			//values 값 ?에 각각 순서대로 대입
 			pstmt1.setInt(1, EmployeeAddr.getEmployeeAddrNo());
 			pstmt1.setInt(2, EmployeeAddr.getEmployeeNo());
 			pstmt1.setString(3, EmployeeAddr.getEmployeeContent());
-			
+			//pstmt1 쿼리 실행
 			pstmt1.executeUpdate();
 			
 			System.out.println(EmployeeAddr.getEmployeeAddrNo() +"AddrDao addrno");
 			System.out.println(EmployeeAddr.getEmployeeNo() +"AddrDao no");
 			System.out.println(EmployeeAddr.getEmployeeContent() +"AddrDao content");
 			
+		//db클래스를 못찾으면 아래 실행
 		} catch(ClassNotFoundException x) {
-			System.out.println("DB Driver 클래스를 찾을 수 없습니다 ");
+			System.out.println("DB Driver 클래스를 찾을 수 없습니다 ");		
+		//sql에서 문제 발생시 아래 실행
 		} catch(SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
-			if (rs != null) try { rs.close(); } catch(SQLException e) {}
-			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
-			if (pstmt1 != null) try { pstmt1.close(); } catch(SQLException e) {}
-			if (conn != null) try { conn.close(); } catch(SQLException e) {}
+			if (rs != null) try { rs.close(); } catch(SQLException e) {System.out.println(e.getMessage() + "rs");}
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {System.out.println(e.getMessage() + "pstmt");}
+			if (pstmt1 != null) try { pstmt1.close(); } catch(SQLException e) {System.out.println(e.getMessage() + "pstmt1");}
+			if (conn != null) try { conn.close(); } catch(SQLException e) {System.out.println(e.getMessage() + "conn");}
 		}		
 	}
 }
