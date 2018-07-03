@@ -7,7 +7,7 @@
 	<title>mInsertForm Page</title>
 </head>
 	<body>
-		<table border="1" width="1300px" height="700px">
+		<table border="1">
 			<tr>
 				<td colspan="3"><a href="./index.jsp">28기 3조 팀프로젝트</a></td>
 			</tr>

@@ -1,5 +1,6 @@
 /*18.06.26 28기 정규룡*/
-package service; // 패키지 이름이 service
+package service; 
+// 패키지 이름이 service
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,7 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.ResultSet;
-import service.Member;	// 위의 페이지들을 import하여 안에 있는 메서드나 변수 사용
+import service.Member;
+// 위의 페이지들을 import하여 안에 있는 메서드나 변수 사용
 
 public class MemberDao {	// 클래스명
 	/*	
@@ -37,11 +39,10 @@ public class MemberDao {	// 클래스명
 				conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass); 
 				// DB 연결
 				
-				pstmt = conn.prepareStatement("INSERT INTO member(member_no, member_name, member_age) VALUES (?, ?, ?)");
+				pstmt = conn.prepareStatement("INSERT INTO member(member_name, member_age) VALUES (?, ?)");
 				// Insert쿼리
-				pstmt.setInt(1, maxNum());
-				pstmt.setString(2, member.getMemberName());
-				pstmt.setInt(3, member.getMemberAge());
+				pstmt.setString(1, member.getMemberName());
+				pstmt.setInt(2, member.getMemberAge());
 				pstmt.executeUpdate();
 				
 				/*System.out.println(pstmt +"<-- pstmt 쿼리문");*/ 
@@ -49,11 +50,11 @@ public class MemberDao {	// 클래스명
 				
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace(); // 오류 발생 시 오류를 출력하는 메서드
-				System.out.println("JDBC 시작을 할 수 없습니다 확인해주세요.");
+				System.out.println("JDBC 시작을 할 수 없습니다 확인해주세요. <-- InsertMember()");
 			}	
 			catch (SQLException e) {
 				e.printStackTrace(); // 오류 발생 시 오류를 출력하는 메서드
-				System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요.");
+				System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요. <-- InsertMember()");
 			} finally{
 				if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
 				if (conn != null) try { conn.close(); } catch(SQLException ex) {}
@@ -93,11 +94,11 @@ public class MemberDao {	// 클래스명
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace(); // 오류 발생 시 오류를 출력하는 메서드
-			System.out.println("JDBC 시작을 할 수 없습니다 확인해주세요.");
+			System.out.println("JDBC 시작을 할 수 없습니다 확인해주세요. <-- maxNum()");
 		} 
 		catch (SQLException e) {
 			e.printStackTrace(); // 오류 발생 시 오류를 출력하는 메서드
-			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요.");
+			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요. <-- maxNum()");
 		}  finally{
 			if (pstmtMaxNo != null) try { pstmtMaxNo.close(); } catch(SQLException ex) {}
 			if (conn != null) try { conn.close(); } catch(SQLException ex) {}
@@ -113,9 +114,9 @@ public class MemberDao {	// 클래스명
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet resultSet = null;
-		/*ArrayList<Member> selectMemberPage();*/
 		String sql = "SELECT member_no, member_name, member_age FROM member ORDER BY member_no LIMIT ?, ?";
-				
+		// 테이블을 지정한 행에서 시작하여 지정한 행까지 보여주는 쿼리문
+		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
@@ -135,8 +136,7 @@ public class MemberDao {	// 클래스명
 				int dbno = resultSet.getInt("member_no");
 				String dbname = resultSet.getString("member_name");
 				int dbage = resultSet.getInt("member_age");
-				
-		
+						
 				m.setMemberNo(dbno);
 				m.setMemberName(dbname);
 				m.setMemberAge(dbage);
@@ -144,10 +144,10 @@ public class MemberDao {	// 클래스명
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-			System.out.println("JDBC 시작을 할 수 없습니다 확인해주세요.");
+			System.out.println("JDBC 시작을 할 수 없습니다 확인해주세요. <-- selectMemberAll()");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요.");
+			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요. <-- selectMemberAll()");
 		}
 		
 		return list;
@@ -158,6 +158,7 @@ public class MemberDao {	// 클래스명
 		PreparedStatement pstmt = null;
 		ResultSet resultSet = null;
 		String sql = "SELECT COUNT(member_no) FROM member";
+		// member 테이블 전체 행의 개수를 구하는 쿼리문
 		int totalRow = 0;
 		
 		try {
@@ -171,19 +172,45 @@ public class MemberDao {	// 클래스명
 			pstmt = conn.prepareStatement(sql);
 			resultSet = pstmt.executeQuery();
 			if(resultSet.next()){
-				totalRow=resultSet.getInt("COUNT(notice_no)");
+				totalRow = resultSet.getInt("COUNT(member_no)");
 			}
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println("JDBC 시작을 할 수 없습니다 확인해주세요. <-- totalRow()");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요. <-- totalRow()");
 		}
 		
-		return totalRow;		
+		return totalRow;
+		// 전체 행의 개수 숫자를 리턴한다.
 	}
 	
-
+	public void deleteMember(int memberNo) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+			
+		String sql = "DELETE FROM member where member_no=?";
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
+			
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass); 
+						
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, memberNo);
+			pstmt.executeUpdate();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("JDBC 시작을 할 수 없습니다 확인해주세요. <-- deleteMember()");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요. <-- deleteMember()");
+		}
+	}
+	
 }
 

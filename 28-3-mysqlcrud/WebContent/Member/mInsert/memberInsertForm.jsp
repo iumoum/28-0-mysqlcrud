@@ -4,18 +4,18 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-	<title>mInsertForm Page</title>
+	<title>memberInsertForm Page</title>
 </head>
 	<body>
 		<form action="./memberInsertAction.jsp" method="post">
-			<table border="1" width="500px" height="300px">
+			<table border="1" width=700px" height="300px">
 				<tr>
 					<td >member 데이터</td>
 				</tr>
 				<tr>
 					<td>
-						<div>member_name : <input type="text" name="memberName"></div> <br>
-						<div>member_age : <input type="text" name="memberAge"></div>	<br>
+						<div>이름 : <input type="text" name="memberName"></div> <br>
+						<div>나이 : <input type="text" name="memberAge"></div>	<br>
 						<div><input type="submit" value="입력하기"></div>
 					</td>
 				</tr>
