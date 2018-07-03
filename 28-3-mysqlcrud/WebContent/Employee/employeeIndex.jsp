@@ -14,10 +14,10 @@
 				<td colspan="2">Employee Page</td>
 			</tr>
 			<tr>
-				<td rowspan="2">Employee</td> <td><a href="./eInsert/employeeInsertForm.jsp">employeeInsertForm으로 이동</a></td>
+				<td rowspan="2">Employee</td> <td><a href="./employeeInsertForm.jsp">employeeInsertForm으로 이동</a></td>
 			</tr>
 			<tr>
-				<td><a href="#">employeeList로 이동</a></td>
+				<td><a href="./employeeList.jsp">employeeList로 이동</a></td>
 			</tr>
 		</table>
 	</body>

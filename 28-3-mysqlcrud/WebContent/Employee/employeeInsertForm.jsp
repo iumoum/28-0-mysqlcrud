@@ -8,10 +8,10 @@
 	</head>
 	<body>
 		<!--employeeIsertAction.jsp 에 post형식으로 EmployeeName,EmployeeAge,EmployeeAddressContent 값을 넘김 -->
-		<form action="./eployeeIsertAction.jsp" method="post">
+		<form action="./employeeInsertAction.jsp" method="post">
 			<table border="1">
 				<tr>
-					<td colspan="2">Teacher</td>
+					<td colspan="2">Eployee</td>
 				</tr>
 				<tr>
 					<td>고용인 이름 : <input type="text" name="employeeName"></td>

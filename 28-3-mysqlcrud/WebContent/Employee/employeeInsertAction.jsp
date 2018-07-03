@@ -4,8 +4,6 @@
 <!-- 필요한 class페이지를 패키지로부터 import해온다 -->
 <%@ page import="service.Employee" %>
 <%@ page import="service.EmployeeDao" %>
-<%@ page import="service.EmployeeAddr" %>
-<%@ page import="service.EmployeeAddrDao" %>
 <!-- 받아오는 정보를 EUC-KR타입의 문자형태로 보여준다 -->
 <% request.setCharacterEncoding("euc-kr"); %>
 <!DOCTYPE html">
@@ -22,4 +20,6 @@
 	
 	//employeeDao변수에 담긴 객체에 주소값을 따라가 insertEmployee메서드를 employee로 실행한다
 	employeeDao.insertEmployee(employee);
+	
+	response.sendRedirect(request.getContextPath() + "/Employee/employeeList.jsp");
 %>
