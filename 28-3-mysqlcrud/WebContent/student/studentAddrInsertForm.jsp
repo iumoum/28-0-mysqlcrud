@@ -6,20 +6,19 @@
 		<title>InsertStudentForm</title>
 	</head>
 	<body>
-		<form action="./insertStudentAction.jsp" method="post">
+		<form action="./studentAddrInsertAction.jsp" method="post">
 			<h3>Student</h3>
 			<table border="1">
 				<tr>
-					<td>이름  : </td>
-					<td><input type="text" name="name"></td>
+					<td>주소  : </td>
+					<td><input type="text" name="addr"></td>
 				</tr>
 				<tr>
-					<td>나이 : </td>
-					<td><input type="text" name="age"></td>
+					<td><input type="submit" value="확인"><input type="hidden" name="studentNo" value= "<%=request.getParameter("send_no")%>"></td>
 				</tr>
-				<tr>
-					<td><input type="submit" value="확인"></td>
-				</tr>
+			
+				
+				
 			</table>
 		</form>
 	</body>	

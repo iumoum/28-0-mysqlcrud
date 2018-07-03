@@ -14,8 +14,12 @@
 <body>
 	<table border="1">
 		<tr>
+			<td>번호</td>
 			<td>이름</td>
 			<td>나이</td>
+			<td>주소입력</td>
+			<td>수정</td>
+			<td>삭제</td>
 		</tr>
 
 		<%
@@ -35,11 +39,29 @@
 			for (int i = 0; i < get_list.size(); i++) {
 				System.out.println(i);
 				Student s1 = get_list.get(i);
+				int send_no = s1.getNo();
 		%>
-		<tr>
-			<td><%=s1.getName()%></td>
-			<td><%=s1.getAge()%></td>
-		</tr>
+				<tr>
+					<td><%=send_no %></td>
+					<td><a href="<%=request.getContextPath()%>/student/studentAddrList.jsp?send_no=<%=send_no%>"><%=s1.getName()%></a></td>
+					<td><%=s1.getAge()%></td>
+					<td>
+					<%
+					String test = dao.studentAddr(send_no);
+					if(test.equals("주소있다")){
+						
+					
+					%>
+					
+					<%}else{ %>
+						<a href="<%=request.getContextPath()%>/student/studentAddrInsertForm.jsp?send_no=<%=send_no%>">주소입력</a>
+				<%	}
+					%>
+					
+					</td>
+					<td><a href="<%=request.getContextPath()%>/student/updateStudentForm.jsp">수정</a></td>
+					<td><a href="<%=request.getContextPath()%>/student/deleteStudent.jsp">삭제</a></td>
+				</tr>
 		<%
 			}
 			Student stu = new Student();
