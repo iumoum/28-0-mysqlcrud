@@ -4,7 +4,7 @@ package service;
 public class TeacherAddr {
 	private int teacherAddrNo;
 	private int teacherNo;
-	public String teacherAddrContent;
+	private String teacherAddrContent;
 	
 	public int getTeacherAddrNo() {
 		return teacherAddrNo;

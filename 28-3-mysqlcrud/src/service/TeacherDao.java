@@ -2,8 +2,9 @@
 package service;
 
 import java.util.ArrayList;
-import service.Teacher;
 import java.sql.*;
+import service.*;
+
 
 public class TeacherDao {
 	
