@@ -3,7 +3,7 @@ package service;
 public class Student {
 	private String name;
 	private int age;
-	
+	private int countno;
 	public String getName() {
 		return name;
 	}
@@ -18,5 +18,12 @@ public class Student {
 		System.out.println(age +"<=setage");
 		this.age = age;
 	}
+	public int getCountno() {
+		return countno;
+	}
+	public void setCountno(int countno) {
+		this.countno = countno;
+	}
+	
 
 }

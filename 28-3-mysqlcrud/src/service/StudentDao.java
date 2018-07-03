@@ -5,10 +5,66 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.sql.DriverManager;
 import service.Student;
-
 public class StudentDao {
+	ArrayList<Student> list = null;
+	
+	public Student countNo(Student s) throws ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.jdbc.Driver");
+		
+		//드라이버 로딩
+		String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
+		String dbUser = "sqlidkjy";
+		String dbPass = "sqlpwkjy";
+		//db연결을 위한 데이터들을 각각의 String 변수들에 대입한다.
+		Connection conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+		
+		PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) as countNo  FROM student");
+		ResultSet rs = pstmt.executeQuery();
+		if(rs.next()) {
+		s.setCountno(rs.getInt("countNo"));
+		}
+		return s;
+		
+	}
+	public ArrayList<Student> selectStudent(int begin, int rowPerPage){
+		
+		
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+			
+				//드라이버 로딩
+				String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
+				String dbUser = "sqlidkjy";
+				String dbPass = "sqlpwkjy";
+				//db연결을 위한 데이터들을 각각의 String 변수들에 대입한다.
+				Connection conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+				list = new ArrayList<Student>();
+				
+				PreparedStatement pstmt = conn.prepareStatement("select student_name, student_age from student order by student_no desc limit ?,?");
+				pstmt.setInt(1, begin);
+				pstmt.setInt(2,  rowPerPage);
+				System.out.println(pstmt +"<-sptmt");
+				ResultSet rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					Student s = new Student();
+					s.setName(rs.getString("student_name"));
+					s.setAge(rs.getInt("student_age"));
+					list.add(s);
+				}	
+			
+			}catch (ClassNotFoundException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return list;
+		
+				
+		
+	}
 	
 	public Student insertStudent(Student stu){
 	//Student 리턴 타입으로 isnertStudent 메소드 선언뒤 Student 클래스 데이터 타입 매개변수인 stu를 선언한다.
@@ -19,6 +75,7 @@ public class StudentDao {
 		PreparedStatement pstmt2 = null;
 		ResultSet rs = null;
 		//초기값 지정
+		
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
