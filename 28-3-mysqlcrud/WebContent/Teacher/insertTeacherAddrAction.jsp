@@ -15,7 +15,7 @@
 			TeacherAddr teacherAddr = new TeacherAddr();
 			TeacherAddrDao teacherAddrDao = new TeacherAddrDao();
 			
-			// insertTeacherAddrForm.jsp로 부터 받아온 teacherNo, teacherAddressContent값을 각각의변수에 대입
+			// insertTeacherAddrForm.jsp로 부터 받아온 teacherNo, teacherAddressContent값을 각각의 변수에 대입
 			int teacherNo = Integer.parseInt(request.getParameter("teacherNo"));
 			String teacherAddressContent = request.getParameter("teacherAddressContent");
 			
@@ -29,6 +29,9 @@
 			
 			// insertTeacherAddress 메서드를 통해 레코드 삽입
 			teacherAddrDao.insertTeacherAddress(teacherAddr);
+			
+			// 페이지 이동
+			response.sendRedirect(request.getContextPath() + "/Teacher/teacherAddrList.jsp?teacherNo=" + teacherNo);
 		%>
 	</body>
 </html>

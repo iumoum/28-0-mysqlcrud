@@ -15,17 +15,20 @@ public class TeacherDao {
 			PRIMARY KEY (`teacher_no`)
 	  )  */
 	
-	// teacherList의 마지막 페이지를 구하기 위해 레코드의 총 갯수를 조회하는 메서드
-	// 매개변수는 없다
-	// 리턴되는 데이터는 teacher 테이블에서 조회되는 레코드의 총 갯수이다.
-	public int countTeacherTable() {
+	// teacher 테이블의 특정 레코드를 수정하는 메서드
+	// 매개변수는 teacher 객체를 입력 받음. updateForm 으로 부터 넘겨받은 값들이 담긴 VO
+	// 리턴 데이터 타입 void
+	public void updateTeacher(Teacher teacher) {
 		Connection conn = null;
-		PreparedStatement pstmtCountTeacherTable = null;
-		ResultSet rsCountTeacherTable = null;
-		int totalTeacher = 0;
+		PreparedStatement pstmtUpdateTeacher = null;
 		
-		// teacher 테이블의 전체 레코드 갯수를 조회하는 쿼리
-		String sqlCountTeacherTable = "SELECT COUNT(*) as total_teacher FROM teacher";
+		// teacherList.jsp로 부터 teacher 객체를 잘 전달 받았는지 테스트
+		System.out.println("teacherNo, updateTeacher => " + teacher.getTeacherNo());
+		System.out.println("teacherName, updateTeacher => " + teacher.getTeacherName());
+		System.out.println("teacherAge, updateTeacher => " + teacher.getTeacherAge());
+		
+		// teacher 테이블의 특정 레코드를 수정하는 쿼리
+		String sqlUpdateTeacher = "UPDATE teacher SET teacher_name = ?, teacher_age = ? WHERE teacher_no = ?";
 		
 		try {
 			// mysql 드라이버 로딩
@@ -38,14 +41,90 @@ public class TeacherDao {
 			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
 		
 			// 위의 쿼리 준비
-			pstmtCountTeacherTable = conn.prepareStatement(sqlCountTeacherTable);
+			pstmtUpdateTeacher = conn.prepareStatement(sqlUpdateTeacher);
 			
-			// 위의 쿼리 실행
-			rsCountTeacherTable = pstmtCountTeacherTable.executeQuery();
+			// ?에 값 대입
+			pstmtUpdateTeacher.setString(1, teacher.getTeacherName());
+			pstmtUpdateTeacher.setInt(2, teacher.getTeacherAge());
+			pstmtUpdateTeacher.setInt(3, teacher.getTeacherNo());
 			
-			// 다음 레코드가 존재한다면
-			if(rsCountTeacherTable.next()) {
-				totalTeacher = rsCountTeacherTable.getInt("total_teacher");
+			// 쿼리 실행 및 수정된 레코드 수 출력
+			System.out.println("수정된 레코드 수 : " + pstmtUpdateTeacher.executeUpdate());
+			
+		} catch (ClassNotFoundException classException) {
+			System.out.println("DB Driver 클래스를 찾을 수 없습니다. 커넥터가 존재하는지 확인 해주세요!");
+		} catch (SQLException sqlException) {
+			System.out.println("DB와 관련된 예외가 발생하였습니다!");
+			sqlException.printStackTrace();
+		} finally {
+			// 객체를 종료하는 부분
+			if(pstmtUpdateTeacher != null) {
+				try {
+					pstmtUpdateTeacher.close();
+				} catch (SQLException sqlException){
+					System.out.println("pstmt1 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException sqlException){
+					System.out.println("conn 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+		}
+	}
+
+	// teacher 테이블의 특정 레코드를 조회하여 VO에 담아 리턴하는 메서드
+	// 매개변수로는 교사 번호. 특정 레코드를 가리키기 위함
+	// 리턴 데이터 타입은 Teacher 클래스 데이터 타입. VO 담아 리턴하기 위함
+	public Teacher selectForUpdateTeacher(int teacherNo) {
+		Connection conn = null;
+		PreparedStatement pstmtSelectForUpdateTeacher = null;
+		ResultSet rsSelectForUpdateTeacher = null;
+		Teacher teacher = null;
+		
+		// teacherList.jsp로 부터 teacherNo값을 잘 전달 받았는지 테스트
+		System.out.println("teacherNo, teacherList.jsp => TeacherDao.java " + teacherNo);
+		
+		// teacher 테이블의 특정 레코드를 조회하는 쿼리
+		String sqlSelectForUpdateTeacher = "SELECT teacher_no,teacher_name,teacher_age FROM teacher WHERE teacher_no = ?";
+		
+		try {
+			// mysql 드라이버 로딩
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			// DB 연결 
+			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPw = "java0000";
+			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
+		
+			// 위의 쿼리 준비
+			pstmtSelectForUpdateTeacher = conn.prepareStatement(sqlSelectForUpdateTeacher);
+			
+			// ?에 값 대입
+			pstmtSelectForUpdateTeacher.setInt(1, teacherNo);
+			
+			// 쿼리 실행
+			rsSelectForUpdateTeacher = pstmtSelectForUpdateTeacher.executeQuery();
+			
+			// 조회된 결과가 있다면
+			if(rsSelectForUpdateTeacher.next()) {
+				teacher = new Teacher();
+				
+				// teacher 객체 내부에 조회된 각각의 데이터를 대입
+				teacher.setTeacherNo(rsSelectForUpdateTeacher.getInt("teacher_no"));
+				teacher.setTeacherName(rsSelectForUpdateTeacher.getString("teacher_name"));
+				teacher.setTeacherAge(rsSelectForUpdateTeacher.getInt("teacher_age"));
+			} else {
+				System.out.println("해당 데이터가 더 이상 존재하지 않습니다.");
 			}
 		} catch (ClassNotFoundException classException) {
 			System.out.println("DB Driver 클래스를 찾을 수 없습니다. 커넥터가 존재하는지 확인 해주세요!");
@@ -54,9 +133,143 @@ public class TeacherDao {
 			sqlException.printStackTrace();
 		} finally {
 			// 객체를 종료하는 부분
-			if(rsCountTeacherTable != null) {
+			if(rsSelectForUpdateTeacher != null) {
 				try {
-					rsCountTeacherTable.close();
+					rsSelectForUpdateTeacher.close();
+				} catch (SQLException sqlException){
+					System.out.println("pstmt1 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+			if(pstmtSelectForUpdateTeacher != null) {
+				try {
+					pstmtSelectForUpdateTeacher.close();
+				} catch (SQLException sqlException){
+					System.out.println("pstmt1 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException sqlException){
+					System.out.println("conn 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+		}
+		return teacher;
+	}
+	
+	// Teacher 테이블의 특정 레코드를 삭제하는 메서드
+	// 매개변수는 교사번호를 입력받음. 특정 레코드를 가리키기 위함
+	// 리턴 데이터 타입은 없다.
+	public void deleteTeacher(int teacherNo) {
+		Connection conn = null;
+		PreparedStatement pstmtDeleteTeacher = null;
+		
+		// teacherList.jsp로 부터 teacherNo값을 잘 전달 받았는지 테스트
+		System.out.println("teacherNo, teacherList.jsp => TeacherDao.java " + teacherNo);
+		
+		// teacher 테이블의 특정 레코드를 삭제하는 쿼리
+		String sqlDeleteTeacher = "DELETE FROM teacher WHERE teacher_no = ?";
+		
+		try {
+			// mysql 드라이버 로딩
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			// DB 연결 
+			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPw = "java0000";
+			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
+		
+			// 위의 쿼리 준비
+			pstmtDeleteTeacher = conn.prepareStatement(sqlDeleteTeacher);
+			
+			// ?에 값 대입
+			pstmtDeleteTeacher.setInt(1, teacherNo);
+			
+			// 위의 쿼리 실행 및 삭제된 레코드의 수 출력
+			System.out.println("삭제된 레코드의 수 : " + pstmtDeleteTeacher.executeUpdate());
+		} catch (ClassNotFoundException classException) {
+			System.out.println("DB Driver 클래스를 찾을 수 없습니다. 커넥터가 존재하는지 확인 해주세요!");
+		} catch (SQLException sqlException) {
+			System.out.println("DB와 관련된 예외가 발생하였습니다!");
+			sqlException.printStackTrace();
+		} finally {
+			// 객체를 종료하는 부분
+			if(pstmtDeleteTeacher != null) {
+				try {
+					pstmtDeleteTeacher.close();
+				} catch (SQLException sqlException){
+					System.out.println("pstmt1 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException sqlException){
+					System.out.println("conn 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	// teacherList의 마지막 페이지를 구하기 위해 레코드의 총 갯수를 조회하는 메서드
+	// 매개변수는 없다
+	// 리턴되는 데이터는 teacher 테이블에서 조회되는 레코드의 총 갯수이다.
+	public int countWholeRecordFromTeacher() {
+		Connection conn = null;
+		PreparedStatement pstmtcountWholeRecordFromTeacher = null;
+		ResultSet rscountWholeRecordFromTeacher = null;
+		int totalTeacher = 0;
+		
+		// teacher 테이블의 전체 레코드 갯수를 조회하는 쿼리
+		String sqlcountWholeRecordFromTeacher = "SELECT COUNT(*) as total_teacher FROM teacher";
+		
+		try {
+			// mysql 드라이버 로딩
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			// DB 연결 
+			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPw = "java0000";
+			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
+		
+			// 위의 쿼리 준비
+			pstmtcountWholeRecordFromTeacher = conn.prepareStatement(sqlcountWholeRecordFromTeacher);
+			
+			// 위의 쿼리 실행
+			rscountWholeRecordFromTeacher = pstmtcountWholeRecordFromTeacher.executeQuery();
+			
+			// 다음 레코드가 존재한다면
+			if(rscountWholeRecordFromTeacher.next()) {
+				totalTeacher = rscountWholeRecordFromTeacher.getInt("total_teacher");
+			}
+		} catch (ClassNotFoundException classException) {
+			System.out.println("DB Driver 클래스를 찾을 수 없습니다. 커넥터가 존재하는지 확인 해주세요!");
+		} catch (SQLException sqlException) {
+			System.out.println("DB와 관련된 예외가 발생하였습니다!");
+			sqlException.printStackTrace();
+		} finally {
+			// 객체를 종료하는 부분
+			if(rscountWholeRecordFromTeacher != null) {
+				try {
+					rscountWholeRecordFromTeacher.close();
 				} catch (SQLException sqlException){
 					System.out.println("rsSelectForCount 객체 종료 중 예외 발생");
 					
@@ -64,9 +277,9 @@ public class TeacherDao {
 					sqlException.printStackTrace();
 				}
 			}
-			if(pstmtCountTeacherTable != null) {
+			if(pstmtcountWholeRecordFromTeacher != null) {
 				try {
-					pstmtCountTeacherTable.close();
+					pstmtcountWholeRecordFromTeacher.close();
 				} catch (SQLException sqlException){
 					System.out.println("pstmt1 객체 종료 중 예외 발생");
 					
@@ -180,8 +393,7 @@ public class TeacherDao {
 	public void insertTeacher(Teacher teacher) {
 		// 객체참조변수 선언
 		Connection conn = null;
-		PreparedStatement pstmt1 = null;
-		PreparedStatement pstmt2 = null;
+		PreparedStatement pstmtInsertTeacher = null;
 		ResultSet rsSelectForCount = null;
 		
 		try {
@@ -194,40 +406,21 @@ public class TeacherDao {
 			String dbUser = "root";
 			String dbPw = "java0000";
 			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
-			
-			// teacher_no를 자동증가시키기 위해 사용하려는 쿼리
-			// teacher_no의 최댓값을 조회
-			String sqlSelectForMaxTeacher = "SELECT MAX(teacher_no) as max_teacher FROM teacher";
-			pstmt1 = conn.prepareStatement(sqlSelectForMaxTeacher);
-			
-			// 위의 쿼리 실행
-			rsSelectForCount = pstmt1.executeQuery();
-			
-			// 데이터를 가져오기 위해 커서를 넘김
-			rsSelectForCount.next();
-			
-			// teacher_no의 최댓값에서 +1을 함으로 자동증가 구현
-			// auto_increament가 조금 사용하기 불편해서 이렇게 만들었다.
-			if(rsSelectForCount.getInt("max_teacher") == 0) {
-				teacher.setTeacherNo(1);
-			}
-			teacher.setTeacherNo(rsSelectForCount.getInt("max_teacher") + 1);
-			
+	
 			// teacherNo 안의 값 테스트
 			System.out.println("teacherNo from teacherDTO: " + teacher.getTeacherNo());
 			
 			// teacher 테이블에 레코드를 삽입하는 쿼리 준비
-			String sqlInsertTeacher = "INSERT INTO teacher(teacher_no,teacher_name,teacher_age) VALUES(?,?,?)";
-			pstmt2 = conn.prepareStatement(sqlInsertTeacher);
+			String sqlInsertTeacher = "INSERT INTO teacher(teacher_name,teacher_age) VALUES(?,?)";
+			pstmtInsertTeacher = conn.prepareStatement(sqlInsertTeacher);
 			
 			// ?에 값 대입
-			pstmt2.setInt(1, teacher.getTeacherNo());
-			pstmt2.setString(2, teacher.getTeacherName());
-			pstmt2.setInt(3, teacher.getTeacherAge());
+			pstmtInsertTeacher.setString(1, teacher.getTeacherName());
+			pstmtInsertTeacher.setInt(2, teacher.getTeacherAge());
 			
 			// 레코드 삽입 쿼리 실행
 			// 실행 후 반환 되는 값은 해당 쿼리로 인해 변동되는(?) 행의 갯수 (예를 들어 삽입되는 행의 갯수)
-			int resultUpdate = pstmt2.executeUpdate();
+			int resultUpdate = pstmtInsertTeacher.executeUpdate();
 			
 			// 삽입되는 레코드의 갯수 출력
 			System.out.println("teacher 테이블에 삽입된 행 갯수 : " + resultUpdate);
@@ -254,19 +447,9 @@ public class TeacherDao {
 					sqlException.printStackTrace();
 				}
 			}
-			if(pstmt1 != null) {
+			if(pstmtInsertTeacher != null) {
 				try {
-					pstmt1.close();
-				} catch (SQLException sqlException){
-					System.out.println("pstmt1 객체 종료 중 예외 발생");
-					
-					// 예외가 발생한 부분을 출력해줌.
-					sqlException.printStackTrace();
-				}
-			}
-			if(pstmt2 != null) {
-				try {
-					pstmt2.close();
+					pstmtInsertTeacher.close();
 				} catch (SQLException sqlException){
 					System.out.println("pstmt2 객체 종료 중 예외 발생");
 					

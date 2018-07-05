@@ -26,12 +26,17 @@
 				<td>주소 번호</td>
 				<td>교사 번호</td>
 				<td>교사 주소</td>
+				<td>수정</td>
+				<td>삭제</td>
 			</tr>
 			<tr>
 				<td><%= teacherAddr.getTeacherAddrNo() %></td>
 				<td><%= teacherAddr.getTeacherNo() %></td>
 				<td><%= teacherAddr.getTeacherAddrContent() %></td>
+				<td><a href="<%= request.getContextPath() %>/Teacher/updateTeacherAddrForm.jsp?teacherNo=<%= teacherNo %>">수정 버튼</a></td>
+				<td><a href="<%= request.getContextPath() %>/Teacher/deleteTeacherAddrAction.jsp?teacherNo=<%= teacherNo %>">삭제 버튼</a></td>
 			</tr>
 		</table>
+		<a href="<%= request.getContextPath() %>/Teacher/teacherList.jsp">teacherList로 이동</a>
 	</body>
 </html>

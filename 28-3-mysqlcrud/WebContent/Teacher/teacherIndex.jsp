@@ -15,7 +15,7 @@
 				<td colspan="2">Teacher Page</td>
 			</tr>
 			<tr>
-				<td rowspan="2">Teacher</td> <td><a href="./tInsert/teacherInsertForm.jsp">teacherInsertForm으로 이동</a></td>
+				<td rowspan="2">Teacher</td> <td><a href="./insertTeacherForm.jsp">teacherInsertForm으로 이동</a></td>
 			</tr>
 			<tr>
 				<td><a href="#">teacherList로 이동</a></td>

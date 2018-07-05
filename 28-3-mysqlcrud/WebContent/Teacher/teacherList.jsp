@@ -27,8 +27,8 @@
 			ArrayList<Teacher> arrayListTeacher = teacherDao.selectTeacherByPage(currentPage, rowPerPage);
 			
 			// 마지막 페이지
-			int lastPage = teacherDao.countTeacherTable() / rowPerPage;
-			if ((teacherDao.countTeacherTable() % rowPerPage) != 0){
+			int lastPage = teacherDao.countWholeRecordFromTeacher() / rowPerPage;
+			if ((teacherDao.countWholeRecordFromTeacher() % rowPerPage) != 0){
 				lastPage++;
 			}
 		%>
@@ -39,6 +39,8 @@
 				<td>교사 이름</td>
 				<td>교사 나이</td>
 				<td>주소 입력</td>
+				<td>수 정</td>
+				<td>삭 제</td>
 			</tr>
 			<% 
 				// size() 메서드는 마지막 인덱스 까지의 요소 갯수를 리턴해준다.
@@ -79,6 +81,8 @@
 						<%
 							}
 						%>
+						<td><a href="<%= request.getContextPath() %>/Teacher/updateTeacherForm.jsp?teacherNo=<%= teacher.getTeacherNo() %>">수정 버튼</a></td>
+						<td><a href="<%= request.getContextPath() %>/Teacher/deleteTeacherAction.jsp?teacherNo=<%= teacher.getTeacherNo() %>">삭제 버튼</a></td>
 					</tr>
 			<% 
 				}
@@ -88,7 +92,7 @@
 			<%
 				if(currentPage > 1){
 			%>
-					<a href="<%= request.getContextPath() %>/Teacher/tList/teacherList.jsp?currentPage=<%= currentPage - 1 %>">&lt; 이전</a>
+					<a href="<%= request.getContextPath() %>/Teacher/teacherList.jsp?currentPage=<%= currentPage - 1 %>">&lt; 이전</a>
 			<%
 				} else {
 			%>
@@ -98,7 +102,7 @@
 				
 				if(currentPage < lastPage){
 			%>
-					<a href="<%= request.getContextPath() %>/Teacher/tList/teacherList.jsp?currentPage=<%= currentPage + 1 %>">다음 &gt;</a>
+					<a href="<%= request.getContextPath() %>/Teacher/teacherList.jsp?currentPage=<%= currentPage + 1 %>">다음 &gt;</a>
 			<%
 				} else {
 			%>

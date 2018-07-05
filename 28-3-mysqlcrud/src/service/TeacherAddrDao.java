@@ -1,4 +1,4 @@
-// 2018.06.26 김지완
+// 2018.07.04 김지완
 package service;
 
 import java.sql.*;
@@ -17,6 +17,221 @@ public class TeacherAddrDao {
 			CONSTRAINT `FK_teacher_address_teacher` FOREIGN KEY (`teacher_no`) REFERENCES `teacher` (`teacher_no`)
 		)*/
 	
+	// teacher_address 테이블의 특정 레코드를 수정하는 메서드
+	// 매개변수는 teacherAddr 객체를 입력 받음. updateForm 으로 부터 넘겨받은 값들이 담긴 VO
+	// 리턴 데이터 타입 void
+	public void updateTeacherAddress(TeacherAddr teacherAddr) {
+		Connection conn = null;
+		PreparedStatement pstmtUpdateTeacherAddress = null;
+		
+		// teacherList.jsp로 부터 teacher 객체를 잘 전달 받았는지 테스트
+		System.out.println("teacherAddressNo, updateTeacherAddress => " + teacherAddr.getTeacherAddrNo());
+		System.out.println("teacherNo, updateTeacherAddress => " + teacherAddr.getTeacherNo());
+		System.out.println("teacherAddrContent, updateTeacherAddress => " + teacherAddr.getTeacherAddrContent());
+		
+		
+		// teacher_address 테이블의 특정 레코드를 수정하는 쿼리
+		String sqlUpdateTeacherAddress = "UPDATE teacher_address SET teacher_address_content = ? WHERE teacher_no = ?";
+		
+		try {
+			// mysql 드라이버 로딩
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			// DB 연결 
+			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPw = "java0000";
+			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
+		
+			// 위의 쿼리 준비
+			pstmtUpdateTeacherAddress = conn.prepareStatement(sqlUpdateTeacherAddress);
+			
+			// ?에 값 대입
+			pstmtUpdateTeacherAddress.setString(1, teacherAddr.getTeacherAddrContent());
+			pstmtUpdateTeacherAddress.setInt(2, teacherAddr.getTeacherNo());
+			
+			// 쿼리 실행 및 수정된 레코드 수 출력
+			System.out.println("수정된 레코드 수 : " + pstmtUpdateTeacherAddress.executeUpdate());
+			
+		} catch (ClassNotFoundException classException) {
+			System.out.println("DB Driver 클래스를 찾을 수 없습니다. 커넥터가 존재하는지 확인 해주세요!");
+		} catch (SQLException sqlException) {
+			System.out.println("DB와 관련된 예외가 발생하였습니다!");
+			sqlException.printStackTrace();
+		} finally {
+			// 객체를 종료하는 부분
+			if(pstmtUpdateTeacherAddress != null) {
+				try {
+					pstmtUpdateTeacherAddress.close();
+				} catch (SQLException sqlException){
+					System.out.println("pstmt1 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException sqlException){
+					System.out.println("conn 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+		}
+	}
+
+	// teacher_address 테이블의 특정 레코드를 조회하여 VO에 담아 리턴하는 메서드
+	// 매개변수로는 교사 번호. 특정 레코드를 가리키기 위함
+	// 리턴 데이터 타입은 TeacherAddr 클래스 데이터 타입. VO 담아 리턴하기 위함
+	public TeacherAddr selectForUpdateTeacherAddress(int teacherNo) {
+		Connection conn = null;
+		PreparedStatement pstmtSelectForUpdateTeacherAddress = null;
+		ResultSet rsSelectForUpdateTeacherAddress = null;
+		TeacherAddr teacherAddr = null;
+		
+		// teacherList.jsp로 부터 teacherNo값을 잘 전달 받았는지 테스트
+		System.out.println("teacherNo, teacherList.jsp => TeacherAddrDao.java " + teacherNo);
+		
+		// teacher 테이블의 특정 레코드를 조회하는 쿼리
+		String sqlSelectForUpdateTeacherAddress = "SELECT teacher_address_no,teacher_no,teacher_address_content FROM teacher_address WHERE teacher_no = ?";
+		
+		try {
+			// mysql 드라이버 로딩
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			// DB 연결 
+			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPw = "java0000";
+			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
+		
+			// 위의 쿼리 준비
+			pstmtSelectForUpdateTeacherAddress = conn.prepareStatement(sqlSelectForUpdateTeacherAddress);
+			
+			// ?에 값 대입
+			pstmtSelectForUpdateTeacherAddress.setInt(1, teacherNo);
+			
+			// 쿼리 실행
+			rsSelectForUpdateTeacherAddress = pstmtSelectForUpdateTeacherAddress.executeQuery();
+			
+			// 조회된 결과가 있다면
+			if(rsSelectForUpdateTeacherAddress.next()) {
+				teacherAddr = new TeacherAddr();
+				
+				// teacherAddr 객체 내부에 조회된 각각의 데이터를 대입
+				teacherAddr.setTeacherAddrNo(rsSelectForUpdateTeacherAddress.getInt("teacher_address_no"));
+				teacherAddr.setTeacherNo(rsSelectForUpdateTeacherAddress.getInt("teacher_no"));
+				teacherAddr.setTeacherAddrContent(rsSelectForUpdateTeacherAddress.getString("teacher_address_content"));
+			} else {
+				System.out.println("해당 데이터가 더 이상 존재하지 않습니다.");
+			}
+		} catch (ClassNotFoundException classException) {
+			System.out.println("DB Driver 클래스를 찾을 수 없습니다. 커넥터가 존재하는지 확인 해주세요!");
+		} catch (SQLException sqlException) {
+			System.out.println("DB와 관련된 예외가 발생하였습니다!");
+			sqlException.printStackTrace();
+		} finally {
+			// 객체를 종료하는 부분
+			if(rsSelectForUpdateTeacherAddress != null) {
+				try {
+					rsSelectForUpdateTeacherAddress.close();
+				} catch (SQLException sqlException){
+					System.out.println("pstmt1 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+			if(pstmtSelectForUpdateTeacherAddress != null) {
+				try {
+					pstmtSelectForUpdateTeacherAddress.close();
+				} catch (SQLException sqlException){
+					System.out.println("pstmt1 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException sqlException){
+					System.out.println("conn 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+		}
+		return teacherAddr;
+	}
+	
+	// teacher_address 테이블의 특정 레코드를 삭제하는 메서드
+	// 매개변수로 교사 번호를 입력받음. 특정 레코드를 가리키기 위함
+	// 리턴 데이터 타입은 void.
+	public void deleteTeacherAddress(int teacherNo) {
+		Connection conn = null;
+		PreparedStatement pstmtDeleteTeacherAddress = null;
+		
+		// teacherList.jsp로 부터 teacherNo값을 잘 전달 받았는지 테스트
+		System.out.println("teacherNo, teacherList.jsp => TeacherAddrDao.java " + teacherNo);
+		
+		// teacher_address 테이블의 특정 레코드를 삭제하는 쿼리
+		String sqlDeleteTeacherAddress = "DELETE FROM teacher_address WHERE teacher_no = ?";
+		
+		try {
+			// mysql 드라이버 로딩
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			// DB 연결 
+			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPw = "java0000";
+			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
+		
+			// 위의 쿼리 준비
+			pstmtDeleteTeacherAddress = conn.prepareStatement(sqlDeleteTeacherAddress);
+			
+			// ?에 값 대입
+			pstmtDeleteTeacherAddress.setInt(1, teacherNo);
+			
+			// 위의 쿼리 실행 및 삭제된 레코드의 수 출력
+			System.out.println("삭제된 레코드의 수 : " + pstmtDeleteTeacherAddress.executeUpdate());
+		} catch (ClassNotFoundException classException) {
+			System.out.println("DB Driver 클래스를 찾을 수 없습니다. 커넥터가 존재하는지 확인 해주세요!");
+		} catch (SQLException sqlException) {
+			System.out.println("DB와 관련된 예외가 발생하였습니다!");
+			sqlException.printStackTrace();
+		} finally {
+			// 객체를 종료하는 부분
+			if(pstmtDeleteTeacherAddress != null) {
+				try {
+					pstmtDeleteTeacherAddress.close();
+				} catch (SQLException sqlException){
+					System.out.println("pstmt1 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException sqlException){
+					System.out.println("conn 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+		}
+	}
+	// teacher_address 테이블의 특정 레코드를 조회하는 메서드
+	// 매개변수로 교사 번호를 입력 받음. 특정 레코드를 가리키기 위함
+	// 리턴 데이터는 TeacherAddr 객체의 참조값. 조회한 결과를 VO에 담아 보내는 형태
 	public TeacherAddr selectTeacherAddress(int teacherNo){
 		Connection conn = null;
 		PreparedStatement pstmtSelectTeacherAddress = null;
@@ -26,7 +241,7 @@ public class TeacherAddrDao {
 		// teacherList.jsp로 부터 teacherNo값을 잘 전달 받았는지 테스트
 		System.out.println("teacherNo, teacherList.jsp => TeacherAddrDao.java " + teacherNo);
 		
-		// teacher_address 테이블에 레코드를 추가하는 쿼리
+		// teacher_address 테이블의 특정 레코드를 조회하는 쿼리
 		String sqlSelectTeacherAddress = "SELECT teacher_address_no, teacher_no,teacher_address_content FROM teacher_address WHERE teacher_no = ?";
 		
 		try {
