@@ -9,101 +9,202 @@ import java.util.ArrayList;
 import java.sql.DriverManager;
 import service.Student;
 public class StudentDao {
+	
+	
 	ArrayList<Student> list = null;
 	String xtest = null;
-	public String studentAddr(int sendNo) throws SQLException, ClassNotFoundException {
+	
+	public Student studentUpdate(String sendNo) {
+		Connection conn =null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Student s = new Student();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
 		
-		Class.forName("com.mysql.jdbc.Driver");
 		
-		//드라이버 로딩
-		String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-		String dbUser = "sqlidkjy";
-		String dbPass = "sqlpwkjy";
-		//db연결을 위한 데이터들을 각각의 String 변수들에 대입한다.
-		Connection conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "sqlidkjy";
+			String dbPass = "sqlpwkjy";
+	
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+			
+			pstmt = conn.prepareStatement("SELECT * FROM student where student_no=?");
+			pstmt.setString(1, sendNo);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				s.setNo(rs.getInt("student_no"));
+				s.setName(rs.getString("student_name"));
+				s.setAge(rs.getInt("student_age"));
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			if (rs != null) try { rs.close(); } catch(SQLException e) {}
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
+			if (conn != null) try { conn.close(); } catch(SQLException e) {}
+		}
+		return s;
+	}
+	
+	public String studentAddr(int sendNo){
+		Connection conn =null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
 		
-		PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM student_address where student_no=?");
-		pstmt.setInt(1, sendNo);
-		ResultSet rs = pstmt.executeQuery();
 		
-		if(rs.next()) {
-			xtest = "주소있다";
-		}else {
-			xtest = "주소 없는듯";
+			//드라이버 로딩
+			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "sqlidkjy";
+			String dbPass = "sqlpwkjy";
+			//db연결을 위한 데이터들을 각각의 String 변수들에 대입한다.
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+			
+			pstmt = conn.prepareStatement("SELECT * FROM student_address where student_no=?");
+			pstmt.setInt(1, sendNo);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				xtest = "주소있다";
+			}else {
+				xtest = "주소 없는듯";
+			}
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if (rs != null) try { rs.close(); } catch(SQLException e) {}
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
+			if (conn != null) try { conn.close(); } catch(SQLException e) {}
+		//객체 종료.	
 		}
 		return xtest;
 	}
-	public String studentNo(int sendNo) throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.jdbc.Driver");
-		
-		//드라이버 로딩
-		String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-		String dbUser = "sqlidkjy";
-		String dbPass = "sqlpwkjy";
-		//db연결을 위한 데이터들을 각각의 String 변수들에 대입한다.
-		Connection conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
-		
-		PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM student_address where student_no=?");
-		pstmt.setInt(1,  sendNo);
-		
-		ResultSet rs = pstmt.executeQuery();
+	public String studentNo(int sendNo){
 		String addr=null;
-		if(rs.next()) {
-			addr = rs.getString("student_address_content");
+		Connection conn =null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		
+		
+			//드라이버 로딩
+			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "sqlidkjy";
+			String dbPass = "sqlpwkjy";
+			//db연결을 위한 데이터들을 각각의 String 변수들에 대입한다.
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+			
+			pstmt = conn.prepareStatement("SELECT * FROM student_address where student_no=?");
+			pstmt.setInt(1,  sendNo);
+			
+		    rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				addr = rs.getString("student_address_content");
+			}
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if (rs != null) try { rs.close(); } catch(SQLException e) {}
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
+			if (conn != null) try { conn.close(); } catch(SQLException e) {}
+		//객체 종료.	
 		}
 		return addr;
 	}
-	public Student countNo(Student s) throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.jdbc.Driver");
+	public Student countNo(Student s){
+		Connection conn =null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
 		
-		//드라이버 로딩
-		String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-		String dbUser = "sqlidkjy";
-		String dbPass = "sqlpwkjy";
-		//db연결을 위한 데이터들을 각각의 String 변수들에 대입한다.
-		Connection conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 		
-		PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) as countNo  FROM student");
-		ResultSet rs = pstmt.executeQuery();
-		if(rs.next()) {
-		s.setCountno(rs.getInt("countNo"));
+			//드라이버 로딩
+			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "sqlidkjy";
+			String dbPass = "sqlpwkjy";
+			//db연결을 위한 데이터들을 각각의 String 변수들에 대입한다.
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+			
+			pstmt = conn.prepareStatement("SELECT COUNT(*) as countNo  FROM student");
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+			s.setCountno(rs.getInt("countNo"));
+			}
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if (rs != null) try { rs.close(); } catch(SQLException e) {}
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
+			if (conn != null) try { conn.close(); } catch(SQLException e) {}
+		//객체 종료.	
 		}
+		
 		return s;
 		
 	}
 	public ArrayList<Student> selectStudent(int begin, int rowPerPage){
+		Connection conn =null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
 		
-			try {
-				Class.forName("com.mysql.jdbc.Driver");
+			//드라이버 로딩
+			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "sqlidkjy";
+			String dbPass = "sqlpwkjy";
+			//db연결을 위한 데이터들을 각각의 String 변수들에 대입한다.
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+			list = new ArrayList<Student>();
 			
-				//드라이버 로딩
-				String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-				String dbUser = "sqlidkjy";
-				String dbPass = "sqlpwkjy";
-				//db연결을 위한 데이터들을 각각의 String 변수들에 대입한다.
-				Connection conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
-				list = new ArrayList<Student>();
-				
-				PreparedStatement pstmt = conn.prepareStatement("select * from student order by student_no asc limit ?,?");
-				pstmt.setInt(1, begin);
-				pstmt.setInt(2,  rowPerPage);
-				System.out.println(pstmt +"<-sptmt");
-				ResultSet rs = pstmt.executeQuery();
-				
-				while(rs.next()) {
-					Student s = new Student();
-					s.setName(rs.getString("student_name"));
-					s.setAge(rs.getInt("student_age"));
-					s.setNo(rs.getInt("student_no"));
-					list.add(s);
-				}	
+			pstmt = conn.prepareStatement("select * from student order by student_no asc limit ?,?");
+			pstmt.setInt(1, begin);
+			pstmt.setInt(2,  rowPerPage);
+			System.out.println(pstmt +"<-sptmt");
+			rs = pstmt.executeQuery();
 			
-			}catch (ClassNotFoundException | SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return list;
+			while(rs.next()) {
+				Student s = new Student();
+				s.setName(rs.getString("student_name"));
+				s.setAge(rs.getInt("student_age"));
+				s.setNo(rs.getInt("student_no"));
+				list.add(s);
+			}	
+		
+		}catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if (rs != null) try { rs.close(); } catch(SQLException e) {}
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
+			if (conn != null) try { conn.close(); } catch(SQLException e) {}
+		//객체 종료.	
+		}
+		return list;
 		
 				
 		

@@ -43,7 +43,7 @@
 		%>
 				<tr>
 					<td><%=send_no %></td>
-					<td><a href="<%=request.getContextPath()%>/student/studentAddrList.jsp?send_no=<%=send_no%>"><%=s1.getName()%></a></td>
+					<td><a href="<%=request.getContextPath()%>/Student/studentAddrList.jsp?send_no=<%=send_no%>"><%=s1.getName()%></a></td>
 					<td><%=s1.getAge()%></td>
 					<td>
 					<%
@@ -54,15 +54,16 @@
 					%>
 					
 					<%}else{ %>
-						<a href="<%=request.getContextPath()%>/student/studentAddrInsertForm.jsp?send_no=<%=send_no%>">주소입력</a>
+						<a href="<%=request.getContextPath()%>/Student/studentAddrInsertForm.jsp?send_no=<%=send_no%>">주소입력</a>
 				<%	}
 					%>
 					
 					</td>
-					<td><a href="<%=request.getContextPath()%>/student/updateStudentForm.jsp">수정</a></td>
-					<td><a href="<%=request.getContextPath()%>/student/deleteStudent.jsp">삭제</a></td>
+					<td><a href="<%=request.getContextPath()%>/Student/updateStudentForm.jsp?send_no=<%=send_no%>">수정</a></td>
+					<td><a href="<%=request.getContextPath()%>/Student/deleteStudent.jsp">삭제</a></td>
 				</tr>
 		<%
+		
 			}
 			Student stu = new Student();
 			

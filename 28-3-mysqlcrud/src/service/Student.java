@@ -30,6 +30,7 @@ public class Student {
 		return no;
 	}
 	public void setNo(int no) {
+		System.out.println(no);
 		this.no = no;
 	}
 	

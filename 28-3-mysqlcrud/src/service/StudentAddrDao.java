@@ -1,4 +1,4 @@
-//김정연 addr 주석 x
+
 package service;
 
 import java.sql.Connection;
@@ -17,33 +17,28 @@ public class StudentAddrDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		
-		
-			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-			String dbUser = "sqlidkjy";
-			String dbPass = "sqlpwkjy";
-			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
-			pstmt = conn.prepareStatement("INSERT INTO student_address(student_no, student_address_content) values(?, ?)");
-			pstmt.setInt(1,sa.getStudentNo());
-			pstmt.setString(2, sa.getAddr());
-			System.out.println(pstmt);
-			pstmt.executeUpdate();
-			
-			}catch (SQLException e) {
-			System.out.println("sql 오류다.");
-			e.printStackTrace();
+	
+	
+		String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
+		String dbUser = "sqlidkjy";
+		String dbPass = "sqlpwkjy";
+		conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+		pstmt = conn.prepareStatement("INSERT INTO student_address(student_no, student_address_content) values(?, ?)");
+		pstmt.setInt(1,sa.getStudentNo());
+		pstmt.setString(2, sa.getAddr());
+		System.out.println(pstmt);
+		pstmt.executeUpdate();
+	
 		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-			try {
-				pstmt.close();
-				conn.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
-		
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
+			if (conn != null) try { conn.close(); } catch(SQLException e) {}
+		//객체 종료.	
 		}
 		return sa;
 	}

@@ -14,10 +14,10 @@
 				<td colspan="2">Student Page</td>
 			</tr>
 			<tr>
-				<td rowspan="2">Student</td> <td><a href="./sInsert/insertStudentForm.jsp">sInsertForm으로 이동</a></td>
+				<td rowspan="2">Student</td> <td><a href="./insertStudentForm.jsp">sInsertForm으로 이동</a></td>
 			</tr>
 			<tr>
-				<td><a href="#">studentList로 이동</a></td>
+				<td><a href="./selectStudentList.jsp">studentList로 이동</a></td>
 			</tr>
 		</table>
 	</body>
