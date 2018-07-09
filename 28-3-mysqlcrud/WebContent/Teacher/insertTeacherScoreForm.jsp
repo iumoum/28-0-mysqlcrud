@@ -1,18 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-		<title>Form To Insert Teacher Address</title>
+		<title>Insert Teacher Score</title>
 	</head>
 	<body>
-		<h1>Teacher Address</h1>
-		<form action="<%= request.getContextPath() %>/Teacher/insertTeacherAddrAction.jsp" method="post">
+		<h1>Teacher Score</h1>
+		<form action="<%= request.getContextPath() %>/Teacher/insertTeacherScoreAction.jsp" method="post">
 			<table border="1">
 				<tr>
-					<td>주소 : </td>
-					<td><input type="text" name="teacherAddressContent"></td>
+					<td>점수 : </td>
+					<td><input type="text" name="score"></td>
 				</tr>
 				<tr>
 					<td colspan="2">

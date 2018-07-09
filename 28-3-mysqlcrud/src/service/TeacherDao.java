@@ -229,16 +229,13 @@ public class TeacherDao {
 	}
 	
 	// teacherList의 마지막 페이지를 구하기 위해 레코드의 총 갯수를 조회하는 메서드
-	// 매개변수는 없다
-	// 리턴되는 데이터는 teacher 테이블에서 조회되는 레코드의 총 갯수이다.
-	public int countWholeRecordFromTeacher() {
+	// 매개변수는 검색어에 따라 총 레코드 수가 달라지기 때문에 searchValue를 입력 받음
+	// 리턴되는 데이터는 검색어에 따라 조회되는 총 레코드의 수 이다.
+	public int countTotalRecordsBySearchValue(String searchValue) {
 		Connection conn = null;
-		PreparedStatement pstmtcountWholeRecordFromTeacher = null;
-		ResultSet rscountWholeRecordFromTeacher = null;
-		int totalTeacher = 0;
-		
-		// teacher 테이블의 전체 레코드 갯수를 조회하는 쿼리
-		String sqlcountWholeRecordFromTeacher = "SELECT COUNT(*) as total_teacher FROM teacher";
+		PreparedStatement pstmtCountTotalRecordsBySearchValue = null;
+		ResultSet rsCountTotalRecordsBySearchValue = null;
+		int totalRecordsBySelect = 0;
 		
 		try {
 			// mysql 드라이버 로딩
@@ -249,16 +246,31 @@ public class TeacherDao {
 			String dbUser = "root";
 			String dbPw = "java0000";
 			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
-		
-			// 위의 쿼리 준비
-			pstmtcountWholeRecordFromTeacher = conn.prepareStatement(sqlcountWholeRecordFromTeacher);
 			
+			// 검색어가 존재하지 않으면 전체보기
+			if(searchValue.equals("")) {
+				// teacher 테이블의 전체 레코드 갯수를 조회하는 쿼리
+				String sqlSelectForFindLastPage = "SELECT COUNT(*) as total_records FROM teacher";
+				
+				// 위의 쿼리 준비
+				pstmtCountTotalRecordsBySearchValue = conn.prepareStatement(sqlSelectForFindLastPage);
+			
+			// 검색어가 존재하면
+			} else {
+				// teacher_name 컬럼의 값에 searchValue의 값이 포함(LIKE)되어 있을 때 조회되는 레코드의 수를 구하는 쿼리
+				String sqlSelectForFindLastPage = "SELECT COUNT(*) as total_records FROM teacher WHERE teacher_name LIKE ?";
+				
+				// 위의 쿼리 준비
+				pstmtCountTotalRecordsBySearchValue = conn.prepareStatement(sqlSelectForFindLastPage);
+				
+				pstmtCountTotalRecordsBySearchValue.setString(1, "%" + searchValue + "%");
+			}
 			// 위의 쿼리 실행
-			rscountWholeRecordFromTeacher = pstmtcountWholeRecordFromTeacher.executeQuery();
+			rsCountTotalRecordsBySearchValue = pstmtCountTotalRecordsBySearchValue.executeQuery();
 			
 			// 다음 레코드가 존재한다면
-			if(rscountWholeRecordFromTeacher.next()) {
-				totalTeacher = rscountWholeRecordFromTeacher.getInt("total_teacher");
+			if(rsCountTotalRecordsBySearchValue.next()) {
+				totalRecordsBySelect = rsCountTotalRecordsBySearchValue.getInt("total_records");
 			}
 		} catch (ClassNotFoundException classException) {
 			System.out.println("DB Driver 클래스를 찾을 수 없습니다. 커넥터가 존재하는지 확인 해주세요!");
@@ -267,9 +279,9 @@ public class TeacherDao {
 			sqlException.printStackTrace();
 		} finally {
 			// 객체를 종료하는 부분
-			if(rscountWholeRecordFromTeacher != null) {
+			if(rsCountTotalRecordsBySearchValue != null) {
 				try {
-					rscountWholeRecordFromTeacher.close();
+					rsCountTotalRecordsBySearchValue.close();
 				} catch (SQLException sqlException){
 					System.out.println("rsSelectForCount 객체 종료 중 예외 발생");
 					
@@ -277,9 +289,9 @@ public class TeacherDao {
 					sqlException.printStackTrace();
 				}
 			}
-			if(pstmtcountWholeRecordFromTeacher != null) {
+			if(pstmtCountTotalRecordsBySearchValue != null) {
 				try {
-					pstmtcountWholeRecordFromTeacher.close();
+					pstmtCountTotalRecordsBySearchValue.close();
 				} catch (SQLException sqlException){
 					System.out.println("pstmt1 객체 종료 중 예외 발생");
 					
@@ -298,20 +310,17 @@ public class TeacherDao {
 				}
 			}
 		}	
-		return totalTeacher;
+		return totalRecordsBySelect;
 	}
 	
 	// teacher 테이블의 레코드를 페이징 조건에 따라 조회하여 ArrayList 데이터 타입으로 리턴하는 메서드
 	// 매개변수는 페이징 조건인 startPoint와 rowPerPage를 입력받음 (쿼리문에 대입하기 위하여)
 	// 리턴 데이터 타입은 ArrayList<Teacher> (Teacher 클래스 데이터 타입을 저장할 수 있는 클래스 배열)
-	public ArrayList<Teacher> selectTeacherByPage(int currentPage, int rowPerPage){
+	public ArrayList<Teacher> selectTeacherByPage(int currentPage, int rowPerPage, String searchValue){
 		Connection conn = null;
 		PreparedStatement pstmtSelectTeacherByPage = null;
 		ResultSet rsSelectTeacherByPage = null;
 		ArrayList<Teacher> arrayListTeacher = new ArrayList<Teacher>();
-		
-		// teacher 테이블의 teacher_no, teacher_name, teacher_age 컬럼의 값을 LIMIT 옵션에 따라 조회하는 쿼리 
-		String sqlSelectTeacherByPage = "SELECT teacher_no, teacher_name, teacher_age FROM teacher ORDER BY teacher_no LIMIT ?, ?";
 		
 		int startPoint = (currentPage - 1) * rowPerPage;
 		try {
@@ -324,12 +333,26 @@ public class TeacherDao {
 			String dbPw = "java0000";
 			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
 		
-			// 위의 쿼리 준비
-			pstmtSelectTeacherByPage = conn.prepareStatement(sqlSelectTeacherByPage);
-			
-			// ?에 값 대입
-			pstmtSelectTeacherByPage.setInt(1, startPoint);
-			pstmtSelectTeacherByPage.setInt(2, rowPerPage);
+			// 검색 내용 부분이 공백일 경우(즉, 전체보기)
+			if(searchValue.equals("")) {
+				// teacher 테이블의 teacher_no, teacher_name, teacher_age 컬럼의 값을 LIMIT 옵션에 따라 조회하는 쿼리 
+				String sqlSelectTeacherByPage = "SELECT teacher_no, teacher_name, teacher_age FROM teacher ORDER BY teacher_no LIMIT ?, ?";
+				
+				pstmtSelectTeacherByPage = conn.prepareStatement(sqlSelectTeacherByPage);
+				
+				pstmtSelectTeacherByPage.setInt(1, startPoint);
+				pstmtSelectTeacherByPage.setInt(2, rowPerPage);
+			} else {
+				// 검색한 이름에 따라 teacher 테이블의 teacher_no, teacher_name, teacher_age 컬럼의 값을 LIMIT 옵션에 따라 조회하는 쿼리 
+				String sqlSelectTeacherByPage = "SELECT teacher_no, teacher_name, teacher_age FROM teacher WHERE teacher_name LIKE ? ORDER By teacher_no LIMIT ?, ?";
+				
+				pstmtSelectTeacherByPage = conn.prepareStatement(sqlSelectTeacherByPage);
+				
+				// ?에 값 대입
+				pstmtSelectTeacherByPage.setString(1, "%" + searchValue + "%");
+				pstmtSelectTeacherByPage.setInt(2, startPoint);
+				pstmtSelectTeacherByPage.setInt(3, rowPerPage);
+			}
 			
 			// 위의 쿼리 실행
 			rsSelectTeacherByPage = pstmtSelectTeacherByPage.executeQuery();

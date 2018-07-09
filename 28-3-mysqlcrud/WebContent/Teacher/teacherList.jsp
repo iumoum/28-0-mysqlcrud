@@ -10,6 +10,17 @@
 	</head>
 	<body>
 		<%
+			// 한글을 입력받기 위함
+			request.setCharacterEncoding("euc-kr");
+			
+			// 검색어를 전달받는 과정
+			String searchValue = "";
+			if(request.getParameter("searchValue") != null){
+				searchValue = request.getParameter("searchValue");
+			}
+			
+			System.out.println(searchValue);
+			
 			// 페이징 알고리즘
 			int rowPerPage = 5;
 			int currentPage = 1;
@@ -24,11 +35,11 @@
 			TeacherAddrDao teacherAddrDao = new TeacherAddrDao();
 			
 			// selectTeacherByPage 메서드를 통해 리턴되는 참조 값(arrayListTeacher객체의 참조값)을 대입
-			ArrayList<Teacher> arrayListTeacher = teacherDao.selectTeacherByPage(currentPage, rowPerPage);
+			ArrayList<Teacher> arrayListTeacher = teacherDao.selectTeacherByPage(currentPage, rowPerPage, searchValue);
 			
 			// 마지막 페이지
-			int lastPage = teacherDao.countWholeRecordFromTeacher() / rowPerPage;
-			if ((teacherDao.countWholeRecordFromTeacher() % rowPerPage) != 0){
+			int lastPage = teacherDao.countTotalRecordsBySearchValue(searchValue) / rowPerPage;
+			if ((teacherDao.countTotalRecordsBySearchValue(searchValue) % rowPerPage) != 0){
 				lastPage++;
 			}
 		%>
@@ -39,6 +50,8 @@
 				<td>교사 이름</td>
 				<td>교사 나이</td>
 				<td>주소 입력</td>
+				<td>점수 입력</td>
+				<td>점수 보기</td>
 				<td>수 정</td>
 				<td>삭 제</td>
 			</tr>
@@ -68,19 +81,9 @@
 							}
 						%>
 						<td><%= teacher.getTeacherAge() %></td>
-						<%
-							// 해당 교사의 주소 정보가 없다면
-							if(teacherAddr == null){
-						%>
-								<td><a href="<%= request.getContextPath() %>/Teacher/insertTeacherAddrForm.jsp?teacherNo=<%= teacher.getTeacherNo() %>">주소 입력</a></td>
-						<%
-							// 그 외
-							} else {
-						%>
-								<td></td>
-						<%
-							}
-						%>
+						<td><a href="<%= request.getContextPath() %>/Teacher/insertTeacherAddrForm.jsp?teacherNo=<%= teacher.getTeacherNo() %>">주소 입력</a></td>
+						<td><a href="<%= request.getContextPath() %>/Teacher/insertTeacherScoreForm.jsp?teacherNo=<%= teacher.getTeacherNo() %>">점수 입력</a></td>
+						<td><a href="<%= request.getContextPath() %>/Teacher/teacherScoreList.jsp?teacherNo=<%= teacher.getTeacherNo() %>">점수 보기</a></td>
 						<td><a href="<%= request.getContextPath() %>/Teacher/updateTeacherForm.jsp?teacherNo=<%= teacher.getTeacherNo() %>">수정 버튼</a></td>
 						<td><a href="<%= request.getContextPath() %>/Teacher/deleteTeacherAction.jsp?teacherNo=<%= teacher.getTeacherNo() %>">삭제 버튼</a></td>
 					</tr>
@@ -88,11 +91,12 @@
 				}
 			%>
 		</table>
+		<br>
 		<div>
 			<%
 				if(currentPage > 1){
 			%>
-					<a href="<%= request.getContextPath() %>/Teacher/teacherList.jsp?currentPage=<%= currentPage - 1 %>">&lt; 이전</a>
+					<a href="<%= request.getContextPath() %>/Teacher/teacherList.jsp?currentPage=<%= currentPage - 1 %>&searchValue=<%= searchValue %>">&lt; 이전</a>
 			<%
 				} else {
 			%>
@@ -102,7 +106,7 @@
 				
 				if(currentPage < lastPage){
 			%>
-					<a href="<%= request.getContextPath() %>/Teacher/teacherList.jsp?currentPage=<%= currentPage + 1 %>">다음 &gt;</a>
+					<a href="<%= request.getContextPath() %>/Teacher/teacherList.jsp?currentPage=<%= currentPage + 1 %>&searchValue=<%= searchValue %>">다음 &gt;</a>
 			<%
 				} else {
 			%>
@@ -111,5 +115,16 @@
 				}
 			%>
 		</div>
+		<br>
+		<div>
+			<form action="<%= request.getContextPath() %>/Teacher/teacherList.jsp" method="post">
+				<label>이름 :  
+					<input type="text" name="searchValue">
+				</label>
+				<button>검색</button>
+			</form>
+		</div>
+		<br>
+		<a href="<%= request.getContextPath() %>/Teacher/teacherIndex.jsp"">teacherIndex로 이동</a>
 	</body>
 </html>
