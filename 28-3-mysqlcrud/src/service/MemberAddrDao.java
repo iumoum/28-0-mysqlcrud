@@ -5,7 +5,9 @@ import service.MemberAddr;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class MemberAddrDao {
 
@@ -32,6 +34,10 @@ public class MemberAddrDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요. <-- insertMemberAddr()");
+		} finally{
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+			if (conn != null) try { conn.close(); } catch(SQLException ex) {}
+			// pstmt,Connection 객체 종료(close())
 		}
 	}
 		
@@ -58,7 +64,49 @@ public class MemberAddrDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요. <-- deleteMemberAddr()");
+		} finally{
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+			if (conn != null) try { conn.close(); } catch(SQLException ex) {}
+			// pstmt,Connection 객체 종료(close())
 		}
 		memberDao.deleteMember(memberNo); // member_addr테이블이 자식테이블이기 때문에 행을 먼저 삭제해준 후에 member테이블의 행을 지운다.
+	}
+	
+	public ArrayList<MemberAddr> selectMemberAddrAll (int memberNo) {
+		ArrayList<MemberAddr> list = new ArrayList<MemberAddr>();
+		Connection conn = null;
+		ResultSet resultset = null;
+		PreparedStatement pstmt = null;
+		String sql = "";
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
+			
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass); 
+			
+			sql = "SELECT member_addr_no, member_no, member_addr_content FROM member_addr WHERE member_no=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, memberNo);
+			
+			resultset = pstmt.executeQuery();
+			
+			while(resultset.next()) {
+				MemberAddr memberaddr = new MemberAddr();
+				memberaddr.setMemberAddrNo((resultset.getInt("member_addr_no")));
+				memberaddr.setMemberNo(Integer.parseInt(resultset.getString("member_no")));
+				memberaddr.setMemberAddrContent((resultset.getString("member_addr_content")));
+				list.add(memberaddr);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("JDBC 시작을 할 수 없습니다 확인해주세요. <-- selectMemberAddrAll()");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요. <-- selectMemberAddrAll()");
+		}
+		return list;
 	}
 }

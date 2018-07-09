@@ -109,13 +109,12 @@ public class MemberDao {	// 클래스명
 		return Num;
 	}
 	
-	public ArrayList<Member> selectMemberAll(int startPage, int pagePerRow) {
-		ArrayList<Member> list = new ArrayList<>();
+	public ArrayList<Member> selectMemberAll (int startPage, int pagePerRow, String searchWord) {
+		ArrayList<Member> list = new ArrayList<Member>();
 		Connection conn = null;
+		ResultSet resultset = null;
 		PreparedStatement pstmt = null;
-		ResultSet resultSet = null;
-		String sql = "SELECT member_no, member_name, member_age FROM member ORDER BY member_no LIMIT ?, ?";
-		// 테이블을 지정한 행에서 시작하여 지정한 행까지 보여주는 쿼리문
+		String sql = "";
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -124,23 +123,28 @@ public class MemberDao {	// 클래스명
 			String dbPass = "java0000";
 			
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass); 
-						
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, startPage);
-			pstmt.setInt(2, pagePerRow);
 			
-			resultSet = pstmt.executeQuery();
+			if(searchWord == "") {
+				sql = "SELECT member_no, member_name, member_age FROM member ORDER BY member_no LIMIT ?, ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, startPage);
+				pstmt.setInt(2, pagePerRow);
+			} else {
+				sql = "SELECT member_no, member_name, member_age FROM member WHERE member_name LIKE ? ORDER BY member_no LIMIT ?, ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, "%"+searchWord+"%");
+				pstmt.setInt(2, startPage);
+				pstmt.setInt(3, pagePerRow);
+			}
 			
-			while(resultSet.next()){
-				Member m = new Member();
-				int dbno = resultSet.getInt("member_no");
-				String dbname = resultSet.getString("member_name");
-				int dbage = resultSet.getInt("member_age");
-						
-				m.setMemberNo(dbno);
-				m.setMemberName(dbname);
-				m.setMemberAge(dbage);
-				list.add(m);
+			resultset = pstmt.executeQuery();
+			
+			while(resultset.next()) {
+				Member member = new Member();
+				member.setMemberNo(resultset.getInt("member_no"));
+				member.setMemberName(resultset.getString("member_name"));
+				member.setMemberAge(resultset.getInt("member_age"));
+				list.add(member);
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -149,7 +153,6 @@ public class MemberDao {	// 클래스명
 			e.printStackTrace();
 			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요. <-- selectMemberAll()");
 		}
-		
 		return list;
 	}
 	
@@ -180,6 +183,11 @@ public class MemberDao {	// 클래스명
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요. <-- totalRow()");
+		} finally{
+			if (resultSet != null) try { resultSet.close(); } catch(SQLException ex) {}
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+			if (conn != null) try { conn.close(); } catch(SQLException ex) {}
+			// pstmt,Connection 객체 종료(close())
 		}
 		
 		return totalRow;
@@ -209,6 +217,10 @@ public class MemberDao {	// 클래스명
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요. <-- deleteMember()");
+		} finally{
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+			if (conn != null) try { conn.close(); } catch(SQLException ex) {}
+			// pstmt,Connection 객체 종료(close())
 		}
 	}
 	

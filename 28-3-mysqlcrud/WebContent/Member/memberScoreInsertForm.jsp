@@ -13,15 +13,15 @@
 		
 		int memberNo = Integer.parseInt(request.getParameter("sendNo"));
 	%>
-	<form action="./memberAddrInsertAction.jsp" method="post">
+	<form action="./memberScoreInsertAction.jsp" method="post">
 		<table border="1">
 			<tr>
-				<td><a href="<%=request.getContextPath()%>/Member/memberList.jsp">MemberAddr 데이터</a></td>
+				<td><a href="<%=request.getContextPath()%>/Member/memberList.jsp">MemberScore 데이터</a></td>
 			</tr>
 			<tr>
 				<td>
 					<div>사용자 번호: <input type="text" name="memberNo" value="<%=memberNo%>" readonly></div> <br>
-					<div>주소 : <input type="text" name="memberAddrContent"></div> <br>
+					<div>점수 : <input type="text" name="score"></div> <br>
 					<div><input type="submit" value="입력하기"></div>
 				</td>
 			</tr>
