@@ -109,6 +109,90 @@ public class MemberDao {	// 클래스명
 		return Num;
 	}
 	
+	public Member selectMember (int MemberNo) {
+		Connection conn = null;
+		ResultSet resultset = null;
+		PreparedStatement pstmt = null;
+		Member member = new Member();
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
+						
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass); 
+			
+			
+			pstmt = conn.prepareStatement("SELECT member_no, member_name, member_age FROM member WHERE member_no=?");
+			pstmt.setInt(1, MemberNo);
+			resultset = pstmt.executeQuery();
+			
+			if(resultset.next()) {
+				member.setMemberNo(resultset.getInt("member_no"));
+				member.setMemberName(resultset.getString("member_name"));
+				member.setMemberAge(resultset.getInt("member_age"));
+			}
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("JDBC 시작을 할 수 없습니다 확인해주세요. <-- selectMember()");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요. <-- selectMember()");
+		} finally{
+			if (resultset != null) try { resultset.close(); } catch(SQLException ex) {}
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+			if (conn != null) try { conn.close(); } catch(SQLException ex) {}
+			// pstmt,Connection 객체 종료(close())
+		}
+		
+		return member;
+	}
+	
+	public ArrayList<Member> selectMemberAll () {
+		ArrayList<Member> list = new ArrayList<Member>();
+		Connection conn = null;
+		ResultSet resultset = null;
+		PreparedStatement pstmt = null;
+		String sql = "";
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
+			
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass); 
+			
+			sql = "SELECT member_no, member_name, member_age FROM member";
+			pstmt = conn.prepareStatement(sql);
+			
+			resultset = pstmt.executeQuery();
+			
+			while(resultset.next()) {
+				Member member = new Member();
+				member.setMemberNo(resultset.getInt("member_no"));
+				member.setMemberName(resultset.getString("member_name"));
+				member.setMemberAge(resultset.getInt("member_age"));
+				list.add(member);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("JDBC 시작을 할 수 없습니다 확인해주세요. <-- selectMemberAll()");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요. <-- selectMemberAll()");
+		} finally{
+			if (resultset != null) try { resultset.close(); } catch(SQLException ex) {}
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+			if (conn != null) try { conn.close(); } catch(SQLException ex) {}
+			// pstmt,Connection 객체 종료(close())
+		}
+		
+		return list;
+	}
+	
 	public ArrayList<Member> selectMemberAll (int startPage, int pagePerRow, String searchWord) {
 		ArrayList<Member> list = new ArrayList<Member>();
 		Connection conn = null;
@@ -152,14 +236,20 @@ public class MemberDao {	// 클래스명
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요. <-- selectMemberAll()");
+		} finally{
+			if (resultset != null) try { resultset.close(); } catch(SQLException ex) {}
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+			if (conn != null) try { conn.close(); } catch(SQLException ex) {}
+			// pstmt,Connection 객체 종료(close())
 		}
+		
 		return list;
 	}
 	
 	public int totalRow() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		ResultSet resultSet = null;
+		ResultSet resultset = null;
 		String sql = "SELECT COUNT(member_no) FROM member";
 		// member 테이블 전체 행의 개수를 구하는 쿼리문
 		int totalRow = 0;
@@ -173,9 +263,9 @@ public class MemberDao {	// 클래스명
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass); 
 						
 			pstmt = conn.prepareStatement(sql);
-			resultSet = pstmt.executeQuery();
-			if(resultSet.next()){
-				totalRow = resultSet.getInt("COUNT(member_no)");
+			resultset = pstmt.executeQuery();
+			if(resultset.next()){
+				totalRow = resultset.getInt("COUNT(member_no)");
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -184,7 +274,7 @@ public class MemberDao {	// 클래스명
 			e.printStackTrace();
 			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요. <-- totalRow()");
 		} finally{
-			if (resultSet != null) try { resultSet.close(); } catch(SQLException ex) {}
+			if (resultset != null) try { resultset.close(); } catch(SQLException ex) {}
 			if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
 			if (conn != null) try { conn.close(); } catch(SQLException ex) {}
 			// pstmt,Connection 객체 종료(close())
@@ -192,6 +282,37 @@ public class MemberDao {	// 클래스명
 		
 		return totalRow;
 		// 전체 행의 개수 숫자를 리턴한다.
+	}
+	
+	public void updateMember(int memberNo, String memberName, int memberAge) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "UPDATE member SET member_name=?, member_age=? where member_no=?";
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
+			
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass); 
+						
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberName);
+			pstmt.setInt(2, memberAge);
+			pstmt.setInt(3, memberNo);
+			pstmt.executeUpdate();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("JDBC 시작을 할 수 없습니다 확인해주세요. <-- updateMember()");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요. <-- updateMember()");
+		} finally{
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+			if (conn != null) try { conn.close(); } catch(SQLException ex) {}
+			// pstmt,Connection 객체 종료(close())
+		}
 	}
 	
 	public void deleteMember(int memberNo) {

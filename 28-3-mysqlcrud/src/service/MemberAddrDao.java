@@ -28,6 +28,7 @@ public class MemberAddrDao {
 			pstmt.setInt(1, memberAddr.getMemberNo());	// 매개변수에 있는 memberNo값 가져옴
 			pstmt.setString(2, memberAddr.getMemberAddrContent()); // 매개변수에 있는 memberAddrContent값 가져옴
 			pstmt.executeUpdate();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("JDBC 시작을 할 수 없습니다 확인해주세요. <-- insertMemberAddr()");
@@ -100,13 +101,49 @@ public class MemberAddrDao {
 				memberaddr.setMemberAddrContent((resultset.getString("member_addr_content")));
 				list.add(memberaddr);
 			}
+		
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("JDBC 시작을 할 수 없습니다 확인해주세요. <-- selectMemberAddrAll()");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요. <-- selectMemberAddrAll()");
+		} finally{
+			if (resultset != null) try { resultset.close(); } catch(SQLException ex) {}
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+			if (conn != null) try { conn.close(); } catch(SQLException ex) {}
+			// pstmt,Connection 객체 종료(close())
 		}
 		return list;
 	}
+	
+	public void updateMemberAddr (int memberNo, String memberAddrContent) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "UPDATE member_addr SET member_addr_content=? where member_no=?";
+		
+		try {
+		Class.forName("com.mysql.jdbc.Driver");
+		String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+		String dbUser = "root";
+		String dbPass = "java0000";
+		conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass); 
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, memberAddrContent);
+		pstmt.setInt(2, memberNo);
+		pstmt.executeUpdate();
+		
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("JDBC 시작을 할 수 없습니다 확인해주세요. <-- selectMemberAddrAll()");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("쿼리문을 시작할 수 없습니다. 확인해주세요. <-- selectMemberAddrAll()");
+		} finally{
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException ex) {}
+			if (conn != null) try { conn.close(); } catch(SQLException ex) {}
+			// pstmt,Connection 객체 종료(close())
+		}
+	}
+	
 }
