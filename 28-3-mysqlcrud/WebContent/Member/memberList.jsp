@@ -10,7 +10,7 @@
 <title>memberList Page</title>
 </head>
 <body>
-	<table border="1" width="700px" height="300px">
+	<table border="1">
 		<tr>
 			<td colspan="6">member 데이터</td>
 		</tr>
@@ -36,13 +36,13 @@
 						<td><%= m.getMemberName() %></td>
 						<td><%= m.getMemberAge() %></td>
 						<td>
-							<a href="<%= request.getContextPath() %>/Member/memberInsert/memberAddrInsertForm.jsp?sendNo=<%= m.getMemberNo() %>">주소입력</a>
+							<a href="<%= request.getContextPath() %>/Member/memberAddrInsertForm.jsp?sendNo=<%= m.getMemberNo() %>">주소입력</a>
 						</td>
 						<td>
-							<a href="<%= request.getContextPath() %>/Member/memberUpdate/memberUpdateForm.jsp?sendNo=<%= m.getMemberNo() %>">수정</a>			
+							<a href="<%= request.getContextPath() %>/Member/memberUpdateForm.jsp?sendNo=<%= m.getMemberNo() %>">수정</a>			
 						</td>
 						<td>
-							<a href="<%= request.getContextPath() %>/Member/memberDelete/memberDeleteAction.jsp?sendNo=<%= m.getMemberNo() %>">삭제</a>			
+							<a href="<%= request.getContextPath() %>/Member/memberDeleteAction.jsp?sendNo=<%= m.getMemberNo() %>">삭제</a>			
 						</td>
 					</tr>
 			<%

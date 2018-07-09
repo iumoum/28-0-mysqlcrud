@@ -14,7 +14,7 @@
 		MemberAddrDao memberAddrDao = new MemberAddrDao();
 		memberAddrDao.deleteMemberAddr(memberNo);
 		
-		response.sendRedirect(request.getContextPath()+"/Member/mList/memberList.jsp");
+		response.sendRedirect(request.getContextPath()+"/Member/memberList.jsp");
 	%>
 </body>
 </html>

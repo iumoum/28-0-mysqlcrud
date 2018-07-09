@@ -1,3 +1,4 @@
+<!-- 18.07.03 28기 정규룡 -->
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <!DOCTYPE html>
 <html>
@@ -14,10 +15,10 @@
 				<td colspan="2">Member Page</td>
 			</tr>
 			<tr>
-				<td rowspan="2">member</td> <td><a href="./memberInsert/memberInsertForm.jsp">mInsertForm으로 이동</a></td>
+				<td rowspan="2">member</td> <td><a href="./memberInsertForm.jsp">mInsertForm으로 이동</a></td>
 			</tr>
 			<tr>
-				<td><a href="./memberList/memberList.jsp">memberList로 이동</a></td>
+				<td><a href="./memberList.jsp">memberList로 이동</a></td>
 			</tr>
 		</table>
 	</body>

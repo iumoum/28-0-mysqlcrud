@@ -23,6 +23,6 @@
 	dao.InsertMember(insertMember);
 	// dao주소에 있는 InsertMember메서드를 Insert주소에 있는 member클래스를 사용하여 실행한다.
 	
-	response.sendRedirect(request.getContextPath() + "/Member/memberList/memberList.jsp");
+	response.sendRedirect(request.getContextPath() + "/Member/memberList.jsp");
 	// memberList.jsp로 페이지를 이동한다.
 %>

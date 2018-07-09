@@ -8,7 +8,7 @@
 </head>
 	<body>
 		<form action="./memberInsertAction.jsp" method="post">
-			<table border="1" width=700px" height="300px">
+			<table border="1">
 				<tr>
 					<td >member ตฅภฬลอ</td>
 				</tr>

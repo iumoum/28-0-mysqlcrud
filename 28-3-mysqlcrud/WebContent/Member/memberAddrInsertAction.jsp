@@ -25,7 +25,7 @@
 		// MemberAddrDao 클레스타입인 memberAddrdao변수에 생성자메서드로 객체를 만들어서 주소값을 만들고 그 주소값을 할당한다.
 		memberAddrdao.insertMemberAddr(insertMemberAddr);
 		// memberAddrdao주소에 있는 insertMemberAddr메서드를 insertMemberAddr주소에 있는 memberAddr클래스를 사용하여 실행한다.
-		response.sendRedirect(request.getContextPath() + "/Member/memberList/memberList.jsp");
+		response.sendRedirect(request.getContextPath() + "/Member/memberList.jsp");
 		// memberList.jsp로 페이지를 이동한다.
 	%>
 </body>
