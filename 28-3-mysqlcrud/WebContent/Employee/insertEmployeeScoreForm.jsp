@@ -3,17 +3,16 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-		<title>Insert Employee Form</title>
+		<title>Insert Employee Score Form</title>
 	</head>
 	<body>
-		<!--employeeIsertAction.jsp 에 post형식으로 EmployeeName,EmployeeAge,EmployeeAddressContent 값을 넘김 -->
-		<form action="./employeeAddrInsertAction.jsp" method="post">
+		<form action="./insertEmployeeScoreActionForm.jsp" method="post">
 			<table border="1">
 				<tr>
-					<td colspan="2">Employee Addr</td>
+					<td colspan="2">Employee Score Form</td>
 				</tr>
 				<tr>
-					<td>고용인 주소 : <input type="text" name="employeeAddrContent">					
+					<td>직원 점수 : <input type="text" name="employeeScore">					
 					</td>
 				</tr>
 				<tr>		

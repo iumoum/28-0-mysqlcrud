@@ -1,3 +1,4 @@
+<!-- 2018-07-03 서연문 -->
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <!DOCTYPE html>
 <html>
@@ -14,7 +15,7 @@
 				<td colspan="2">Employee Page</td>
 			</tr>
 			<tr>
-				<td rowspan="2">Employee</td> <td><a href="./employeeInsertForm.jsp">employeeInsertForm으로 이동</a></td>
+				<td rowspan="2">Employee</td> <td><a href="./insertEmployeeForm.jsp">employeeInsertForm으로 이동</a></td>
 			</tr>
 			<tr>
 				<td><a href="./employeeList.jsp">employeeList로 이동</a></td>

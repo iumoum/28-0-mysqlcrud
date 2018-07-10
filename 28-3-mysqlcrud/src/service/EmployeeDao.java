@@ -8,6 +8,73 @@ import java.sql.*;
 
 public class EmployeeDao {
 	
+	public void updateEmployee(Employee employee) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+
+			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPw = "java0000";
+			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
+		
+			pstmt = conn.prepareStatement("UPDATE employee SET employee_name = ?, employee_age = ? WHERE employee_no = ?");
+			
+			// ?에 값 대입
+			pstmt.setString(1, employee.getEmployeeName());
+			pstmt.setInt(2, employee.getEmployeeAge());
+			pstmt.setInt(3, employee.getEmployeeNo());
+			pstmt.executeUpdate();
+			
+		} catch(ClassNotFoundException x) {
+			System.out.println("DB Driver 클래스를 찾을 수 없습니다 ");		
+		} catch(SQLException ex) {
+			System.out.println(ex.getMessage());
+		} finally {
+			if(pstmt != null) { try{pstmt.close();} catch (SQLException ex) {System.out.println(ex); ex.printStackTrace();}}
+			if(conn != null) { try{conn.close();} catch (SQLException ex) {System.out.println(ex); ex.printStackTrace();}}
+		}	
+	}
+	
+	public Employee selectForUpdateEmployee(int employeeNo) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Employee employee = null;	
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPw = "java0000";
+			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
+		
+			pstmt = conn.prepareStatement("SELECT employee_no, employee_name, employee_age FROM employee WHERE employee_no = ?");
+			pstmt.setInt(1, employeeNo);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				employee = new Employee();
+				
+				employee.setEmployeeNo(rs.getInt("employee_no"));
+				employee.setEmployeeName(rs.getString("employee_name"));
+				employee.setEmployeeAge(rs.getInt("employee_age"));
+			}		
+		} catch(ClassNotFoundException x) {
+			System.out.println("DB Driver 클래스를 찾을 수 없습니다 ");		
+		} catch(SQLException ex) {
+			System.out.println(ex.getMessage());
+		} finally {
+			if(rs != null) { try{rs.close();} catch (SQLException ex) {System.out.println(ex); ex.printStackTrace();}}
+			if(pstmt != null) { try{pstmt.close();} catch (SQLException ex) {System.out.println(ex); ex.printStackTrace();}}
+			if(conn != null) { try{conn.close();} catch (SQLException ex) {System.out.println(ex); ex.printStackTrace();}}
+		}
+		return employee;
+	}
+		
 	//테이블 수 구하기
 	public int countEmployeeTable() {
 		Connection conn = null;
@@ -34,7 +101,6 @@ public class EmployeeDao {
 			}
 		} catch(ClassNotFoundException x) {
 			System.out.println("DB Driver 클래스를 찾을 수 없습니다 ");		
-	
 		} catch(SQLException ex) {
 			System.out.println(ex.getMessage());
 		} finally {
@@ -46,13 +112,12 @@ public class EmployeeDao {
 	}
 	
 	
-	public ArrayList<Employee> selectEmployeeByPage(int currentPage, int pagePerRow) {
+	public ArrayList<Employee> selectEmployeeByPage(int currentPage, int rowPerPage, String searchValue) {
 		ArrayList<Employee> arrayListEmployee = new ArrayList<Employee>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String sql = "SELECT employee_no, employee_name, employee_age FROM employee ORDER BY employee_no LIMIT ?, ?";
-		int startRow = (currentPage - 1) * pagePerRow;
+		int startRow = (currentPage - 1) * rowPerPage;
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -63,9 +128,16 @@ public class EmployeeDao {
 			
 			conn = DriverManager.getConnection(dbUrl, dbUser, dbPw);
 			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, startRow);
-			pstmt.setInt(2, pagePerRow);
+			if(searchValue.equals("")) {
+				pstmt = conn.prepareStatement("SELECT employee_no, employee_name, employee_age FROM employee ORDER BY employee_no LIMIT ?, ?");
+				pstmt.setInt(1, startRow);
+				pstmt.setInt(2, rowPerPage);
+			} else {
+				pstmt = conn.prepareStatement("SELECT employee_no, employee_name, employee_age FROM employee WHERE employee_name LIKE ? ORDER BY employee_no LIMIT ?, ?");
+				pstmt.setString(1, "%"+searchValue+"%");
+				pstmt.setInt(2, startRow);
+				pstmt.setInt(3, rowPerPage);
+			}
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {

@@ -1,9 +1,9 @@
+<!-- 2018-07-03 ¼­¿¬¹® -->
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page import="service.*" %>
 <!DOCTYPE html>
-<%@ page import="service.EmployeeAddr" %>
-<%@ page import="service.EmployeeAddrDao" %>
-<% request.setCharacterEncoding("euc-kr"); %>
 <%
+	request.setCharacterEncoding("euc-kr");
 	EmployeeAddr employeeAddr = new EmployeeAddr();
 	EmployeeAddrDao employeeAddrDao = new EmployeeAddrDao();
 	

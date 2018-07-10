@@ -1,7 +1,6 @@
 <!-- 2018-07-02 서연문 -->
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
-<%@ page import="service.EmployeeAddr" %>
-<%@ page import="service.EmployeeAddrDao" %>
+<%@ page import="service.*" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -26,8 +25,8 @@
 					<td><%= employeeAddr.getEmployeeAddrNo() %></td>
 					<td><%= employeeAddr.getEmployeeNo() %></td>
 					<td><%= employeeAddr.getEmployeeContent() %></td>
-					<td><a href="./employeeAddrUpdatForm.jsp?no=<%= employeeAddr.getEmployeeNo() %>">수정</a></td>
-					<td><a href="./employeeAddrDeletAction.jsp?no=<%= employeeAddr.getEmployeeNo() %>">삭제</a></td>
+					<td><a href="./updatEmployeeAddrForm.jsp?no=<%= employeeAddr.getEmployeeNo() %>">수정</a></td>
+					<td><a href="./deletEmployeeAddrAction.jsp?no=<%= employeeAddr.getEmployeeNo() %>">삭제</a></td>
 				</tr>		
 			</table>	
 		</div>

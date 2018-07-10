@@ -20,12 +20,14 @@ public class Employee {
 	public void setEmployeeNo(int employeeNo) {
 		this.employeeNo = employeeNo;
 	}
+	
 	public String getEmployeeName() {
 		return employeeName;
 	}
 	public void setEmployeeName(String employeeName) {
 		this.employeeName = employeeName;
 	}
+	
 	public int getEmployeeAge() {
 		return employeeAge;
 	}

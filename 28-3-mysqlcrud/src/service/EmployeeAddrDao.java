@@ -1,7 +1,7 @@
-//2018-06-26 서연문
+// 2018-07-03 서연문
 package service;
 
-import service.EmployeeDao;
+import service.EmployeeDao; 
 import service.EmployeeAddr;
 import java.sql.Connection; 
 import java.sql.DriverManager;
@@ -10,6 +10,28 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EmployeeAddrDao {
+	
+	public void selectForUpdateEmployeeAddress(int emplyeeNo) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+	}
+		
+	/*	try {
+			//sql에 연결하기 위해 driver 로딩
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			//db접속하기 위해 각 데이터타입의 변수에 db유형/ip번호/포트번호/dbid/dbpw를 대입한다
+			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPw = "java0000";
+			
+			//db에 접속하기 위한 데이터를 conn객체에 대입한다
+			conn = DriverManager.getConnection(dbUrl, dbUser, dbPw);		
+			
+			//pstmt1에 insert 쿼리문 준비
+			
+	} */
+	
 	
 	public void insertEmployeeAddr(EmployeeAddr employeeAddr) {
 		//매개변수 Employee는 employee_no, employee_name, employee_age데이터 값이 담겨있다
@@ -31,7 +53,7 @@ public class EmployeeAddrDao {
 			conn = DriverManager.getConnection(dbUrl, dbUser, dbPw);		
 			
 			//pstmt1에 insert 쿼리문 준비
-			pstmt = conn.prepareStatement("INSERT INTO employee_address( Employee_no, Employee_address_content)	VALUES( ?, ?)");
+			pstmt = conn.prepareStatement("INSERT INTO employee_address( Employee_no, Employee_address_content)	VALUES(?, ?)");
 			
 			//values 값 ?에 각각 순서대로 대입
 			pstmt.setInt(1, employeeAddr.getEmployeeNo());
@@ -146,7 +168,6 @@ public class EmployeeAddrDao {
 			//db에 접속하기 위한 데이터를 conn객체에 대입한다
 			conn = DriverManager.getConnection(dbUrl, dbUser, dbPw);
 			
-			System.out.println(employeeNo + "<<<<< 상세주소 보기위해 넘긴 번호");
 			//pstmt객체에 db접속하기위한 conn객체와 select문을 대입
 			//employee의 no를 구하기 위해 employee_no의 max값을 select (auto_increment 대신사용)
 			pstmtSelectEmployeeAddr = conn.prepareStatement("SELECT employee_address_no, employee_no, employee_address_content FROM employee_address WHERE employee_no=?");

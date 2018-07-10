@@ -2,26 +2,28 @@
 package service;
 
 public class EmployeeAddr {
-	private int EmployeeAddrNo;
-	private int EmployeeNo;
-	private String EmployeeContent;
+	private int employeeAddrNo;
+	private int employeeNo;
+	private String employeeContent;
 	
 	public int getEmployeeAddrNo() {
-		return EmployeeAddrNo;
+		return employeeAddrNo;
 	}
 	public void setEmployeeAddrNo(int employeeAddrNo) {
-		EmployeeAddrNo = employeeAddrNo;
+		this.employeeAddrNo = employeeAddrNo;
 	}
+	
 	public int getEmployeeNo() {
-		return EmployeeNo;
+		return employeeNo;
 	}
 	public void setEmployeeNo(int employeeNo) {
-		EmployeeNo = employeeNo;
+		this.employeeNo = employeeNo;
 	}
+	
 	public String getEmployeeContent() {
-		return EmployeeContent;
+		return employeeContent;
 	}
 	public void setEmployeeContent(String employeeContent) {
-		EmployeeContent = employeeContent;
+		this.employeeContent = employeeContent;
 	}
 }

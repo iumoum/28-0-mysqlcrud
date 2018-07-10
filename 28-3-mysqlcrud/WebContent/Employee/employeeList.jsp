@@ -1,10 +1,7 @@
-<!-- 2018-07-02 서연문 -->
+<!-- 2018-07-03 서연문 -->
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
-<%@ page import="service.EmployeeAddrDao" %>
-<%@ page import="service.EmployeeAddr" %>
+<%@ page import="service.*" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="service.EmployeeDao" %>
-<%@ page import="service.Employee" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -12,56 +9,51 @@
 		<title>Insert title here</title>
 	</head>
 	<body>
-		<%
+		<%	
+			String searchValue = "";
+			if(request.getParameter("searchValue") != null) {
+				searchValue = request.getParameter("searchValue");
+			}
+			System.out.println(searchValue +"<searchValue");
+			
 			int currentPage = 1;
-			int pagePerRow = 5;
+			int rowPerPage = 5;
 			if(request.getParameter("currentPage") != null) {
 				currentPage = Integer.parseInt(request.getParameter("currentPage"));
 			}
 					
-			EmployeeDao employeeDao = new EmployeeDao();
-			ArrayList<Employee> arrayListEmployee = employeeDao.selectEmployeeByPage(currentPage, pagePerRow);
+			EmployeeDao employeeScoreDao = new EmployeeDao();
+			ArrayList<Employee> arrayListEmployee = employeeScoreDao.selectEmployeeByPage(currentPage, rowPerPage, searchValue);
 			
-			int lastPage = employeeDao.countEmployeeTable() / pagePerRow;
-			if ((employeeDao.countEmployeeTable() % pagePerRow) != 0) {
+			int lastPage = employeeScoreDao.countEmployeeTable() / rowPerPage;
+			if ((employeeScoreDao.countEmployeeTable() % rowPerPage) != 0) {
 				lastPage++;
-			}
-			
-		%>
-		
+			}		
+		%>	
 		<table border="1">
 			<tr>
-				<td>직원 번호</td>
-				<td>직원 이름</td>
-				<td>직원 나이</td>
-				<td>주소 입력</td>
-				<td>수  정</td>
-				<td>삭  제</td>
+				<th>직원 번호</th>
+				<th>직원 이름</th>
+				<th>직원 나이</th>
+				<th>주소 입력</th>
+				<th>수  정</th>
+				<th>삭  제</th>
+				<th>점수 입력</th>
+				<th>점수 보기 </th>
 			</tr>
 			<%
 				for(int i=0; i<arrayListEmployee.size(); i++){
-					Employee employee =  arrayListEmployee.get(i);
+					Employee employee = arrayListEmployee.get(i);
 			%>
 			<tr>
 				<td><%= employee.getEmployeeNo() %></td>
 				<td><a href="./employeeAddrList.jsp?no=<%= employee.getEmployeeNo() %>"><%= employee.getEmployeeName() %></a></td>
 				<td><%= employee.getEmployeeAge() %></td>
-			<%	
-				EmployeeAddrDao employeeAddrDao = new EmployeeAddrDao();
-				EmployeeAddr employeeAddr = employeeAddrDao.selectEmployeeAddr(employee.getEmployeeNo());
-				if(employeeAddr == null){
-					
-			%>
-					<td><a href="./employeeAddrInsertForm.jsp?no=<%= employee.getEmployeeNo() %>">주소 입력</a></td>
-			<%
-				} else{
-			%>
-					<td></td>
-			<%
-				}
-			%>
-				<td><a href="./employeeUpdatForm.jsp?no=<%= employee.getEmployeeNo() %>">수정</a></td>
-				<td><a href="./employeeDeletAction.jsp?no=<%= employee.getEmployeeNo() %>">삭제</a></td>
+				<td><a href="./insertEmployeeAddrForm.jsp?no=<%= employee.getEmployeeNo() %>">주소 입력</a></td>
+				<td><a href="./updateEmployeeForm.jsp?no=<%= employee.getEmployeeNo() %>">수정</a></td>
+				<td><a href="./deletEmployeeAction.jsp?no=<%= employee.getEmployeeNo() %>">삭제</a></td>
+				<td><a href="./insertEmployeeScoreForm.jsp?no=<%= employee.getEmployeeNo() %>">점수 입력</a></td>
+				<td><a href="./employeeScoreList.jsp?no=<%= employee.getEmployeeNo()%>">점수 보기</a></td>
 			</tr>
 			<%
 				}
@@ -89,6 +81,12 @@
 			<%
 				}
 			%>					
+		</div>
+		<div>
+			<form action="<%= request.getContextPath() %>/Employee/employeeList.jsp%>" method="post">
+				이름 : <input type="text" name="searchValue">
+				<button>검색</button>
+			</form>
 		</div>
 	</body>
 </html>
