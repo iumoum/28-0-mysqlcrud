@@ -14,6 +14,120 @@ public class StudentDao {
 	ArrayList<Student> list = null;
 	String xtest = null;
 	
+	public Student studentSearch(String sk, String sv) {
+		Connection conn =null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Student stu = new Student();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		
+		
+			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "sqlidkjy";
+			String dbPass = "sqlpwkjy";
+	
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+			pstmt = conn.prepareStatement("select * from student where "+sk+"=?");
+			pstmt.setString(1, sv);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				stu.setNo(rs.getInt("student_no"));
+				stu.setName(rs.getString("student_name"));
+				stu.setAge(rs.getInt("student_age"));
+				
+			}else {
+				stu.setText("검색안됨");
+			}
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			if (rs != null) try { rs.close(); } catch(SQLException e) {}
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
+			if (conn != null) try { conn.close(); } catch(SQLException e) {}
+			
+		}
+		return stu;
+	}
+	
+	public void studentDelete(String sendNo) {
+		Connection conn =null;
+		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
+		PreparedStatement pstmt3 = null;
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		
+			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "sqlidkjy";
+			String dbPass = "sqlpwkjy";
+	
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+			pstmt = conn.prepareStatement("DELETE FROM student_score WHERE student_no =?");
+			pstmt.setString(1, sendNo);
+			pstmt.executeUpdate();
+			
+			pstmt2 = conn.prepareStatement("DELETE FROM student_address WHERE student_no =?");
+			pstmt2.setString(1, sendNo);
+			pstmt2.executeUpdate();
+			
+			pstmt3 = conn.prepareStatement("DELETE FROM student WHERE student_no =?");
+			pstmt3.setString(1, sendNo);
+			pstmt3.executeUpdate();
+			
+		
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
+			if (pstmt2 != null) try { pstmt2.close(); } catch(SQLException e) {}
+			if (pstmt3 != null) try { pstmt3.close(); } catch(SQLException e) {}
+			if (conn != null) try { conn.close(); } catch(SQLException e) {}
+		}
+	}
+	
+	public String studentUpdateAction(Student stu) {
+		Connection conn =null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		
+
+			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "sqlidkjy";
+			String dbPass = "sqlpwkjy";
+	
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+			
+			pstmt = conn.prepareStatement("UPDATE Student SET student_name = ?, student_age = ? WHERE student_no = ?");
+			pstmt.setString(1, stu.getName());
+			pstmt.setInt(2, stu.getAge());
+			pstmt.setInt(3, stu.getNo());
+			
+			pstmt.executeUpdate();
+			
+			xtest = "업데이트 성공";
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
+			if (conn != null) try { conn.close(); } catch(SQLException e) {}
+		}
+		return xtest;
+	}
+	
 	public Student studentUpdate(String sendNo) {
 		Connection conn =null;
 		PreparedStatement pstmt = null;
@@ -21,8 +135,7 @@ public class StudentDao {
 		Student s = new Student();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-		
-		
+
 			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "sqlidkjy";
 			String dbPass = "sqlpwkjy";

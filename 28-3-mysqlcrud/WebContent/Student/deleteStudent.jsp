@@ -1,12 +1,24 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page import="java.sql.*" %>
+<%@ page import="service.*" %>
+<!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>Insert title here</title>
-</head>
-<body>
-
-</body>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+		<title>Insert title here</title>
+	</head>
+	<body>
+	<%
+		request.setCharacterEncoding("euc-kr");
+		
+		String sendNo = request.getParameter("send_no");
+		
+		StudentDao dao = new StudentDao();
+		
+		dao.studentDelete(sendNo);
+		
+		response.sendRedirect(request.getContextPath()+"/Student/selectStudentList.jsp");
+		
+	%>
+	</body>
 </html>

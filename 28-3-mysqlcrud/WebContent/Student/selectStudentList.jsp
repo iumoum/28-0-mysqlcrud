@@ -60,7 +60,7 @@
 					
 					</td>
 					<td><a href="<%=request.getContextPath()%>/Student/updateStudentForm.jsp?send_no=<%=send_no%>">수정</a></td>
-					<td><a href="<%=request.getContextPath()%>/Student/deleteStudent.jsp">삭제</a></td>
+					<td><a href="<%=request.getContextPath()%>/Student/deleteStudent.jsp?send_no=<%=send_no%>">삭제</a></td>
 				</tr>
 		<%
 		
@@ -103,6 +103,15 @@
 	<%
 		}
 	%>
-
+	<h3>검색하기</h3> 
+	<form action="<%=request.getContextPath()%>/Student/searchStudent.jsp" method="post">
+	<select name="sk">
+	    <option value="student_no">번호</option>
+	    <option value="student_name">이름</option>
+	    <option value="student_age">나이</option>
+	</select>
+	<input type="text" name="sv">
+	<input type="submit" value="검색">
+</form>
 </body>
 </html>

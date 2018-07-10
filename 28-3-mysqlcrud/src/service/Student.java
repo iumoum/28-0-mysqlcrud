@@ -5,6 +5,7 @@ public class Student {
 	private int age;
 	private int countno;
 	private int no;
+	private String text;
 	
 	public String getName() {
 		return name;
@@ -32,6 +33,12 @@ public class Student {
 	public void setNo(int no) {
 		System.out.println(no);
 		this.no = no;
+	}
+	public String getText() {
+		return text;
+	}
+	public void setText(String text) {
+		this.text = text;
 	}
 	
 
