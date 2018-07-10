@@ -1,0 +1,164 @@
+@charset "EUC-KR";
+#entityListTable {
+	width: 900px;
+	border-collapse: collapse;
+	border: 1px solid #d0d0d0;
+	
+}
+
+#entityListTable thead th{
+	padding: 10px 5px 10px 5px;
+	background-color:#c0c0c0;
+	color: #000000;
+	border: 1px solid #afafaf;
+}
+
+#entityListTable td{
+	color: #000000;
+	border: 1px solid #afafaf;
+	text-align: center;
+	padding: 15px 0 15px 0;
+}
+
+#addTeacher{
+	float:right;
+}
+
+#buttonForAnotherPage{
+	clear:both;
+	text-align:center;
+}
+
+#buttonForSearch{
+	float:right;
+}
+
+.buttonToUpdateEntity{
+	text-decoration: none;
+	border: 1px solid gray;
+	border-radius: 3px;
+	font-size: 13px;
+	color: gray;
+	padding: 4px 9px 4px 9px;
+	font-weight: bold;
+}
+
+.buttonToUpdateEntity:visited {
+	text-decoration: none;
+	font-size: 13px;
+	color: gray;
+}
+
+.buttonToInsertAddress{
+	text-decoration: none;
+	border: 1px solid gray;
+	border-radius: 3px;
+	font-size: 13px;
+	color: gray;
+	padding: 4px 9px 4px 9px;
+	font-weight: bold;
+}
+
+.buttonToInsertScore{
+	text-decoration: none;
+	border: 1px solid gray;
+	border-radius: 3px;
+	font-size: 13px;
+	color: gray;
+	padding: 4px 9px 4px 9px;
+	font-weight: bold;
+}
+
+.buttonToDeleteEntity{
+	text-decoration: none;
+	border: 1px solid black;
+	border-radius: 3px;
+	font-size: 13px;
+	background-color: #f90000;
+	color: white;
+	padding: 4px 9px 4px 9px;
+	font-weight: bold;
+}
+
+.buttonToDeleteEntity:visited {
+	text-decoration: none;
+	font-size: 13px;
+	color: white;
+}
+
+.buttonToShowScore{
+	text-decoration: none;
+	border: 1px solid gray;
+	border-radius: 3px;
+	font-size: 13px;
+	color: gray;
+	padding: 4px 9px 4px 9px;
+	font-weight: bold;
+}
+
+#buttonToAddTeacher{
+	text-decoration: none;
+	border: 1px solid gray;
+	border-radius: 3px;
+	font-size: 13px;
+	color: gray;
+	padding: 4px 9px 4px 9px;
+	font-weight: bold;
+}
+
+#buttonToPrevPage{
+	text-decoration: none;
+	border: 1px solid gray;
+	font-size: 13px;
+	border-radius: 3px;
+	padding: 4px 6px 4px 6px;
+	font-weight: bold;
+	color: #000000;
+}
+
+#buttonToPrevPage:visited{
+	text-decoration: none;
+	border: 1px solid gray;
+	font-size: 13px;
+	border-radius: 3px;
+	padding: 4px 6px 4px 6px;
+	font-weight: bold;
+	color: #000000;
+}
+
+#buttonToNextPage{
+	text-decoration: none;
+	border: 1px solid gray;
+	font-size: 13px;
+	border-radius: 3px;
+	padding: 4px 6px 4px 6px;
+	font-weight: bold;
+	color: #000000;
+}
+
+#buttonToNextPage:visited{
+	text-decoration: none;
+	border: 1px solid gray;
+	font-size: 13px;
+	border-radius: 3px;
+	padding: 4px 6px 4px 6px;
+	font-weight: bold;
+	color: #000000;
+}
+
+.buttonToShowAddress{
+	color: blue;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+.buttonToShowAddress:visited{
+	color: blue;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+#page {
+	clear:both;
+	text-align:center;
+}

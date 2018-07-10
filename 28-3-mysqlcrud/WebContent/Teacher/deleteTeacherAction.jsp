@@ -19,7 +19,7 @@
 			teacherAddrDao.deleteTeacherAddress(teacherNo);
 			teacherDao.deleteTeacher(teacherNo);
 			
-			response.sendRedirect(request.getContextPath() + "/teacherList.jsp");
+			response.sendRedirect(request.getContextPath() + "/Teacher/teacherList.jsp");
 		%>
 	</body>
 </html>

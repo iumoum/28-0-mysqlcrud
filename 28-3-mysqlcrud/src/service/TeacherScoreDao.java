@@ -14,7 +14,7 @@ public class TeacherScoreDao {
 		System.out.println("teacherNo, teacherScoreList.jsp => TeacherScoreDao.java " + teacherNo);
 		
 		// teacher와 teacher_score 테이블에서  WHERE 조건에 해당하는 레코드를 내부 조인하여 조회하는 쿼리 
-		String sqlSelectTeacherAndTeacherScore = "SELECT t.teacher_no,t.teacher_name,t.teacher_age,ts.score_no,ts.score FROM teacher t INNER JOIN teacher_score ts WHERE t.teacher_no = ?";
+		String sqlSelectTeacherAndTeacherScore = "SELECT t.teacher_no,t.teacher_name,t.teacher_age,ts.score_no,ts.score FROM teacher t INNER JOIN teacher_score ts on t.teacher_no = ts.teacher_no WHERE t.teacher_no = ?";
 		
 		try {
 			// mysql 드라이버 로딩
