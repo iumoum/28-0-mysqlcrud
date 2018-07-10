@@ -14,6 +14,32 @@ public class StudentDao {
 	ArrayList<Student> list = null;
 	String xtest = null;
 	
+	public Student studentScoreCheck(String sendNo) throws ClassNotFoundException, SQLException {
+		Connection conn =null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Student stu = new Student();
+		
+		Class.forName("com.mysql.jdbc.Driver");
+		
+		
+		String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
+		String dbUser = "sqlidkjy";
+		String dbPass = "sqlpwkjy";
+
+		conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+		pstmt = conn.prepareStatement("select * from student where student_no =?");
+		pstmt.setString(1, sendNo);
+		
+		rs = pstmt.executeQuery();
+		if(rs.next()) {
+			stu.setName(rs.getString("student_name"));
+		}
+		
+		return stu;
+		
+	}
+	
 	public Student studentSearch(String sk, String sv) {
 		Connection conn =null;
 		PreparedStatement pstmt = null;

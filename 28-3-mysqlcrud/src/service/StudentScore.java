@@ -5,6 +5,7 @@ public class StudentScore {
 	private String studentName;
 	private int StudentScoreNo;
 	private int Score;
+	private String scoreCheck;
 	
 	public int getStudentNo() {
 		return studentNo;
@@ -29,6 +30,12 @@ public class StudentScore {
 	}
 	public void setScore(int score) {
 		Score = score;
+	}
+	public String getScoreCheck() {
+		return scoreCheck;
+	}
+	public void setScoreCheck(String scoreCheck) {
+		this.scoreCheck = scoreCheck;
 	}
 	
 	

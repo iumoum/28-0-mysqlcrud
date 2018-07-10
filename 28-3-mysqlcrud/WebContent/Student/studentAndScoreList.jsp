@@ -16,18 +16,36 @@
 			<td>점수입력</td>
 		</tr>
 		<%
+			request.setCharacterEncoding("euc-kr");
+		
+			String sendNo = request.getParameter("send_no");
+		
 			StudentScoreDao dao = new StudentScoreDao();
-	
-			ArrayList<StudentScore> get_list = dao.studentScore();
+			
+			ArrayList<StudentScore> get_list = dao.studentScore(sendNo);
+			
 			for (int i = 0; i < get_list.size(); i++) {
 				StudentScore studentScore = get_list.get(i);
+				if(studentScore.getScoreCheck()!=null){
 			%>
-				<tr>
-					<td><%=studentScore.getStudentName() %></td>
-					<td><%=studentScore.getScore()%></td>
-					<td><a href="#">GoGo!</a></td>
-				</tr>
+					<tr>
+						<td>-</td>
+						<td>-</td>
+						<td>
+					<a href="<%=request.getContextPath() %>/Student/insertStudentScoreForm.jsp?send_no=<%=sendNo%>">GoGo!</a></td>
+					</tr>
+			<%
+				}else{
+				
+			%>
+					<tr>
+						<td><%=studentScore.getStudentName() %></td>
+						<td><%=studentScore.getScore()%></td>
+						<td>
+					<a href="<%=request.getContextPath() %>/Student/insertStudentScoreForm.jsp?send_no=<%=sendNo%>">GoGo!</a></td>
+					</tr>
 		<%
+				}
 			}
 		%>
 	</table>

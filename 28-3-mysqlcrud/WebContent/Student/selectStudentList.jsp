@@ -17,6 +17,7 @@
 			<td>번호</td>
 			<td>이름</td>
 			<td>나이</td>
+			<td>점수 보기</td>
 			<td>주소입력</td>
 			<td>수정</td>
 			<td>삭제</td>
@@ -45,20 +46,8 @@
 					<td><%=send_no %></td>
 					<td><a href="<%=request.getContextPath()%>/Student/studentAddrList.jsp?send_no=<%=send_no%>"><%=s1.getName()%></a></td>
 					<td><%=s1.getAge()%></td>
-					<td>
-					<%
-					String test = dao.studentAddr(send_no);
-					if(test.equals("주소있다")){
-						
-					
-					%>
-					
-					<%}else{ %>
-						<a href="<%=request.getContextPath()%>/Student/studentAddrInsertForm.jsp?send_no=<%=send_no%>">주소입력</a>
-				<%	}
-					%>
-					
-					</td>
+					<td><a href="<%=request.getContextPath() %>/Student/studentAndScoreList.jsp?send_no=<%=send_no%>">점수 보기</a></td>
+					<td><a href="<%=request.getContextPath()%>/Student/studentAddrInsertForm.jsp?send_no=<%=send_no%>">주소입력</a></td>
 					<td><a href="<%=request.getContextPath()%>/Student/updateStudentForm.jsp?send_no=<%=send_no%>">수정</a></td>
 					<td><a href="<%=request.getContextPath()%>/Student/deleteStudent.jsp?send_no=<%=send_no%>">삭제</a></td>
 				</tr>
