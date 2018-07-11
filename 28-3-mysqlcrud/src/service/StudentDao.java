@@ -81,11 +81,9 @@ public class StudentDao {
 		return stu;
 	}
 	
-	public void studentDelete(String sendNo) {
+	public void studentTbDelete(String sendNo) {
 		Connection conn =null;
 		PreparedStatement pstmt = null;
-		PreparedStatement pstmt2 = null;
-		PreparedStatement pstmt3 = null;
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -95,18 +93,10 @@ public class StudentDao {
 			String dbPass = "sqlpwkjy";
 	
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
-			pstmt = conn.prepareStatement("DELETE FROM student_score WHERE student_no =?");
+			pstmt = conn.prepareStatement("DELETE FROM student WHERE student_no =?");
 			pstmt.setString(1, sendNo);
 			pstmt.executeUpdate();
-			
-			pstmt2 = conn.prepareStatement("DELETE FROM student_address WHERE student_no =?");
-			pstmt2.setString(1, sendNo);
-			pstmt2.executeUpdate();
-			
-			pstmt3 = conn.prepareStatement("DELETE FROM student WHERE student_no =?");
-			pstmt3.setString(1, sendNo);
-			pstmt3.executeUpdate();
-			
+		
 		
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -114,8 +104,6 @@ public class StudentDao {
 			e.printStackTrace();
 		}finally {
 			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
-			if (pstmt2 != null) try { pstmt2.close(); } catch(SQLException e) {}
-			if (pstmt3 != null) try { pstmt3.close(); } catch(SQLException e) {}
 			if (conn != null) try { conn.close(); } catch(SQLException e) {}
 		}
 	}

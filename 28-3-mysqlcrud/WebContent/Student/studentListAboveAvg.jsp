@@ -3,26 +3,27 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="service.*" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <title>Insert title here</title>
 </head>
 <body>
-	<%-- <%
-		//StudentScoreDao s = new ''();
+ <%
+	StudentScoreDao s = new StudentScoreDao();
 	
-	int scoreAvg = 0;//StudentScoreDao.selectScoreAvg();
+	int scoreAvg = 0;
 	
-	ArrayList<StudentAndScore> list = new ArrayList<StudentAndScore>();
-	list = StudentScoreDao.selectStudentListAboveAvg();
+	scoreAvg = s.selectScoreAvg();
+	
+	ArrayList<StudentScore> list = new ArrayList<StudentScore>();
+	list = s.selectStudentListAboveAvg();
 	%>
 	<div>
 		평균 :<%=scoreAvg %> 
-		
 	</div>
-	<table>
+	<table border="1">
 		<thead>
 			<tr>
 				<th>Student_NO</th>
@@ -33,16 +34,17 @@
 		<tbody>
 			<%
 				for(int i=0; i<list.size(); i++){
+					StudentScore sc = list.get(i);
 			%>		
 					<tr>
-						<td><%=list.get(i).getStudent().getStudentNo() %></td>
-						<td><%=list.get(i).getStudent().getStudentName() %></td>
-						<td><%=list.get(i).getStudentScore().getStudentScore() %></td>
+						<td><%=sc.getStudentNo() %></td>
+						<td><%=sc.getStudentName() %></td>
+						<td><%=sc.getScore() %></td>
 					</tr>	
 			<%
 				}
 			%>
 		</tbody>
-	</table> --%>
+	</table> 
 </body>
 </html>

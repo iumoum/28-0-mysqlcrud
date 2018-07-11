@@ -32,7 +32,7 @@
 				<td><%=s.getNo() %></td>
 				<td><a href="<%=request.getContextPath()%>/Student/studentAddrList.jsp?send_no=<%=s.getNo()%>"><%=s.getName()%></a></td>
 				<td><%=s.getAge() %></td>
-				<td></td>
+				<td><a href="<%=request.getContextPath()%>/Student/studentAddrInsertForm.jsp?send_no=<%=s.getNo()%>">주소 입력</a></td>
 				<td><a href="<%=request.getContextPath()%>/Student/updateStudentForm.jsp?send_no=<%=s.getNo()%>">수정</a></td>
 				<td><a href="<%=request.getContextPath()%>/Student/deleteStudent.jsp?send_no=<%=s.getNo()%>">삭제</a></td>
 			</tr>

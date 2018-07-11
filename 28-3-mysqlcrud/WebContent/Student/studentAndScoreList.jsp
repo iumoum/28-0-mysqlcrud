@@ -13,7 +13,6 @@
 		<tr>
 			<td>이름</td>
 			<td>점수</td>
-			<td>점수입력</td>
 		</tr>
 		<%
 			request.setCharacterEncoding("euc-kr");
@@ -27,22 +26,18 @@
 			for (int i = 0; i < get_list.size(); i++) {
 				StudentScore studentScore = get_list.get(i);
 				if(studentScore.getScoreCheck()!=null){
-			%>
+		%>
 					<tr>
 						<td>-</td>
 						<td>-</td>
-						<td>
-					<a href="<%=request.getContextPath() %>/Student/insertStudentScoreForm.jsp?send_no=<%=sendNo%>">GoGo!</a></td>
 					</tr>
-			<%
+		<%
 				}else{
 				
-			%>
+		%>
 					<tr>
 						<td><%=studentScore.getStudentName() %></td>
-						<td><%=studentScore.getScore()%></td>
-						<td>
-					<a href="<%=request.getContextPath() %>/Student/insertStudentScoreForm.jsp?send_no=<%=sendNo%>">GoGo!</a></td>
+						<td><%=studentScore.getScore()%></td>	
 					</tr>
 		<%
 				}

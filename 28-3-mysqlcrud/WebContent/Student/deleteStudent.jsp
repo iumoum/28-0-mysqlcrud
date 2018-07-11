@@ -13,9 +13,17 @@
 		
 		String sendNo = request.getParameter("send_no");
 		
-		StudentDao dao = new StudentDao();
+		StudentAddrDao dao = new StudentAddrDao();
 		
-		dao.studentDelete(sendNo);
+		dao.studentAddrTbDelete(sendNo);
+		
+		StudentScoreDao dao2 = new StudentScoreDao();
+		
+		dao2.studentScoreTbDelete(sendNo);
+		
+		StudentDao dao3 = new StudentDao();
+		
+		dao3.studentTbDelete(sendNo);
 		
 		response.sendRedirect(request.getContextPath()+"/Student/selectStudentList.jsp");
 		
