@@ -9,7 +9,7 @@
 		<form action="./insertEmployeeScoreActionForm.jsp" method="post">
 			<table border="1">
 				<tr>
-					<td colspan="2">Employee Score Form</td>
+					<td colspan="2">Insert Employee Score Form</td>
 				</tr>
 				<tr>
 					<td>직원 점수 : <input type="text" name="employeeScore">					
@@ -17,7 +17,7 @@
 				</tr>
 				<tr>		
 					<td colspan="2">
-						<input type="hidden" name="employeeNo" value="<%= request.getParameter("no") %>">
+						<input type="hidden" name="employeeNo" value="<%= request.getParameter("employeeNo") %>">
 						<button>등록</button>
 					</td>			
 				</tr>

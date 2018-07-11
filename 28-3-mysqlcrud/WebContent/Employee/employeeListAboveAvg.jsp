@@ -1,15 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
-<%@ page import="service.*" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="service.*" %>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-		<title>Insert title here</title>
+		<title>Employee List Above Avg</title>
 	</head>
 	<body>
-		<h1>employeeListAboveAvg</h1>
+		<h1>Employee List Above Avg</h1>
 		<%
+			request.setCharacterEncoding("euc-kr");
+		
 			EmployeeScoreDao employeeScoreDao = new EmployeeScoreDao();
 			int scoreAvg = employeeScoreDao.selectScoreAvg();
 			
@@ -35,10 +37,10 @@
 						EmployeeAndScore employeeAndScore = arrayListEmployeeAndScore.get(i);
 				%>
 						<tr>
-							<td><%=arrayListEmployeeAndScore.get(i).getEmployee().getEmployeeNo()%></td>
-							<td><%=arrayListEmployeeAndScore.get(i).getEmployee().getEmployeeName()%></td>
-							<td><%=arrayListEmployeeAndScore.get(i).getEmployeeScore().getEmployeeScoreNo()%></td>
-							<td><%=arrayListEmployeeAndScore.get(i).getEmployeeScore().getScore()%></td>
+							<td><%= arrayListEmployeeAndScore.get(i).getEmployee().getEmployeeNo() %></td>
+							<td><%= arrayListEmployeeAndScore.get(i).getEmployee().getEmployeeName() %></td>
+							<td><%= arrayListEmployeeAndScore.get(i).getEmployeeScore().getEmployeeScoreNo() %></td>
+							<td><%= arrayListEmployeeAndScore.get(i).getEmployeeScore().getScore() %></td>
 						</tr>
 				<%
 					}

@@ -4,14 +4,14 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-		<title>Insert Eployee Form</title>
+		<title>Insert Employee Form</title>
 	</head>
 	<body>
 		<!--employeeIsertAction.jsp 에 post형식으로 EmployeeName,EmployeeAge,EmployeeAddressContent 값을 넘김 -->
 		<form action="./insertEmployeeAction.jsp" method="post">
 			<table border="1">
 				<tr>
-					<td colspan="2">Eployee</td>
+					<td colspan="2">Insert Employee Form</td>
 				</tr>
 				<tr>
 					<td>직원 이름 : <input type="text" name="employeeName"></td>

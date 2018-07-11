@@ -5,8 +5,13 @@
 <%
 	request.setCharacterEncoding("euc-kr");
 
+	EmployeeAddress employeeAddress = new EmployeeAddress();
 	EmployeeAddressDao employeeAddressDao = new EmployeeAddressDao();
-	employeeAddressDao.deleteEmployeeAddress(Integer.parseInt(request.getParameter("employeeNo")));
+	
+	employeeAddress.setEmployeeNo(Integer.parseInt(request.getParameter("employeeNo")));
+	employeeAddress.setEmployeeAddressContent(request.getParameter("employeeAddressContent"));
+	
+	employeeAddressDao.insertEmployeeAddress(employeeAddress);
 	
 	response.sendRedirect(request.getContextPath() + "/Employee/employeeList.jsp");
 %>

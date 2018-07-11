@@ -1,8 +1,0 @@
-CREATE TABLE `employee` (
-	`Employee_no` INT(10) NOT NULL,
-	`Employee_name` VARCHAR(50) NOT NULL,
-	`Employee_age` INT(10) NOT NULL,
-	PRIMARY KEY (`Employee_no`)
-)
-COLLATE='euckr_korean_ci'
-ENGINE=InnoDB;

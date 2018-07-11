@@ -20,7 +20,7 @@
 	padding: 15px 0 15px 0;
 }
 
-#addTeacher{
+#addEntity{
 	float:right;
 }
 
@@ -96,7 +96,7 @@
 	font-weight: bold;
 }
 
-#buttonToAddTeacher{
+#buttonToAddEntity{
 	text-decoration: none;
 	border: 1px solid gray;
 	border-radius: 3px;

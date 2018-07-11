@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <%
 	request.setCharacterEncoding("euc-kr");
+
 	EmployeeScore employeeScore = new EmployeeScore();
 	EmployeeScoreDao employeeScoreDao = new EmployeeScoreDao();
 	

@@ -4,9 +4,9 @@
 <!-- 필요한 class페이지를 패키지로부터 import해온다 -->
 <%@ page import="service.*" %>
 <!-- 받아오는 정보를 EUC-KR타입의 문자형태로 보여준다 -->
-<% request.setCharacterEncoding("euc-kr"); %>
 <!DOCTYPE html">
 <%
+	request.setCharacterEncoding("euc-kr");
 	// Employee클래스의 데이터타입으로 생성된 변수 employee에 생성자 메서드를 호출하여
 	// Employee객체가 생성되어 변수 employee객체참조 값을 대입해준다 
 	Employee employee = new Employee();

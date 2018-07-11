@@ -6,9 +6,9 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-		<title>Teacher List</title>
 		<link rel="stylesheet" href="<%= request.getContextPath() %>/style/indexCss.css">
 		<link rel="stylesheet" href="<%= request.getContextPath() %>/style/entityList.css">
+		<title>Teacher List</title>
 	</head>
 	<body>
 		<%@ include file="/module/header.jsp" %>
@@ -129,8 +129,8 @@
 					%>
 				</table>
 				<br>
-				<div id="addTeacher">
-					<a id="buttonToAddTeacher" href="<%= request.getContextPath() %>/Teacher/insertTeacherForm.jsp">+ TEACHER</a>
+				<div id="addEntity">
+					<a id="buttonToAddEntity" href="<%= request.getContextPath() %>/Teacher/insertTeacherForm.jsp">+ TEACHER</a>
 				</div>
 				<br><br>
 				<div id="page">

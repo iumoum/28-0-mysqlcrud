@@ -1,10 +1,10 @@
 //2018-07-02 서연문
 package service;
-import service.Employee;
+
 import java.util.ArrayList;
 import java.sql.*;
+import service.*;
 
-//mysql db에 연결하기 위해 sql패키지 모두 import
 
 public class EmployeeDao {
 	
@@ -38,11 +38,12 @@ public class EmployeeDao {
 		}	
 	}
 	
+	
 	public Employee selectForUpdateEmployee(int employeeNo) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		Employee employee = null;	
+		Employee employee = null;
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -57,8 +58,7 @@ public class EmployeeDao {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				employee = new Employee();
-				
+				employee = new Employee();	
 				employee.setEmployeeNo(rs.getInt("employee_no"));
 				employee.setEmployeeName(rs.getString("employee_name"));
 				employee.setEmployeeAge(rs.getInt("employee_age"));
@@ -75,14 +75,13 @@ public class EmployeeDao {
 		return employee;
 	}
 		
+	
 	//테이블 수 구하기
-	public int countEmployeeTable() {
+	public int countEmployeeTable(String searchValue) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int totalEmployee = 0;
-		
-		String sql = "SELECT COUNT(*) as total_employee FROM employee";
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -93,12 +92,22 @@ public class EmployeeDao {
 			
 			conn = DriverManager.getConnection(dbUrl, dbUser, dbPw);
 			
-			pstmt = conn.prepareStatement(sql);
+			if(searchValue.equals("")) {
+				
+				pstmt = conn.prepareStatement("SELECT COUNT(*) as total_records FROM employee");
+
+			} else {
+				
+				pstmt = conn.prepareStatement("SELECT COUNT(*) as total_records FROM employee WHERE employee_name LIKE ?");
+				pstmt.setString(1, "%"+searchValue+"%");
+			
+			}			
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				totalEmployee = rs.getInt("total_employee");
+				totalEmployee = rs.getInt("total_records");
 			}
+			
 		} catch(ClassNotFoundException x) {
 			System.out.println("DB Driver 클래스를 찾을 수 없습니다 ");		
 		} catch(SQLException ex) {
@@ -112,13 +121,13 @@ public class EmployeeDao {
 	}
 	
 	
-	public ArrayList<Employee> selectEmployeeByPage(int currentPage, int rowPerPage, String searchValue) {
-		ArrayList<Employee> arrayListEmployee = new ArrayList<Employee>();
+	public ArrayList<Employee> selectEmployeeByPage(int currentPage, int rowPerPage,String searchValue) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		int startRow = (currentPage - 1) * rowPerPage;
+		ArrayList<Employee> arrayListEmployee = new ArrayList<Employee>();
 		
+		int startPage = (currentPage - 1) * rowPerPage;	
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			
@@ -130,23 +139,26 @@ public class EmployeeDao {
 			
 			if(searchValue.equals("")) {
 				pstmt = conn.prepareStatement("SELECT employee_no, employee_name, employee_age FROM employee ORDER BY employee_no LIMIT ?, ?");
-				pstmt.setInt(1, startRow);
+				pstmt.setInt(1, startPage);
 				pstmt.setInt(2, rowPerPage);
+				
 			} else {
+				
 				pstmt = conn.prepareStatement("SELECT employee_no, employee_name, employee_age FROM employee WHERE employee_name LIKE ? ORDER BY employee_no LIMIT ?, ?");
 				pstmt.setString(1, "%"+searchValue+"%");
-				pstmt.setInt(2, startRow);
+				pstmt.setInt(2, startPage);
 				pstmt.setInt(3, rowPerPage);
 			}
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				Employee e = new Employee();
-				e.setEmployeeNo(rs.getInt("employee_no"));
-				e.setEmployeeName(rs.getString("employee_name"));
-				e.setEmployeeAge(rs.getInt("employee_age"));
+				Employee employee = new Employee();
 				
-				arrayListEmployee.add(e);
+				employee.setEmployeeNo(rs.getInt("employee_no"));
+				employee.setEmployeeName(rs.getString("employee_name"));
+				employee.setEmployeeAge(rs.getInt("employee_age"));
+				
+				arrayListEmployee.add(employee);
 			}
 								
 		} catch(ClassNotFoundException x) {
