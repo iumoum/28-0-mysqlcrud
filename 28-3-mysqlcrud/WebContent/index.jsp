@@ -9,9 +9,11 @@
 </head>
 	<body>
 		<%@ include file="/module/header.jsp" %>
-		<%@ include file="/module/nav.jsp" %>
-		<div id="article">
-			
+		<div id="container">
+			<%@ include file="/module/nav.jsp" %>
+			<div id="article">
+				
+			</div>
 		</div>
 		<%@ include file="/module/footer.jsp" %>
 	</body>

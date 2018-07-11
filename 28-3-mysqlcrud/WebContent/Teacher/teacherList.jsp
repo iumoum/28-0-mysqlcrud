@@ -40,6 +40,12 @@
 					// teacherAddrDao 객체 생성
 					TeacherAddrDao teacherAddrDao = new TeacherAddrDao();
 					
+					
+					// teacherScoreDao 객체 생성
+					TeacherScoreDao teacherScoreDao = new TeacherScoreDao();
+					
+					
+					
 					// selectTeacherByPage 메서드를 통해 리턴되는 참조 값(arrayListTeacher객체의 참조값)을 대입
 					ArrayList<Teacher> arrayListTeacher = teacherDao.selectTeacherByPage(currentPage, rowPerPage, searchValue);
 					
@@ -80,13 +86,13 @@
 							Teacher teacher = arrayListTeacher.get(i);
 							
 							// selectTeacherAddress 메서드를 호출하고 리턴받은 TeacherAddr객체의 참조 값을 teacherAddr 객체 참조변수에 대입 
-							TeacherAddr teacherAddr = teacherAddrDao.selectTeacherAddress(teacher.getTeacherNo());
+							ArrayList<TeacherAddr> arrayListTeacherAddr = teacherAddrDao.selectTeacherAddress(teacher.getTeacherNo());
 					%>
 							<tr>
 								<td><%= teacher.getTeacherNo() %></td>
 								<%
 									// 해당 교사의 주소 정보가 존재한다면
-									if(teacherAddr != null){
+									if(arrayListTeacherAddr.size() != 0){
 								%>
 										<td><a title="주소 보기" class="buttonToShowAddress" href="<%= request.getContextPath() %>/Teacher/teacherAddrList.jsp?teacherNo=<%= teacher.getTeacherNo() %>"><%= teacher.getTeacherName() %></a></td>
 								<%	
@@ -99,8 +105,22 @@
 								%>
 								<td><%= teacher.getTeacherAge() %></td>
 								<td><a title="주소 추가" class="buttonToInsertAddress" href="<%= request.getContextPath() %>/Teacher/insertTeacherAddrForm.jsp?teacherNo=<%= teacher.getTeacherNo() %>">+ ADDRESS</a></td>
-								<td><a title="점수 입력" class="buttonToInsertScore" href="<%= request.getContextPath() %>/Teacher/insertTeacherScoreForm.jsp?teacherNo=<%= teacher.getTeacherNo() %>">+ SCORE</a></td>
-								<td><a title="점수 확인" class="buttonToShowScore" href="<%= request.getContextPath() %>/Teacher/teacherScoreList.jsp?teacherNo=<%= teacher.getTeacherNo() %>">VIEW SCORE</a></td>
+								<%
+									// 해당하는 교사의 점수가 존재하지 않는다면 점수 입력 버튼을 보여줌
+									TeacherAndTeacherScore teacherAndTeacherScore = teacherScoreDao.selectTeacherAndTeacherScore(teacher.getTeacherNo());
+									if(teacherAndTeacherScore == null){
+								%>
+										<td><a title="점수 입력" class="buttonToInsertScore" href="<%= request.getContextPath() %>/Teacher/insertTeacherScoreForm.jsp?teacherNo=<%= teacher.getTeacherNo() %>">+ SCORE</a></td>
+										<td></td>
+								<%
+									// 점수가 존재한다면 안보여줌 (1:1 관계를 유지하기 위함)
+									} else {
+								%>
+										<td></td>
+										<td><a title="점수 확인" class="buttonToShowScore" href="<%= request.getContextPath() %>/Teacher/teacherScoreList.jsp?teacherNo=<%= teacher.getTeacherNo() %>">VIEW SCORE</a></td>
+								<%
+									}
+								%>
 								<td><a title="교사 정보 수정" class="buttonToUpdateEntity" href="<%= request.getContextPath() %>/Teacher/updateTeacherForm.jsp?teacherNo=<%= teacher.getTeacherNo() %>">UPDATE</a></td>
 								<td><a title="교사 정보 삭제" class="buttonToDeleteEntity" href="<%= request.getContextPath() %>/Teacher/deleteTeacherAction.jsp?teacherNo=<%= teacher.getTeacherNo() %>">DELETE</a></td>
 							</tr>

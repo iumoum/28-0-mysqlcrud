@@ -26,8 +26,8 @@
 		<li>
 			TEACHER
 			<ul class="subNav">
-				<li><a href="<%= request.getContextPath()%>/Teacher/teacherList.jsp">teacherList</a></li>
-				<li>teacherAboveAvgList</li>
+				<li><a href="<%= request.getContextPath()%>/Teacher/teacherList.jsp">TeacherList</a></li>
+				<li>TeacherAboveAvgList</li>
 			</ul>
 		</li>
 	</ul>

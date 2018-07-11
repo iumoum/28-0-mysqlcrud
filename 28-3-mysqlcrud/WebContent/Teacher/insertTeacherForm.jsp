@@ -30,6 +30,8 @@
 						</tr>
 					</table>
 				</form>
+				<br>
+				<a href="<%= request.getContextPath() %>/Teacher/teacherList.jsp">teacherList∑Œ ¿Ãµø</a>
 			</div>
 		</div>	
 		<%@ include file="/module/footer.jsp" %>

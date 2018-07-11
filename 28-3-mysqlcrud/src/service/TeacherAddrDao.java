@@ -1,6 +1,7 @@
 // 2018.07.04 김지완
 package service;
 
+import java.util.ArrayList;
 import java.sql.*;
 import service.*;
 
@@ -86,17 +87,17 @@ public class TeacherAddrDao {
 	// teacher_address 테이블의 특정 레코드를 조회하여 VO에 담아 리턴하는 메서드
 	// 매개변수로는 교사 번호. 특정 레코드를 가리키기 위함
 	// 리턴 데이터 타입은 TeacherAddr 클래스 데이터 타입. VO 담아 리턴하기 위함
-	public TeacherAddr selectForUpdateTeacherAddress(int teacherNo) {
+	public TeacherAddr selectForUpdateTeacherAddress(int teacherAddressNo) {
 		Connection conn = null;
 		PreparedStatement pstmtSelectForUpdateTeacherAddress = null;
 		ResultSet rsSelectForUpdateTeacherAddress = null;
 		TeacherAddr teacherAddr = null;
 		
-		// teacherList.jsp로 부터 teacherNo값을 잘 전달 받았는지 테스트
-		System.out.println("teacherNo, teacherList.jsp => TeacherAddrDao.java " + teacherNo);
+		// teacherAddrList.jsp로 부터 teacherNo값을 잘 전달 받았는지 테스트
+		System.out.println("teacherAddressNo, teacherAddrList.jsp => TeacherAddrDao.java " + teacherAddressNo);
 		
 		// teacher 테이블의 특정 레코드를 조회하는 쿼리
-		String sqlSelectForUpdateTeacherAddress = "SELECT teacher_address_no,teacher_no,teacher_address_content FROM teacher_address WHERE teacher_no = ?";
+		String sqlSelectForUpdateTeacherAddress = "SELECT teacher_address_no,teacher_no,teacher_address_content FROM teacher_address WHERE teacher_address_no = ?";
 		
 		try {
 			// mysql 드라이버 로딩
@@ -112,7 +113,7 @@ public class TeacherAddrDao {
 			pstmtSelectForUpdateTeacherAddress = conn.prepareStatement(sqlSelectForUpdateTeacherAddress);
 			
 			// ?에 값 대입
-			pstmtSelectForUpdateTeacherAddress.setInt(1, teacherNo);
+			pstmtSelectForUpdateTeacherAddress.setInt(1, teacherAddressNo);
 			
 			// 쿼리 실행
 			rsSelectForUpdateTeacherAddress = pstmtSelectForUpdateTeacherAddress.executeQuery();
@@ -170,17 +171,17 @@ public class TeacherAddrDao {
 	}
 	
 	// teacher_address 테이블의 특정 레코드를 삭제하는 메서드
-	// 매개변수로 교사 번호를 입력받음. 특정 레코드를 가리키기 위함
+	// 매개변수로 주소 번호를 입력받음. 특정 레코드를 가리키기 위함
 	// 리턴 데이터 타입은 void.
-	public void deleteTeacherAddress(int teacherNo) {
+	public void deleteTeacherAddress(int teacherAddressNo) {
 		Connection conn = null;
 		PreparedStatement pstmtDeleteTeacherAddress = null;
 		
-		// teacherList.jsp로 부터 teacherNo값을 잘 전달 받았는지 테스트
-		System.out.println("teacherNo, teacherList.jsp => TeacherAddrDao.java " + teacherNo);
+		// teacherAddrList.jsp로 부터 teacherAddressNo값을 잘 전달 받았는지 테스트
+		System.out.println("teacherAddressNo, teacherAddrList.jsp => TeacherAddrDao.java " + teacherAddressNo);
 		
 		// teacher_address 테이블의 특정 레코드를 삭제하는 쿼리
-		String sqlDeleteTeacherAddress = "DELETE FROM teacher_address WHERE teacher_no = ?";
+		String sqlDeleteTeacherAddress = "DELETE FROM teacher_address WHERE teacher_address_no = ?";
 		
 		try {
 			// mysql 드라이버 로딩
@@ -196,7 +197,7 @@ public class TeacherAddrDao {
 			pstmtDeleteTeacherAddress = conn.prepareStatement(sqlDeleteTeacherAddress);
 			
 			// ?에 값 대입
-			pstmtDeleteTeacherAddress.setInt(1, teacherNo);
+			pstmtDeleteTeacherAddress.setInt(1, teacherAddressNo);
 			
 			// 위의 쿼리 실행 및 삭제된 레코드의 수 출력
 			System.out.println("삭제된 레코드의 수 : " + pstmtDeleteTeacherAddress.executeUpdate());
@@ -229,14 +230,16 @@ public class TeacherAddrDao {
 			}
 		}
 	}
+	
 	// teacher_address 테이블의 특정 레코드를 조회하는 메서드
 	// 매개변수로 교사 번호를 입력 받음. 특정 레코드를 가리키기 위함
-	// 리턴 데이터는 TeacherAddr 객체의 참조값. 조회한 결과를 VO에 담아 보내는 형태
-	public TeacherAddr selectTeacherAddress(int teacherNo){
+	// 리턴 데이터는 arrayListTeacherAddr 리스트이다. 조회한 결과를 VO에 담고 그것을 또 리스트에 담아 보내는 형태
+	public ArrayList<TeacherAddr> selectTeacherAddress(int teacherNo){
 		Connection conn = null;
 		PreparedStatement pstmtSelectTeacherAddress = null;
 		ResultSet rsSelectTeacherAddress = null;
 		TeacherAddr teacherAddr = null;
+		ArrayList<TeacherAddr> arrayListTeacherAddr = new ArrayList<TeacherAddr>();
 		
 		// teacherList.jsp로 부터 teacherNo값을 잘 전달 받았는지 테스트
 		System.out.println("teacherNo, teacherList.jsp => TeacherAddrDao.java " + teacherNo);
@@ -263,7 +266,7 @@ public class TeacherAddrDao {
 			// 위의 쿼리 실행
 			rsSelectTeacherAddress = pstmtSelectTeacherAddress.executeQuery();
 			
-			if(rsSelectTeacherAddress.next()) {
+			while(rsSelectTeacherAddress.next()) {
 				// teacherAddr 객체 생성
 				teacherAddr = new TeacherAddr();
 				
@@ -271,6 +274,8 @@ public class TeacherAddrDao {
 				teacherAddr.setTeacherAddrNo(rsSelectTeacherAddress.getInt("teacher_address_no"));
 				teacherAddr.setTeacherNo(rsSelectTeacherAddress.getInt("teacher_no"));
 				teacherAddr.setTeacherAddrContent(rsSelectTeacherAddress.getString("teacher_address_content"));
+				
+				arrayListTeacherAddr.add(teacherAddr);
 			}
 		} catch (ClassNotFoundException classException) {
 			System.out.println("DB Driver 클래스를 찾을 수 없습니다. 커넥터가 존재하는지 확인 해주세요!");
@@ -310,8 +315,8 @@ public class TeacherAddrDao {
 				}
 			}
 		}
-		// teacherAddr 객체 참조값 반환
-		return teacherAddr;
+		// arrayListTeacherAddr 리스트 반환
+		return arrayListTeacherAddr;
 	}
 	
 	// teacher_address 테이블에 레코드를 추가하는 메서드

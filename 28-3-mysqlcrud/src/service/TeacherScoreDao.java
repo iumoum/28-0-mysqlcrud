@@ -4,6 +4,72 @@ import java.sql.*;
 import service.*;
 
 public class TeacherScoreDao {
+	
+	// teacher_score 테이블의 특정 레코드를 수정하는 메서드
+	// 특정 레코드를 가리키고 수정내용을 입력하기위해 매개변수로 teacherScore 객체의 참조값을 입력 받음
+	public void updateTeacherScore (TeacherScore teacherScore) {
+		Connection conn = null;
+		PreparedStatement pstmtUpdateTeacherScore = null;
+		
+		// updateTeacherScore.jsp로 부터 teacherScore 객체의 참조 값을 잘 전달 받았는지 테스트
+		System.out.println("teacherScore, updateTeacherScore.jsp => TeacherScoreDao.java " + teacherScore);
+		
+		// teacher_score 테이블의 특정 레코드를 수정하는 쿼리
+		String sqlUpdateTeacherScore = "UPDATE teacher_score SET score = ? WHERE teacher_no = ?";
+		
+		try {
+			// mysql 드라이버 로딩
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			// DB 연결 
+			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPw = "java0000";
+			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
+			
+			// 위의 쿼리 실행 준비
+			pstmtUpdateTeacherScore = conn.prepareStatement(sqlUpdateTeacherScore);
+			
+			// ? 에 값 대입
+			pstmtUpdateTeacherScore.setInt(1,teacherScore.getScore());
+			pstmtUpdateTeacherScore.setInt(2,teacherScore.getTeacherNo());
+			
+			// 쿼리 실행 및 수정된 레코드 갯수 출력
+			System.out.println("teacher_score 테이블에서 수정된 레코드 수 : " + pstmtUpdateTeacherScore.executeUpdate());
+	
+		} catch (ClassNotFoundException classException) {
+			System.out.println("DB Driver 클래스를 찾을 수 없습니다. 커넥터가 있는지 확인하세요!");
+		} catch (SQLException sqlException) {
+			System.out.println("DB와 관련된 예외가 발생하였습니다!");
+			sqlException.printStackTrace();
+		} finally {
+			// 객체를 종료하는 부분
+			if(pstmtUpdateTeacherScore != null) {
+				try {
+					pstmtUpdateTeacherScore.close();
+				} catch (SQLException sqlException){
+					System.out.println("pstmtInsertTeacherAddress 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException sqlException){
+					System.out.println("conn 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	// 특정 교사의 teacher 테이블과 teacher_score 테이블을 조인하여 조회하는 메서드
+	// 교사를 특정하기 위해 매개변수로 교사 번호를 입력받음
+	// VO를 통해 teacherScoreList.jsp로 전달하기 위해 teacherAndTeacherScore VO를 리턴
 	public TeacherAndTeacherScore selectTeacherAndTeacherScore(int teacherNo) {
 		Connection conn = null;
 		PreparedStatement pstmtSelectTeacherAndTeacherScore = null;
@@ -14,7 +80,7 @@ public class TeacherScoreDao {
 		System.out.println("teacherNo, teacherScoreList.jsp => TeacherScoreDao.java " + teacherNo);
 		
 		// teacher와 teacher_score 테이블에서  WHERE 조건에 해당하는 레코드를 내부 조인하여 조회하는 쿼리 
-		String sqlSelectTeacherAndTeacherScore = "SELECT t.teacher_no,t.teacher_name,t.teacher_age,ts.score_no,ts.score FROM teacher t INNER JOIN teacher_score ts on t.teacher_no = ts.teacher_no WHERE t.teacher_no = ?";
+		String sqlSelectTeacherAndTeacherScore = "SELECT t.teacher_no,t.teacher_name,ts.score FROM teacher t INNER JOIN teacher_score ts on t.teacher_no = ts.teacher_no WHERE t.teacher_no = ?";
 		
 		try {
 			// mysql 드라이버 로딩
@@ -39,11 +105,9 @@ public class TeacherScoreDao {
 				Teacher teacher = new Teacher();
 				teacher.setTeacherNo(rsSelectTeacherAndTeacherScore.getInt("teacher_no"));
 				teacher.setTeacherName(rsSelectTeacherAndTeacherScore.getString("teacher_name"));
-				teacher.setTeacherAge(rsSelectTeacherAndTeacherScore.getInt("teacher_age"));
 				
 				TeacherScore teacherScore = new TeacherScore();
 				
-				teacherScore.setScoreNo(rsSelectTeacherAndTeacherScore.getInt("score_no"));
 				teacherScore.setScore(rsSelectTeacherAndTeacherScore.getInt("score"));
 				
 				teacherAndTeacherScore = new TeacherAndTeacherScore();

@@ -1,5 +1,6 @@
 <!-- 2018.07.10 김지완 -->
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="service.*" %>
 <!DOCTYPE html>
 <html>
@@ -7,6 +8,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 		<title>Teacher Address List</title>
 		<link rel="stylesheet" href="<%= request.getContextPath() %>/style/indexCss.css">
+		<link rel="stylesheet" href="<%= request.getContextPath() %>/style/entityList.css">
 	</head>
 	<body>
 		<%@ include file="/module/header.jsp" %>
@@ -24,26 +26,39 @@
 						System.out.println("teacherNo, teacherList.jsp => teacherAddrList.jsp : " + teacherNo);
 						
 						// selectTeacherAddress 메서드를 호출하고 리턴받은 TeacherAddr객체의 참조 값을 teacherAddr 객체 참조변수에 대입 
-						TeacherAddr teacherAddr = teacherAddrDao.selectTeacherAddress(teacherNo);		
+						ArrayList<TeacherAddr> arrayListTeacherAddr = teacherAddrDao.selectTeacherAddress(teacherNo);		
 					%>
 					<h1>Teacher Address</h1>
-					<table border="1">
-						<tr>
-							<td>주소 번호</td>
-							<td>교사 번호</td>
-							<td>교사 주소</td>
-							<td>수정</td>
-							<td>삭제</td>
-						</tr>
-						<tr>
-							<td><%= teacherAddr.getTeacherAddrNo() %></td>
-							<td><%= teacherAddr.getTeacherNo() %></td>
-							<td><%= teacherAddr.getTeacherAddrContent() %></td>
-							<td><a href="<%= request.getContextPath() %>/Teacher/updateTeacherAddrForm.jsp?teacherNo=<%= teacherNo %>">수정 버튼</a></td>
-							<td><a href="<%= request.getContextPath() %>/Teacher/deleteTeacherAddrAction.jsp?teacherNo=<%= teacherNo %>">삭제 버튼</a></td>
-						</tr>
+					<br><br><br>
+					<table id="entityListTable" >
+						<thead>
+							<tr>
+								<th style="width:70px">주소 번호</th>
+								<th>교사 번호</th>
+								<th>교사 주소</th>
+								<th>수정</th>
+								<th>삭제</th>
+							</tr>
+						</thead>
+						<%
+							System.out.println(arrayListTeacherAddr.size() + "<== size");
+							for(int i = 0; i < arrayListTeacherAddr.size(); i++){
+						%>
+							<tr>
+								<td><%= arrayListTeacherAddr.get(i).getTeacherAddrNo() %></td>
+								<td><%= arrayListTeacherAddr.get(i).getTeacherNo() %></td>
+								<td><%= arrayListTeacherAddr.get(i).getTeacherAddrContent() %></td>
+								<td><a class="buttonToUpdateEntity" href="<%= request.getContextPath() %>/Teacher/updateTeacherAddrForm.jsp?teacherAddressNo=<%= arrayListTeacherAddr.get(i).getTeacherAddrNo() %>">UPDATE</a></td>
+								<td><a class="buttonToDeleteEntity" href="<%= request.getContextPath() %>/Teacher/deleteTeacherAddrAction.jsp?teacherAddressNo=<%= arrayListTeacherAddr.get(i).getTeacherAddrNo() %>">DELETE</a></td>
+							</tr>
+						<%
+							}
+						%>
 					</table>
-					<a href="<%= request.getContextPath() %>/Teacher/teacherList.jsp">teacherList로 이동</a>
+					<br>
+					<div id="listButton">
+						<a id="buttonToList" href="<%= request.getContextPath() %>/Teacher/teacherList.jsp">목록으로</a>
+					</div>
 				</div>
 			</div>
 		<%@ include file="/module/footer.jsp" %>
