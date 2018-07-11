@@ -42,11 +42,13 @@
 						<td><%= teacherAndTeacherScore.getTeahcer().getTeacherNo() %></td>
 						<td><%= teacherAndTeacherScore.getTeahcer().getTeacherName() %></td>
 						<td><%= teacherAndTeacherScore.getTeacherScore().getScore() %></td>
-						<td><a href="<%= request.getContextPath() %>/Teacher/updateTeacherScoreForm.jsp?teacherNo=<%= teacherAndTeacherScore.getTeahcer().getTeacherNo() %>">UPDATE</a>
+						<td><a class="buttonToUpdateEntity" href="<%= request.getContextPath() %>/Teacher/updateTeacherScoreForm.jsp?teacherNo=<%= teacherAndTeacherScore.getTeahcer().getTeacherNo() %>">UPDATE</a>
 					</tr>
 				</table>
 				<br>
-				<a href="<%= request.getContextPath() %>/Teacher/teacherList.jsp">teacherList로 이동</a>
+				<div id="listButton">
+					<a id="buttonToList" href="<%= request.getContextPath() %>/Teacher/teacherList.jsp">목록으로</a>
+				</div>
 			</div>
 		</div>
 		<%@ include file="/module/footer.jsp" %>

@@ -11,8 +11,8 @@
 		<%@ include file="/module/header.jsp" %>
 		<div id="container">
 			<%@ include file="/module/nav.jsp" %>
-			<div id="article">
-				
+			<div id="article" style="margin: 0; padding:0">
+				<img src="<%= request.getContextPath() %>/img/teemo.png">
 			</div>
 		</div>
 		<%@ include file="/module/footer.jsp" %>

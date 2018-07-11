@@ -12,13 +12,17 @@
 			int teacherNo = Integer.parseInt(request.getParameter("teacherNo"));
 			System.out.println("teacherNo from teacherList.jsp : " + teacherNo);
 			
-			TeacherDao teacherDao = new TeacherDao();
+			TeacherScoreDao teacherScoreDao = new TeacherScoreDao();
 			TeacherAddrDao teacherAddrDao = new TeacherAddrDao();
+			TeacherDao teacherDao = new TeacherDao();
 			
 			// teacher_address 테이블이 teacher 테이블을 참조하는 구조이기 때문에 taecher_address 테이블 안의 관련된 정보를 먼저 삭제해야한다.
-			teacherAddrDao.deleteTeacherAddress(teacherNo);
+			// teacher_score 도 마찬가지!
+			teacherAddrDao.deleteAllTeacherAddress(teacherNo);
+			teacherScoreDao.deleteTeacherScore(teacherNo);
 			teacherDao.deleteTeacher(teacherNo);
 			
+			// 페이지 이동
 			response.sendRedirect(request.getContextPath() + "/Teacher/teacherList.jsp");
 		%>
 	</body>

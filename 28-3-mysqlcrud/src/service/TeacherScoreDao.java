@@ -5,8 +5,71 @@ import service.*;
 
 public class TeacherScoreDao {
 	
+	// 해당 교사의 점수를 삭제하는 메서드
+	// 교사를 특정하기 위해 teacherNo 변수 안의 값을 매개변수로 입력 받는다.
+	// 리턴 데이터는 없다.
+	public void deleteTeacherScore (int teacherNo) {
+		Connection conn = null;
+		PreparedStatement pstmtDeleteTeacherScore = null;
+		
+		// teacherList.jsp로 부터 teacherNo 값을 잘 전달 받았는지 테스트
+		System.out.println("teacherNo, teacherList.jsp => TeacherScoreDao.java " + teacherNo);
+		
+		// teacher_score 테이블의 특정 레코드를 삭제하는 쿼리
+		String sqlDeleteTeacherScore = "DELETE FROM teacher_score WHERE teacher_no = ?";
+		
+		try {
+			// mysql 드라이버 로딩
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			// DB 연결 
+			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPw = "java0000";
+			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
+			
+			// 위의 쿼리 실행 준비
+			pstmtDeleteTeacherScore = conn.prepareStatement(sqlDeleteTeacherScore);
+			
+			// ? 에 값 대입
+			pstmtDeleteTeacherScore.setInt(1, teacherNo);
+			
+			// 쿼리 실행 및 수정된 레코드 갯수 출력
+			System.out.println("teacher_score 테이블에서 삭제된 레코드 수 : " + pstmtDeleteTeacherScore.executeUpdate());
+	
+		} catch (ClassNotFoundException classException) {
+			System.out.println("DB Driver 클래스를 찾을 수 없습니다. 커넥터가 있는지 확인하세요!");
+		} catch (SQLException sqlException) {
+			System.out.println("DB와 관련된 예외가 발생하였습니다!");
+			sqlException.printStackTrace();
+		} finally {
+			// 객체를 종료하는 부분
+			if(pstmtDeleteTeacherScore != null) {
+				try {
+					pstmtDeleteTeacherScore.close();
+				} catch (SQLException sqlException){
+					System.out.println("pstmtInsertTeacherAddress 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException sqlException){
+					System.out.println("conn 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+		}
+	}
+	
 	// teacher_score 테이블의 특정 레코드를 수정하는 메서드
 	// 특정 레코드를 가리키고 수정내용을 입력하기위해 매개변수로 teacherScore 객체의 참조값을 입력 받음
+	// 아무것도 리턴하지 않겠다
 	public void updateTeacherScore (TeacherScore teacherScore) {
 		Connection conn = null;
 		PreparedStatement pstmtUpdateTeacherScore = null;
