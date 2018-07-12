@@ -7,13 +7,24 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <title>Insert title here</title>
+<link rel="stylesheet" href="<%= request.getContextPath() %>/style/indexCss.css">
+<link rel="stylesheet" href="<%= request.getContextPath() %>/style/entityList.css">
 </head>
 <body>
-	<table border="1">
-		<tr>
-			<td>이름</td>
-			<td>점수</td>
-		</tr>
+<%@ include file="/module/header.jsp" %>
+<div id="container">
+	<%@ include file="/module/nav.jsp" %>
+	<div id="article">
+	<h1>Student Score List</h1>
+	<br><br><br>
+	<table id="entityListTable">
+		<thead>
+			<tr>
+				<th style="width:70px">학생 번호</th>
+				<th style="width:120px">학생 이름</th>
+				<th style="width:120px">점수</th>
+			</tr>
+		</thead>
 		<%
 			request.setCharacterEncoding("euc-kr");
 		
@@ -30,12 +41,14 @@
 					<tr>
 						<td>-</td>
 						<td>-</td>
+						<td>-</td>
 					</tr>
 		<%
 				}else{
 				
 		%>
 					<tr>
+						<td><%=studentScore.getStudentNo() %></td>
 						<td><%=studentScore.getStudentName() %></td>
 						<td><%=studentScore.getScore()%></td>	
 					</tr>
@@ -44,5 +57,12 @@
 			}
 		%>
 	</table>
+	<br>
+	<div id="listButton">
+					<a id="buttonToList" href="<%= request.getContextPath() %>/Student/selectStudentList.jsp">목록으로</a>
+				</div>
+	</div>
+</div>
+<%@ include file="/module/footer.jsp" %>
 </body>
 </html>

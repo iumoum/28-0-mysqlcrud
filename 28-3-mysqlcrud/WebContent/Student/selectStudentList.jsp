@@ -1,9 +1,7 @@
 <!-- 2018-07-02 김정연 -->
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR"%>
-
-<%@ page import="service.Student"%>
-<%@ page import="service.StudentDao"%>
+<%@ page import="service.*" %>
 <%@ page import="java.util.ArrayList"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -20,6 +18,19 @@
 	<div id="container">
 		<%@ include file="/module/nav.jsp"%>
 		<div id="article">
+		<h1>Student</h1>
+		<br><br><br>
+		<div id="buttonForSearch">
+			<form action="<%=request.getContextPath()%>/Student/searchStudent.jsp"method="post">
+				<select name="sk">
+					<option value="student_no">번호</option>
+					<option value="student_name">이름</option>
+					<option value="student_age">나이</option>
+				</select> <input type="text" name="sv"> <input type="submit"
+				value="검색">
+			</form>
+		</div>
+		<br><br>
 			<table id="entityListTable">
 				<thead>
 					<tr>
@@ -54,13 +65,25 @@
 				<tbody>
 					<tr>
 						<td><%=send_no%></td>
-						<td><a
-							href="<%=request.getContextPath()%>/Student/studentAddrList.jsp?send_no=<%=send_no%>"><%=s1.getName()%></a></td>
+						<td><a class="buttonToShowAddress" href="<%=request.getContextPath()%>/Student/studentAddrList.jsp?send_no=<%=send_no%>"><%=s1.getName()%></a></td>
 						<td><%=s1.getAge()%></td>
 						<td><a class="buttonToInsertAddress"
-							href="<%=request.getContextPath()%>/Student/studentAddrInsertForm.jsp?send_no=<%=send_no%>">주소입력</a></td>
-						<td><a class="buttonToInsertScore"
-							href="<%=request.getContextPath()%>/Student/insertStudentScoreForm.jsp?send_no=<%=send_no%>">GoGo!</a></td>
+							href="<%=request.getContextPath()%>/Student/studentAddrInsertForm.jsp?send_no=<%=send_no%>">+address</a></td>
+						<%
+							StudentScoreDao sDao = new StudentScoreDao();
+							
+							String scoreCheck = sDao.studentScoreCheck(send_no);
+							
+							if(scoreCheck.equals("점수 있다")){
+						%>
+								<td> - </td>
+						<%
+							}else{
+						%>
+								<td><a class="buttonToInsertScore"href="<%=request.getContextPath()%>/Student/insertStudentScoreForm.jsp?send_no=<%=send_no%>">점수 입력!</a></td>
+						<%
+							}
+						%>
 						<td><a class="buttonToUpdateEntity" 
 						href="<%=request.getContextPath()%>/Student/studentAndScoreList.jsp?send_no=<%=send_no%>">점수보기</a></td>
 						<td><a class="buttonToShowScore"
@@ -85,10 +108,10 @@
 				%>
 			</table>
 			<br>
-			<div id="addTeacher">
-				<a id="buttonToAddTeacher"
+			<div id="addEntity">
+				<a id="buttonToAddEntity"
 					href="<%=request.getContextPath()%>/Student/insertStudentForm.jsp">+
-					STUDENT</a>&nbsp;<a id="buttonToAddTeacher" href="<%=request.getContextPath() %>/Student/studentListAboveAvg.jsp">+SCORELIST</a>
+					STUDENT</a>&nbsp;<a id="buttonToAddEntity" href="<%=request.getContextPath() %>/Student/studentListAboveAvg.jsp">+SCORELIST</a>
 			</div>
 			<br>
 			<br>
@@ -126,15 +149,6 @@
 				%>
 			</div>
 		</div>
-		<form action="<%=request.getContextPath()%>/Student/searchStudent.jsp"
-			method="post">
-			<select name="sk">
-				<option value="student_no">번호</option>
-				<option value="student_name">이름</option>
-				<option value="student_age">나이</option>
-			</select> <input type="text" name="sv"> <input type="submit"
-				value="검색">
-		</form>
 	</div>
 	<%@ include file="/module/footer.jsp"%>
 </body>

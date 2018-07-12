@@ -4,8 +4,14 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 		<title>InsertStudentForm</title>
+		<link rel="stylesheet" href="<%= request.getContextPath() %>/style/indexCss.css">
+		<link rel="stylesheet" href="<%= request.getContextPath() %>/style/entityList.css">
 	</head>
 	<body>
+	<%@ include file="/module/header.jsp" %>
+	<div id="container">
+		<%@ include file="/module/nav.jsp" %>
+		<div id="article">
 		<form action="./studentAddrInsertAction.jsp" method="post">
 			<h3>Student</h3>
 			<table border="1">
@@ -15,11 +21,14 @@
 				</tr>
 				<tr>
 					<td><input type="submit" value="확인"><input type="hidden" name="studentNo" value= "<%=request.getParameter("send_no")%>"></td>
-				</tr>
-			
-				
-				
+				</tr>	
 			</table>
 		</form>
+		<div id="listButton">
+			<a id="buttonToList" href="<%= request.getContextPath() %>/Student/selectStudentList.jsp">목록으로</a>
+		</div>
+		</div>
+	</div>
+		<%@ include file="/module/footer.jsp" %>
 	</body>	
 </html>

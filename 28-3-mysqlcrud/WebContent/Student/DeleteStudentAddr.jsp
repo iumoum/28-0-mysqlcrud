@@ -1,25 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <%@ page import="java.sql.*" %>
-<%@ page import="service.Student" %>
-<%@ page import="service.StudentDao" %>
+<%@ page import="service.*" %>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-		<title>insertStudentAction</title>
+		<title>Insert title here</title>
 	</head>
 	<body>
 	<%
 		request.setCharacterEncoding("euc-kr");
-			
-		Student st = new Student();
+		String sendNo = request.getParameter("send_no");
 		
-			
-		st.setName(request.getParameter("name"));
-		st.setAge(Integer.parseInt(request.getParameter("age")));
+		StudentAddrDao saDao= new StudentAddrDao();
 		
-		StudentDao stdao = new StudentDao();
-		stdao.insertStudent(st);
+		saDao.DeleteAddr(sendNo);
+		
 		response.sendRedirect(request.getContextPath() + "/Student/selectStudentList.jsp");
 	%>
 	</body>

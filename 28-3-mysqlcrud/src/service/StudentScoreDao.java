@@ -7,6 +7,40 @@ import service.*;
 
 public class StudentScoreDao {
 	
+	public String studentScoreCheck(int sendNo) {
+		Connection conn =null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String scoreCheck = null;
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		
+		
+		String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+		String dbUser = "root";
+		String dbPass = "java0000";
+
+		conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+		pstmt = conn.prepareStatement("SELECT * FROM student_score where student_no = ?");
+		pstmt.setInt(1, sendNo);
+		
+		rs = pstmt.executeQuery();
+		
+		if(rs.next()) {
+			scoreCheck = "점수 있다";
+		}else {
+			scoreCheck = "점수 없다";
+		}
+		
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return scoreCheck;
+	}
+	
 	public void studentScoreTbDelete(String sendNo) {
 		Connection conn =null;
 		PreparedStatement pstmt = null;
@@ -14,9 +48,9 @@ public class StudentScoreDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		
-			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-			String dbUser = "sqlidkjy";
-			String dbPass = "sqlpwkjy";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
 	
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			pstmt = conn.prepareStatement("DELETE FROM student_score WHERE student_no =?");
@@ -44,15 +78,15 @@ public class StudentScoreDao {
 			Class.forName("com.mysql.jdbc.Driver");
 		
 
-		String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-		String dbUser = "sqlidkjy";
-		String dbPass = "sqlpwkjy";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
 	
-		conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
-		
-		pstmt = conn.prepareStatement("select avg(score) from student_score");
-		rs = pstmt.executeQuery();
-		
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+			
+			pstmt = conn.prepareStatement("select avg(score) from student_score");
+			rs = pstmt.executeQuery();
+			
 		if(rs.next()) {
 			scoreAvg = rs.getInt("avg(score)");
 		
@@ -80,9 +114,9 @@ public class StudentScoreDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 
-			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-			String dbUser = "sqlidkjy";
-			String dbPass = "sqlpwkjy";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
 		
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			
@@ -119,9 +153,9 @@ public class StudentScoreDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		
-			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-			String dbUser = "sqlidkjy";
-			String dbPass = "sqlpwkjy";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
 			
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			
@@ -152,9 +186,9 @@ public class StudentScoreDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		
-			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-			String dbUser = "sqlidkjy";
-			String dbPass = "sqlpwkjy";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
 			
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			

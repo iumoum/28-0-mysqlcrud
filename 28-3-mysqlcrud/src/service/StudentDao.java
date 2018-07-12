@@ -23,9 +23,9 @@ public class StudentDao {
 		Class.forName("com.mysql.jdbc.Driver");
 		
 		
-		String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-		String dbUser = "sqlidkjy";
-		String dbPass = "sqlpwkjy";
+		String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+		String dbUser = "root";
+		String dbPass = "java0000";
 
 		conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 		pstmt = conn.prepareStatement("select * from student where student_no =?");
@@ -49,9 +49,9 @@ public class StudentDao {
 			Class.forName("com.mysql.jdbc.Driver");
 		
 		
-			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-			String dbUser = "sqlidkjy";
-			String dbPass = "sqlpwkjy";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
 	
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			pstmt = conn.prepareStatement("select * from student where "+sk+"=?");
@@ -88,9 +88,9 @@ public class StudentDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		
-			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-			String dbUser = "sqlidkjy";
-			String dbPass = "sqlpwkjy";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
 	
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			pstmt = conn.prepareStatement("DELETE FROM student WHERE student_no =?");
@@ -116,9 +116,9 @@ public class StudentDao {
 			Class.forName("com.mysql.jdbc.Driver");
 		
 
-			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-			String dbUser = "sqlidkjy";
-			String dbPass = "sqlpwkjy";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
 	
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			
@@ -150,9 +150,9 @@ public class StudentDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 
-			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-			String dbUser = "sqlidkjy";
-			String dbPass = "sqlpwkjy";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
 	
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			
@@ -187,9 +187,9 @@ public class StudentDao {
 		
 		
 			//드라이버 로딩
-			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-			String dbUser = "sqlidkjy";
-			String dbPass = "sqlpwkjy";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
 			//db연결을 위한 데이터들을 각각의 String 변수들에 대입한다.
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			
@@ -217,45 +217,6 @@ public class StudentDao {
 		}
 		return xtest;
 	}
-	public String studentNo(int sendNo){
-		String addr=null;
-		Connection conn =null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		
-		
-			//드라이버 로딩
-			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-			String dbUser = "sqlidkjy";
-			String dbPass = "sqlpwkjy";
-			//db연결을 위한 데이터들을 각각의 String 변수들에 대입한다.
-			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
-			
-			pstmt = conn.prepareStatement("SELECT * FROM student_address where student_no=?");
-			pstmt.setInt(1,  sendNo);
-			
-		    rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				addr = rs.getString("student_address_content");
-			}
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally {
-			if (rs != null) try { rs.close(); } catch(SQLException e) {}
-			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
-			if (conn != null) try { conn.close(); } catch(SQLException e) {}
-		//객체 종료.	
-		}
-		return addr;
-	}
 	public Student countNo(Student s){
 		Connection conn =null;
 		PreparedStatement pstmt = null;
@@ -265,9 +226,9 @@ public class StudentDao {
 		
 		
 			//드라이버 로딩
-			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-			String dbUser = "sqlidkjy";
-			String dbPass = "sqlpwkjy";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
 			//db연결을 위한 데이터들을 각각의 String 변수들에 대입한다.
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			
@@ -301,9 +262,9 @@ public class StudentDao {
 			Class.forName("com.mysql.jdbc.Driver");
 		
 			//드라이버 로딩
-			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-			String dbUser = "sqlidkjy";
-			String dbPass = "sqlpwkjy";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
 			//db연결을 위한 데이터들을 각각의 String 변수들에 대입한다.
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			list = new ArrayList<Student>();
@@ -350,9 +311,9 @@ public class StudentDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			//드라이버 로딩
-			String jdbcDriver = "jdbc:mysql://localhost:3306/mysqlcrud?useUnicode=true&characterEncoding=euckr";
-			String dbUser = "sqlidkjy";
-			String dbPass = "sqlpwkjy";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
 			//db연결을 위한 데이터들을 각각의 String 변수들에 대입한다.
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			pstmt = conn.prepareStatement("SELECT COUNT(*) as countNo  FROM student");
