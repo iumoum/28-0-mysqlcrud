@@ -4,10 +4,10 @@ public class TeacherAndTeacherScore {
 	private Teacher teacher;
 	private TeacherScore teacherScore;
 	
-	public Teacher getTeahcer() {
+	public Teacher getTeacher() {
 		return teacher;
 	}
-	public void setTeahcer(Teacher teacher) {
+	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
 	}
 	public TeacherScore getTeacherScore() {
@@ -16,6 +16,8 @@ public class TeacherAndTeacherScore {
 	public void setTeacherScore(TeacherScore teacherScore) {
 		this.teacherScore = teacherScore;
 	}
+	
+	
 	
 	
 }

@@ -336,7 +336,7 @@ public class TeacherDao {
 			// 검색 내용 부분이 공백일 경우(즉, 전체보기)
 			if(searchValue.equals("")) {
 				// teacher 테이블의 teacher_no, teacher_name, teacher_age 컬럼의 값을 LIMIT 옵션에 따라 조회하는 쿼리 
-				String sqlSelectTeacherByPage = "SELECT teacher_no, teacher_name, teacher_age FROM teacher ORDER BY teacher_no LIMIT ?, ?";
+				String sqlSelectTeacherByPage = "SELECT teacher_no, teacher_name, teacher_age FROM teacher ORDER BY teacher_no DESC LIMIT ?, ?";
 				
 				pstmtSelectTeacherByPage = conn.prepareStatement(sqlSelectTeacherByPage);
 				
@@ -344,7 +344,7 @@ public class TeacherDao {
 				pstmtSelectTeacherByPage.setInt(2, rowPerPage);
 			} else {
 				// 검색한 이름에 따라 teacher 테이블의 teacher_no, teacher_name, teacher_age 컬럼의 값을 LIMIT 옵션에 따라 조회하는 쿼리 
-				String sqlSelectTeacherByPage = "SELECT teacher_no, teacher_name, teacher_age FROM teacher WHERE teacher_name LIKE ? ORDER By teacher_no LIMIT ?, ?";
+				String sqlSelectTeacherByPage = "SELECT teacher_no, teacher_name, teacher_age FROM teacher WHERE teacher_name LIKE ? ORDER BY teacher_no DESC LIMIT ?, ?";
 				
 				pstmtSelectTeacherByPage = conn.prepareStatement(sqlSelectTeacherByPage);
 				

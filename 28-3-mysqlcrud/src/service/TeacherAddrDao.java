@@ -169,68 +169,7 @@ public class TeacherAddrDao {
 		}
 		return teacherAddr;
 	}
-	
-	// 해당 교사의 주소에 관한 모든 레코드를 삭제하는 메서드
-	// 해당 교사를 특정하기 위해 teacherNo을 매개변수로 입력받음
-	// 리턴 데이터는 없다.
-	public void deleteAllTeacherAddress(int teacherNo) {
-		Connection conn = null;
-		PreparedStatement pstmtDeleteTeacherAddress = null;
-		
-		// teacherAddrList.jsp로 부터 teacherAddressNo값을 잘 전달 받았는지 테스트
-		System.out.println("teacherNo, teacherAddrList.jsp => TeacherAddrDao.java " + teacherNo);
-		
-		// teacher_address 테이블의 특정 레코드를 삭제하는 쿼리
-		String sqlDeleteTeacherAddress = "DELETE FROM teacher_address WHERE teacher_no = ?";
-		
-		try {
-			// mysql 드라이버 로딩
-			Class.forName("com.mysql.jdbc.Driver");
-			
-			// DB 연결 
-			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
-			String dbUser = "root";
-			String dbPw = "java0000";
-			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
-		
-			// 위의 쿼리 준비
-			pstmtDeleteTeacherAddress = conn.prepareStatement(sqlDeleteTeacherAddress);
-			
-			// ?에 값 대입
-			pstmtDeleteTeacherAddress.setInt(1, teacherNo);
-			
-			// 위의 쿼리 실행 및 삭제된 레코드의 수 출력
-			System.out.println("teacher_score 테이블에서 삭제된 레코드의 수 : " + pstmtDeleteTeacherAddress.executeUpdate());
-		} catch (ClassNotFoundException classException) {
-			System.out.println("DB Driver 클래스를 찾을 수 없습니다. 커넥터가 존재하는지 확인 해주세요!");
-		} catch (SQLException sqlException) {
-			System.out.println("DB와 관련된 예외가 발생하였습니다!");
-			sqlException.printStackTrace();
-		} finally {
-			// 객체를 종료하는 부분
-			if(pstmtDeleteTeacherAddress != null) {
-				try {
-					pstmtDeleteTeacherAddress.close();
-				} catch (SQLException sqlException){
-					System.out.println("pstmt1 객체 종료 중 예외 발생");
-					
-					// 예외가 발생한 부분을 출력해줌.
-					sqlException.printStackTrace();
-				}
-			}
-			if(conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException sqlException){
-					System.out.println("conn 객체 종료 중 예외 발생");
-					
-					// 예외가 발생한 부분을 출력해줌.
-					sqlException.printStackTrace();
-				}
-			}
-		}
-	}
-	
+
 	// teacher_address 테이블의 특정 레코드를 삭제하는 메서드
 	// 매개변수로 주소 번호를 입력받음. 특정 레코드를 가리키기 위함
 	// 리턴 데이터 타입은 void.

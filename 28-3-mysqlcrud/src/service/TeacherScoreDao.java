@@ -1,22 +1,21 @@
 package service;
 
+import java.util.ArrayList;
 import java.sql.*;
 import service.*;
 
 public class TeacherScoreDao {
-	
-	// 해당 교사의 점수를 삭제하는 메서드
-	// 교사를 특정하기 위해 teacherNo 변수 안의 값을 매개변수로 입력 받는다.
-	// 리턴 데이터는 없다.
-	public void deleteTeacherScore (int teacherNo) {
+	// 교사들의 평균 점수보다 높은 점수를 가진 교사의 수를 조회하는 메서드
+	// 리턴 되는 데이터는 교사의 수이다.
+	public int countTeacherWhoseScoreisAboveAvg(){
+		// 필요한 객체참조변수 생성
+		PreparedStatement pstmtCountTeacherWhoseScoreisAboveAvg = null;
+		ResultSet rsCountTeacherWhoseScoreisAboveAvg = null;
+		int teacherWhoseScoreIsAboveAvg = 0;
 		Connection conn = null;
-		PreparedStatement pstmtDeleteTeacherScore = null;
-		
-		// teacherList.jsp로 부터 teacherNo 값을 잘 전달 받았는지 테스트
-		System.out.println("teacherNo, teacherList.jsp => TeacherScoreDao.java " + teacherNo);
-		
-		// teacher_score 테이블의 특정 레코드를 삭제하는 쿼리
-		String sqlDeleteTeacherScore = "DELETE FROM teacher_score WHERE teacher_no = ?";
+	
+		// 교사들의 평균 점수보다 높은 점수를 가진 교사들의 수를 조회하는 쿼리
+		String sqlCountTeacherWhoseScoreisAboveAvg = "SELECT COUNT(*) as teacher_whose_score_is_above_average FROM teacher_score WHERE score >= (SELECT AVG(score) FROM teacher_score)";
 		
 		try {
 			// mysql 드라이버 로딩
@@ -29,14 +28,14 @@ public class TeacherScoreDao {
 			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
 			
 			// 위의 쿼리 실행 준비
-			pstmtDeleteTeacherScore = conn.prepareStatement(sqlDeleteTeacherScore);
+			pstmtCountTeacherWhoseScoreisAboveAvg = conn.prepareStatement(sqlCountTeacherWhoseScoreisAboveAvg);
+				
+			// 쿼리 실행 
+			rsCountTeacherWhoseScoreisAboveAvg = pstmtCountTeacherWhoseScoreisAboveAvg.executeQuery();
 			
-			// ? 에 값 대입
-			pstmtDeleteTeacherScore.setInt(1, teacherNo);
-			
-			// 쿼리 실행 및 수정된 레코드 갯수 출력
-			System.out.println("teacher_score 테이블에서 삭제된 레코드 수 : " + pstmtDeleteTeacherScore.executeUpdate());
-	
+			if (rsCountTeacherWhoseScoreisAboveAvg.next()) {
+				teacherWhoseScoreIsAboveAvg = rsCountTeacherWhoseScoreisAboveAvg.getInt("teacher_whose_score_is_above_average");
+			}
 		} catch (ClassNotFoundException classException) {
 			System.out.println("DB Driver 클래스를 찾을 수 없습니다. 커넥터가 있는지 확인하세요!");
 		} catch (SQLException sqlException) {
@@ -44,9 +43,19 @@ public class TeacherScoreDao {
 			sqlException.printStackTrace();
 		} finally {
 			// 객체를 종료하는 부분
-			if(pstmtDeleteTeacherScore != null) {
+			if(rsCountTeacherWhoseScoreisAboveAvg != null) {
 				try {
-					pstmtDeleteTeacherScore.close();
+					rsCountTeacherWhoseScoreisAboveAvg.close();
+				} catch (SQLException sqlException){
+					System.out.println("pstmtInsertTeacherAddress 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+			if(pstmtCountTeacherWhoseScoreisAboveAvg != null) {
+				try {
+					pstmtCountTeacherWhoseScoreisAboveAvg.close();
 				} catch (SQLException sqlException){
 					System.out.println("pstmtInsertTeacherAddress 객체 종료 중 예외 발생");
 					
@@ -65,6 +74,163 @@ public class TeacherScoreDao {
 				}
 			}
 		}
+		return teacherWhoseScoreIsAboveAvg;
+	}
+	
+	// 교사들의 평균 점수를 구하는 메서드
+	// 조회되는 평균 점수를 리턴한다.
+	public int findAvgScore(){
+		Connection conn = null;
+		PreparedStatement pstmtFindAvgScore = null;
+		ResultSet rsFindAvgScore = null;
+		int teacherAvgScore = 0;
+		
+		// 교사들의 평균 점수를 구하는 쿼리
+		String sqlFindAvgScore = "SELECT AVG(score) as teacher_avg_score FROM teacher_score";
+		
+		try {
+			// mysql 드라이버 로딩
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			// DB 연결 
+			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPw = "java0000";
+			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
+			
+			// 위의 쿼리 실행 준비
+			pstmtFindAvgScore = conn.prepareStatement(sqlFindAvgScore);
+				
+			// 쿼리 실행 
+			rsFindAvgScore = pstmtFindAvgScore.executeQuery();
+			
+			if (rsFindAvgScore.next()) {
+				teacherAvgScore = rsFindAvgScore.getInt("teacher_avg_score");
+			}
+	
+		} catch (ClassNotFoundException classException) {
+			System.out.println("DB Driver 클래스를 찾을 수 없습니다. 커넥터가 있는지 확인하세요!");
+		} catch (SQLException sqlException) {
+			System.out.println("DB와 관련된 예외가 발생하였습니다!");
+			sqlException.printStackTrace();
+		} finally {
+			// 객체를 종료하는 부분
+			if(rsFindAvgScore != null) {
+				try {
+					rsFindAvgScore.close();
+				} catch (SQLException sqlException){
+					System.out.println("pstmtInsertTeacherAddress 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+			if(pstmtFindAvgScore != null) {
+				try {
+					pstmtFindAvgScore.close();
+				} catch (SQLException sqlException){
+					System.out.println("pstmtInsertTeacherAddress 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException sqlException){
+					System.out.println("conn 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+		}
+		return teacherAvgScore;
+	}
+	
+	// 교사들의 평균 점수보다 높은 점수를 가진 교사를 조회하는 메서드
+	// 리턴 되는 데이터는 teacherAndTeacherScore 객체의 참조 값이 담긴 리스트이다.
+	public ArrayList<TeacherAndTeacherScore> selectScoreAboveAvgByPage(int currentPage, int rowPerPage){
+		// 필요한 객체참조변수 생성
+		ArrayList<TeacherAndTeacherScore> arrayListScoreAboveAvg = new ArrayList<TeacherAndTeacherScore>();
+		PreparedStatement pstmtSelectScoreAboveAvg = null;
+		ResultSet rsSelectScoreAboveAvg = null;
+		Connection conn = null;
+	
+		int startPoint = (currentPage - 1) * rowPerPage;
+		
+		// 교사들의 평균 점수보다 높은 점수를 가진 교사들을 조회하는 쿼리
+		String sqlSelectScoreAboveAvg = "SELECT t.teacher_no, t.teacher_name, ts.score FROM teacher_score ts INNER JOIN teacher t on t.teacher_no = ts.teacher_no WHERE score >= (SELECT AVG(score) FROM teacher_score) ORDER BY score DESC LIMIT ?, ?";
+		
+		try {
+			// mysql 드라이버 로딩
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			// DB 연결 
+			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPw = "java0000";
+			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
+			
+			// 위의 쿼리 실행 준비
+			pstmtSelectScoreAboveAvg = conn.prepareStatement(sqlSelectScoreAboveAvg);
+			
+			pstmtSelectScoreAboveAvg.setInt(1, startPoint);
+			pstmtSelectScoreAboveAvg.setInt(2, rowPerPage);
+				
+			// 쿼리 실행 
+			rsSelectScoreAboveAvg = pstmtSelectScoreAboveAvg.executeQuery();
+			
+			while (rsSelectScoreAboveAvg.next()) {
+				TeacherAndTeacherScore teacherAndTeacherScore = new TeacherAndTeacherScore();
+				TeacherScore teacherScore = new TeacherScore();
+				Teacher teacher = new Teacher();
+				
+				// teacher 객체 내부 데이터 영역에 조회된 각각의 값(교사 번호, 교사이름)을 대입
+				teacher.setTeacherNo(rsSelectScoreAboveAvg.getInt("teacher_no"));
+				teacher.setTeacherName(rsSelectScoreAboveAvg.getString("teacher_name"));
+				
+				// teacherScore 객체 내부 데이터 영역에 조회된 각각의 값(교사 점수)을 대입
+				teacherScore.setScore(rsSelectScoreAboveAvg.getInt("score"));
+				
+				// teacherAndTeacherScore 객체 내부 데이터 영역에 필요한 정보들로 채워진 객체의 참조 값을 대입
+				teacherAndTeacherScore.setTeacher(teacher);
+				teacherAndTeacherScore.setTeacherScore(teacherScore);
+				
+				// teacherAndTeacherScore 객체를 arrayListScoreAboveAvg 리스트에 자동으로 추가 
+				arrayListScoreAboveAvg.add(teacherAndTeacherScore);
+			}
+	
+		} catch (ClassNotFoundException classException) {
+			System.out.println("DB Driver 클래스를 찾을 수 없습니다. 커넥터가 있는지 확인하세요!");
+		} catch (SQLException sqlException) {
+			System.out.println("DB와 관련된 예외가 발생하였습니다!");
+			sqlException.printStackTrace();
+		} finally {
+			// 객체를 종료하는 부분
+			if(pstmtSelectScoreAboveAvg != null) {
+				try {
+					pstmtSelectScoreAboveAvg.close();
+				} catch (SQLException sqlException){
+					System.out.println("pstmtInsertTeacherAddress 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException sqlException){
+					System.out.println("conn 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+		}
+		return arrayListScoreAboveAvg;
 	}
 	
 	// teacher_score 테이블의 특정 레코드를 수정하는 메서드
@@ -175,7 +341,7 @@ public class TeacherScoreDao {
 				
 				teacherAndTeacherScore = new TeacherAndTeacherScore();
 				
-				teacherAndTeacherScore.setTeahcer(teacher);
+				teacherAndTeacherScore.setTeacher(teacher);
 				teacherAndTeacherScore.setTeacherScore(teacherScore);
 			}
 	

@@ -1,3 +1,4 @@
+<!-- 2018-07-12 김지완 -->
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <%@ page import="service.*" %>
 <!DOCTYPE html>
@@ -28,11 +29,11 @@
 					<table border="1">
 						<tr>
 							<td>교사 번호 : </td>
-							<td><input type="text" name="teacherNo" value="<%= teacherAndTeacherScore.getTeahcer().getTeacherNo() %>" readonly>
+							<td><input type="text" name="teacherNo" value="<%= teacherAndTeacherScore.getTeacher().getTeacherNo() %>" readonly>
 						</tr>
 						<tr>
 							<td>교사 이름 : </td>
-							<td><input type="text" name="teacherName" value="<%= teacherAndTeacherScore.getTeahcer().getTeacherName() %>" readonly>
+							<td><input type="text" name="teacherName" value="<%= teacherAndTeacherScore.getTeacher().getTeacherName() %>" readonly>
 						</tr>
 						<tr>
 							<td>교사 점수 : </td>

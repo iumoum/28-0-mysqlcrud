@@ -39,10 +39,10 @@
 						</tr>
 					</thead>
 					<tr>
-						<td><%= teacherAndTeacherScore.getTeahcer().getTeacherNo() %></td>
-						<td><%= teacherAndTeacherScore.getTeahcer().getTeacherName() %></td>
+						<td><%= teacherAndTeacherScore.getTeacher().getTeacherNo() %></td>
+						<td><%= teacherAndTeacherScore.getTeacher().getTeacherName() %></td>
 						<td><%= teacherAndTeacherScore.getTeacherScore().getScore() %></td>
-						<td><a class="buttonToUpdateEntity" href="<%= request.getContextPath() %>/Teacher/updateTeacherScoreForm.jsp?teacherNo=<%= teacherAndTeacherScore.getTeahcer().getTeacherNo() %>">UPDATE</a>
+						<td><a class="buttonToUpdateEntity" href="<%= request.getContextPath() %>/Teacher/updateTeacherScoreForm.jsp?teacherNo=<%= teacherAndTeacherScore.getTeacher().getTeacherNo() %>">UPDATE</a>
 					</tr>
 				</table>
 				<br>
