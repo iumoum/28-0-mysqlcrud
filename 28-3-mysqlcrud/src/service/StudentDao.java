@@ -10,9 +10,67 @@ import java.sql.DriverManager;
 import service.Student;
 public class StudentDao {
 	
-	
 	ArrayList<Student> list = null;
 	String xtest = null;
+	//ArrayList<Student> 리턴 타입으로 selectStudentMore를 선언. 매개변수는 두개로, 모두 int 데이터 타입인 변수 begin, rowPerPage를 선언.
+	public ArrayList<Student> selectStudentMore(int begin, int rowPerPage){
+		
+		//초기값 지정.
+		Connection conn =null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		
+			//드라이버 로딩
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
+			
+			//db연결을 위한 데이터들을 각각의 String 변수들에 대입한다.
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+			
+			//ArrayList 객체참조 변수인 list에 ArrayList<Student> 객체의 주소값을 할당.
+			list = new ArrayList<Student>();
+			
+			pstmt = conn.prepareStatement("select * from student order by student_no asc limit ?,?");
+			pstmt.setInt(1, begin);
+			pstmt.setInt(2,  rowPerPage);
+			System.out.println(pstmt +"<-sptmt");
+			rs = pstmt.executeQuery();
+			//쿼리 실행.
+			
+			
+			//쿼리에 입력된 조건에 따라 테이블을 불러온다.
+			while(rs.next()) {
+				
+				//객체 생성후 dto주소값 할당.
+				Student s = new Student();
+				
+				//rs 객체 내의 getString 메서드를 이용해서 dto에 값 셋팅.
+				s.setName(rs.getString("student_name"));
+				s.setAge(rs.getInt("student_age"));
+				s.setNo(rs.getInt("student_no"));
+				
+				//세팅된 하나의 dto마다 인덱스 번호 추가.
+				list.add(s);
+			}	
+		
+		}catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}finally {
+			if (rs != null) try { rs.close(); } catch(SQLException e) {}
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
+			if (conn != null) try { conn.close(); } catch(SQLException e) {}
+		//객체 종료.	
+		}
+		return list;
+		//리턴 list (인덱스 번호가 붙여져있는 dto 주소값들)
+				
+		
+	}
+
 	
 	public Student studentScoreCheck(String sendNo) throws ClassNotFoundException, SQLException {
 		Connection conn =null;
@@ -40,47 +98,8 @@ public class StudentDao {
 		
 	}
 	
-	public Student studentSearch(String sk, String sv) {
-		Connection conn =null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		Student stu = new Student();
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		
-		
-			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
-			String dbUser = "root";
-			String dbPass = "java0000";
 	
-			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
-			pstmt = conn.prepareStatement("select * from student where "+sk+"=?");
-			pstmt.setString(1, sv);
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				stu.setNo(rs.getInt("student_no"));
-				stu.setName(rs.getString("student_name"));
-				stu.setAge(rs.getInt("student_age"));
-				
-			}else {
-				stu.setText("검색안됨");
-			}
-			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			if (rs != null) try { rs.close(); } catch(SQLException e) {}
-			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
-			if (conn != null) try { conn.close(); } catch(SQLException e) {}
-			
-		}
-		return stu;
-	}
-	
+	//리턴타입은 void 로 하고 studentTbDelete 메서드 선언. 매개변수는 String 데이터 타입인 sendNo을 선언.
 	public void studentTbDelete(String sendNo) {
 		Connection conn =null;
 		PreparedStatement pstmt = null;
@@ -108,6 +127,7 @@ public class StudentDao {
 		}
 	}
 	
+	//리턴 타입은 String. studentUpdateAction 메서드 선언. 매개변수는 Student클래스 데이터 타입인 변수 stu.
 	public String studentUpdateAction(Student stu) {
 		Connection conn =null;
 		PreparedStatement pstmt = null;
@@ -129,6 +149,7 @@ public class StudentDao {
 			
 			pstmt.executeUpdate();
 			
+			//여기서 쿼리가 실행이 되면 전역변수인 xtest에 "업데이트 성공" 이라는 텍스트를 입력한다.
 			xtest = "업데이트 성공";
 			
 		} catch (ClassNotFoundException e) {
@@ -139,9 +160,12 @@ public class StudentDao {
 			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
 			if (conn != null) try { conn.close(); } catch(SQLException e) {}
 		}
+		//리턴 xtest.
 		return xtest;
+		
 	}
 	
+	//리턴 타입은 클래스 리턴 타입인 Student. studentUpdate 메서드를 선언. 매개변수는 String 데이터 타입인 변수 sendNo 를 선언.
 	public Student studentUpdate(String sendNo) {
 		Connection conn =null;
 		PreparedStatement pstmt = null;
@@ -178,6 +202,7 @@ public class StudentDao {
 		return s;
 	}
 	
+	//리턴 타입은 클래스 리턴 타입인 String 으로 하고 studentAddr 메서드를 선언
 	public String studentAddr(int sendNo){
 		Connection conn =null;
 		PreparedStatement pstmt = null;
@@ -253,7 +278,7 @@ public class StudentDao {
 		return s;
 		
 	}
-	public ArrayList<Student> selectStudent(int begin, int rowPerPage){
+	public ArrayList<Student> selectStudent(int begin, int rowPerPage, String sk, String sv){
 		Connection conn =null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -269,9 +294,10 @@ public class StudentDao {
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			list = new ArrayList<Student>();
 			
-			pstmt = conn.prepareStatement("select * from student order by student_no asc limit ?,?");
-			pstmt.setInt(1, begin);
-			pstmt.setInt(2,  rowPerPage);
+			pstmt = conn.prepareStatement("select * from student where "+sk+"= ? order by student_no asc limit ?,?");
+			pstmt.setString(1, sv);
+			pstmt.setInt(2, begin);
+			pstmt.setInt(3,  rowPerPage);
 			System.out.println(pstmt +"<-sptmt");
 			rs = pstmt.executeQuery();
 			

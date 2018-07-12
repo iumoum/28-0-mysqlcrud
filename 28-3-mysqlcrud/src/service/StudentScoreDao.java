@@ -7,40 +7,58 @@ import service.*;
 
 public class StudentScoreDao {
 	
+	// 리턴 타입은 String 리터 타입. studentScoreCheck 메서드 선언. 매개변수는 int 데이터 타입인 변수 sendNo을 선언.
 	public String studentScoreCheck(int sendNo) {
+		
+		//초기값 설정.
 		Connection conn =null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String scoreCheck = null;
 		
 		try {
+			//드라이버 로딩.
 			Class.forName("com.mysql.jdbc.Driver");
 		
-		
-		String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
-		String dbUser = "root";
-		String dbPass = "java0000";
-
-		conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
-		pstmt = conn.prepareStatement("SELECT * FROM student_score where student_no = ?");
-		pstmt.setInt(1, sendNo);
-		
-		rs = pstmt.executeQuery();
-		
-		if(rs.next()) {
-			scoreCheck = "점수 있다";
-		}else {
-			scoreCheck = "점수 없다";
-		}
+			//db연결 준비
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
+	
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+			//db연결 준비 끝.
+			
+			//db연결 데이터가 있는 conn 객체 내부의 prepareStatement 메서드에 쿼리문 넣은 후, pstmt에 대입.
+			pstmt = conn.prepareStatement("SELECT * FROM student_score where student_no = ?");
+			pstmt.setInt(1, sendNo);
+			
+			//쿼리 실행.
+			rs = pstmt.executeQuery();
+			
+			//테이블 데이터 빼오기. 만약 테이블 데이터 뺴오기(rs객체 내부의 next메서드)가 되면
+			if(rs.next()) {
+				//scoreCheck 변수에 "점수 있다" 대입.
+				scoreCheck = "점수 있다";
+			//아니면.
+			}else {
+				//scoreCheck 변수에 "점수 없다" 대입.
+				scoreCheck = "점수 없다";
+			}
 		
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			if (rs != null) try { rs.close(); } catch(SQLException e) {}
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
+			if (conn != null) try { conn.close(); } catch(SQLException e) {}
 		}
+		//리턴 scoreCheck. 즉, 이프문에 따라 달라진 텍스트를 리턴.
 		return scoreCheck;
 	}
 	
+	//리턴 데이터 타입은 void. studentScoreTbDelete 메서드 선언. 매개변수는 String 데이터 타입으로 sendNo 선언.
 	public void studentScoreTbDelete(String sendNo) {
 		Connection conn =null;
 		PreparedStatement pstmt = null;
@@ -68,6 +86,7 @@ public class StudentScoreDao {
 		}
 	}
 	
+	//리턴 타입은 int. 메서드는 selectScoreAvg를 선언한다. 매개변수는 선언 X
 	public int selectScoreAvg() {
 		Connection conn =null;
 		PreparedStatement pstmt = null;
@@ -76,18 +95,18 @@ public class StudentScoreDao {
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-		
-
 			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPass = "java0000";
 	
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			
+			//score 컬럼의 평균을 구하는 쿼리문.
 			pstmt = conn.prepareStatement("select avg(score) from student_score");
 			rs = pstmt.executeQuery();
 			
 		if(rs.next()) {
+			//평균을 scoreAvg에 대입.
 			scoreAvg = rs.getInt("avg(score)");
 		
 		}
@@ -101,11 +120,15 @@ public class StudentScoreDao {
 			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
 			if (conn != null) try { conn.close(); } catch(SQLException e) {}
 		}
+		//리턴 평균.
 		return scoreAvg;
 		
 	}
 	
+	//리턴 타입은 ArrayList<StudentScore>로 하고 selectStudentListAboveAvg 메서드를 선언.
 	public ArrayList<StudentScore> selectStudentListAboveAvg(){
+		
+		//ArrayList<StudentScore> 객체참조변수인 list에 주소값 할당.
 		ArrayList<StudentScore> list = new ArrayList<StudentScore>();
 		Connection conn =null;
 		PreparedStatement pstmt = null;
@@ -120,9 +143,11 @@ public class StudentScoreDao {
 		
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			
+			//평균을 넘는 컬럼만을 검색하는 쿼리문.
 			pstmt = conn.prepareStatement("select student.student_no, student.student_name, student_score.score from "
 					+ "student_score inner join student on student_score.student_no" + 
 					"= student.student_no where student_score.score >= (select avg(score) from student_score) order by student_score.score DESC");
+			//쿼리 실행.
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -130,6 +155,8 @@ public class StudentScoreDao {
 				sc.setStudentNo(rs.getInt("student.student_no"));
 				sc.setStudentName(rs.getString("student.student_name"));
 				sc.setScore(rs.getInt("student_score.score"));
+				
+				//각각의 값들이 세팅된 dto 주소값들에 순서대로 인덱스 번호를 부여한다.
 				list.add(sc);
 			}
 		
@@ -142,10 +169,12 @@ public class StudentScoreDao {
 			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
 			if (conn != null) try { conn.close(); } catch(SQLException e) {}
 		}
+		//리턴 dto 주소값(+index num).
 		return list;
 		
 	}
 	
+	//리턴 타입은 StudentScore 클래스 리턴 타입으로하고 메서드는 insertStudentScore로 선언.매개변수는 StudentScore 클래스 데이터 타입인 sc로 선언.
 	public StudentScore insertStudentScore(StudentScore sc) {
 		Connection conn =null;
 		PreparedStatement pstmt = null;
@@ -176,6 +205,7 @@ public class StudentScoreDao {
 		
 		return sc;
 	}
+	
 	
 	public ArrayList<StudentScore> studentScore(String sendNo){
 		

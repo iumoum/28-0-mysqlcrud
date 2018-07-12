@@ -20,7 +20,7 @@
 		
 		StudentDao stdao = new StudentDao();
 		stdao.insertStudent(st);
-		response.sendRedirect(request.getContextPath() + "/Student/selectStudentList.jsp");
+		response.sendRedirect(request.getContextPath() + "/Student/studentList.jsp");
 	%>
 	</body>
 </html>

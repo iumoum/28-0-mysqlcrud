@@ -19,7 +19,7 @@
 		
 		String xtest = dao.studentUpdateAction(s);
 		
-		response.sendRedirect(request.getContextPath()+"/Student/selectStudentList.jsp");
+		response.sendRedirect(request.getContextPath()+"/Student/studentList.jsp");
 		
 		
 	%>

@@ -24,7 +24,7 @@
 		StudentAddrDao adao = new StudentAddrDao();
 		adao.insertStudentAddr(sa);
 		
-		response.sendRedirect("./selectStudentList.jsp");
+		response.sendRedirect("./studentList.jsp");
 	%>
 	</body>
 </html>

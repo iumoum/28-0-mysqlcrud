@@ -23,7 +23,7 @@
 		
 		studentScoreDao.insertStudentScore(sc);
 		
-		response.sendRedirect(request.getContextPath()+"/Student/selectStudentList.jsp");
+		response.sendRedirect(request.getContextPath()+"/Student/studentList.jsp");
 	%>
 	</body>
 </html>
