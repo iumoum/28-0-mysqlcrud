@@ -6,7 +6,7 @@
 			EMPLOYEE
 			<ul class="subNav">
 				<li><a href="<%= request.getContextPath()%>/Employee/employeeList.jsp">EmployeeList</a></li>
-				<li>EmployeeAboveAvgList</li>
+				<li><a href="<%= request.getContextPath()%>/Employee/employeeListAboveAvg.jsp">EmployeeAboveAvgList</a></li>
 			</ul>
 		</li>
 		<li>
@@ -19,7 +19,7 @@
 		<li>
 			MEMBER
 			<ul class="subNav">
-				<li><a href="<%= request.getContextPath()%>/Employee/employeeList.jsp">MemberList</a></li>
+				<li><a href="<%= request.getContextPath()%>/Member/memberList.jsp">MemberList</a></li>
 				<li>MemberAboveAvgList</li>
 			</ul>
 		</li>

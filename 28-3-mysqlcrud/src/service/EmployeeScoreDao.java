@@ -1,10 +1,47 @@
+//2018-07-12 서연문
 package service;
 
+//각 메서드를 통해 DB와 연결해 INSERT DELETE UPDATE 하기 위해 필요한 class를 import
 import java.util.ArrayList;
 import java.sql.*;
 import service.*;
 
 public class EmployeeScoreDao {
+	
+	public EmployeeScore selectEmployeeScore(int employeeNo) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		EmployeeScore employeeScore = null;
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPw = "java0000";
+			
+			conn = DriverManager.getConnection(dbUrl, dbUser, dbPw);
+			
+			pstmt = conn.prepareStatement("SELECT employee_score_no, employee_no, score FROM employee_score WHERE employee_no = ?");
+			pstmt.setInt(1, employeeNo);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {					
+				employeeScore = new EmployeeScore();
+				employeeScore.setEmployeeScoreNo(rs.getInt("employee_score_no"));
+				employeeScore.setEmployeeNo(rs.getInt("employee_no"));
+				employeeScore.setScore(rs.getInt("score"));
+			}
+		} catch (ClassNotFoundException e) {
+			System.out.println("DB Driver Class를 찾을 수 없습니다");		
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			
+		}
+		return employeeScore;
+	}	
+	
 	
 	public void updateEmployeeScore(EmployeeScore employeeScore) {
 		Connection conn = null;
@@ -117,7 +154,7 @@ public class EmployeeScoreDao {
 	}
 	
 	
-	public EmployeeAndScore selectEmployeeScore(int employeeNo) {
+	public EmployeeAndScore selectEmployeeAndScore(int employeeNo) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -132,7 +169,7 @@ public class EmployeeScoreDao {
 			
 			conn = DriverManager.getConnection(dbUrl, dbUser, dbPw);
 			
-			pstmt = conn.prepareStatement("SELECT e.employee_no,e.employee_name,es.score FROM employee e INNER JOIN employee_score es on e.employee_no = es.employee_no WHERE e.employee_no = ?");
+			pstmt = conn.prepareStatement("SELECT e.employee_no, e.employee_name, es.employee_score_no, es.score FROM employee e INNER JOIN employee_score es on e.employee_no = es.employee_no WHERE e.employee_no = ?");
 			pstmt.setInt(1, employeeNo);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {	
@@ -141,13 +178,15 @@ public class EmployeeScoreDao {
 				employee.setEmployeeName(rs.getString("employee_name"));
 				
 				EmployeeScore employeeScore = new EmployeeScore();
+				employeeScore.setEmployeeScoreNo(rs.getInt("employee_score_no"));
+				employeeScore.setEmployeeNo(rs.getInt("employee_no"));
 				employeeScore.setScore(rs.getInt("score"));
 				
 				employeeAndScore = new EmployeeAndScore();
 				employeeAndScore.setEmployee(employee);
 				employeeAndScore.setEmployeeScore(employeeScore);
 				
-				System.out.println("employee_score_no");
+				System.out.println(rs.getInt("employee_score_no") + "<<<<score_no");
 			}
 		} catch (ClassNotFoundException e) {
 			System.out.println("DB Driver Class를 찾을 수 없습니다");		

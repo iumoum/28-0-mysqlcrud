@@ -1,9 +1,12 @@
-//2018-06-26 서연문
+//2018-07-12 서연문
 package service;
 
+//employee 테이블의 각 컬럼에 데이터를 setter getter 하기위한 class파일
+//직원의 이름과 나이를 입력
 public class Employee {
 	
-	//접근지정자 private(지정된 클래스 내에서만 사용 가능)에 각 데이터타입으로 EmployeeNo,EmployeeName,EmployeeAge 변수 생성
+	//접근지정자 private(해당 클래스 내에서만 사용 가능)에 해당 테이블의 데이터 유형에 맞는 데이터타입으로 EmployeeNo, EmployeeName, EmployeeAge 변수 생성
+	//PRIMARY KEY = employeeNo(AUTO_INCREMENT)
 	private int employeeNo;
 	private String employeeName;
 	private int employeeAge;

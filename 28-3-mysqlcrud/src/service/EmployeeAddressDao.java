@@ -1,12 +1,14 @@
-// 2018-07-03 서연문
+//2018-07-12 서연문
 package service;
 
+//각 메서드를 통해 DB와 연결해 INSERT DELETE UPDATE SELECT 하기 위해 필요한 class를 import
 import java.util.ArrayList;
 import java.sql.*;
 import service.*;
 
 public class EmployeeAddressDao {
 	
+	//employee의 주소를 UPDATE하기 위한 메서드
 	public void updateEmployeeAddress(EmployeeAddress employeeAddress) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -17,13 +19,16 @@ public class EmployeeAddressDao {
 			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPw = "java0000";
-			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
-		
-			pstmt = conn.prepareStatement("UPDATE employee_address SET employee_address_content = ? WHERE employee_address_no = ?");
 			
-			// ?에 값 대입
+			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
+			
+			//updateEmployeeAction.jsp페이지의 메서드 호출을 통해 받은 값으로
+			//employee_address테이블의 컬럼employee_address_no가 받아온 값과 일치하는 행의 employee_address_content컬럼을 받아온 값으로 수정
+			pstmt = conn.prepareStatement("UPDATE employee_address SET employee_address_content = ? WHERE employee_address_no = ?");
+			//?에 값을 세팅합니다
 			pstmt.setString(1, employeeAddress.getEmployeeAddressContent());
 			pstmt.setInt(2, employeeAddress.getEmployeeAddressNo());
+			//쿼리 실행
 			pstmt.executeUpdate();
 			
 		} catch(ClassNotFoundException x) {
@@ -37,10 +42,13 @@ public class EmployeeAddressDao {
 	}
 	
 	
+	//employee의 주소를 수정하기전  담겨있는 값을 updateform에 입력해주기 위해 검색하는 메서드
+	//EmployeeAddress 클래스 데이터 타입
 	public EmployeeAddress selectForUpdateEmployeeAddress(int emplyeeAddressNo) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		//EmployeeAddress클래스를 통해 employeeAddress객체 생성 초기값 null
 		EmployeeAddress employeeAddress = null;
 		
 		try {
@@ -55,13 +63,17 @@ public class EmployeeAddressDao {
 			//db에 접속하기 위한 데이터를 conn객체에 대입한다
 			conn = DriverManager.getConnection(dbUrl, dbUser, dbPw);		
 				
-			//pstmt에 insert 쿼리문 준비
+			//pstmt에 insert 쿼리문 준비 employee_address테이블의 컬럼employee_address_no가 updateEmployeeForm.jsp에서 호출한 값과 같은 값을 가진 행의 정보를 검색
 			pstmt = conn.prepareStatement("SELECT employee_address_no, employee_no, employee_address_content FROM employee_address WHERE employee_address_no = ?");
+			//WHERW절의 employee_address_no=?에 대입
 			pstmt.setInt(1, emplyeeAddressNo);
+			//쿼리 실행
 			rs = pstmt.executeQuery();
-				
+			//rs객체에 값이 있다면	
 			if(rs.next()) {
-				employeeAddress = new EmployeeAddress();	
+				//employeeAddress객체에 생성자 메서드를 통해 생성된 EmployeeAddress의 주소값을 대입
+				employeeAddress = new EmployeeAddress();
+				//employeeAddress객체에 담긴 주소값을 찾아가서 세팅 
 				employeeAddress.setEmployeeAddressNo(rs.getInt("employee_address_no"));
 				employeeAddress.setEmployeeNo(rs.getInt("employee_no"));
 				employeeAddress.setEmployeeAddressContent(rs.getString("employee_address_content"));
@@ -75,13 +87,12 @@ public class EmployeeAddressDao {
 			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {System.out.println(e.getMessage() + "pstmt");}
 			if (conn != null) try { conn.close(); } catch(SQLException e) {System.out.println(e.getMessage() + "conn");}
 		}
+		//updateEmployeeAddressForm.jsp에 employeeAddress로 리턴
 		return employeeAddress;					
 	} 
 	
-	
+	//employee의 주소를 입력하기 위한 메서드
 	public void insertEmployeeAddress(EmployeeAddress employeeAddress) {
-		//매개변수 Employee는 employee_no, employee_name, employee_age데이터 값이 담겨있다
-		//필요한 class를 객체 선언하고 초기값 null로 지정
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -98,17 +109,13 @@ public class EmployeeAddressDao {
 			//db에 접속하기 위한 데이터를 conn객체에 대입한다
 			conn = DriverManager.getConnection(dbUrl, dbUser, dbPw);		
 			
-			//pstmt1에 insert 쿼리문 준비
-			pstmt = conn.prepareStatement("INSERT INTO employee_address( Employee_no, employee_address_content)	VALUES(?, ?)");
-			
-			//values 값 ?에 각각 순서대로 대입
+			//pstmt에 INSERT 쿼리문 준비 employee_address테이블의 컬럼 employee_no와 employee_address_content를 insert
+			pstmt = conn.prepareStatement("INSERT INTO employee_address( employee_no, employee_address_content)	VALUES(?, ?)");		
+			//values 값 ?에 각각 순서대로  insertEmployeeAction.jsp에서 받아온 값을 대입
 			pstmt.setInt(1, employeeAddress.getEmployeeNo());
 			pstmt.setString(2, employeeAddress.getEmployeeAddressContent());		
 			//쿼리 실행
 			pstmt.executeUpdate();
-			
-			System.out.println(employeeAddress.getEmployeeNo() +"Addr EmployeeNo");
-			System.out.println(employeeAddress.getEmployeeAddressContent() +"Addr Content");
 		
 		//db클래스를 못찾으면 아래 실행
 		} catch(ClassNotFoundException x) {
@@ -123,7 +130,9 @@ public class EmployeeAddressDao {
 		}		
 	}	
 	
-	public void deleteEmployeeAddress(int employeeAddressNo) {
+	
+	/*//employee의 주소정보를 삭제하기 위한 메서
+	public void deleteEmployeeAddress(int employeeNo) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -143,8 +152,8 @@ public class EmployeeAddressDao {
 			
 			//pstmt객체에 db접속하기위한 conn객체와 select문을 대입
 			//employee의 no를 구하기 위해 employee_no의 max값을 select (auto_increment 대신사용)
-			pstmt = conn.prepareStatement("DELETE FROM employee_address WHERE employee_address_no=?");
-			pstmt.setInt(1, employeeAddressNo);
+			pstmt = conn.prepareStatement("DELETE FROM employee_address WHERE employee_no=?");
+			pstmt.setInt(1, employeeNo);
 			pstmt.executeUpdate();
 					
 		} catch(ClassNotFoundException x) {
@@ -157,10 +166,12 @@ public class EmployeeAddressDao {
 			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {System.out.println(e.getMessage() + "pstmt");}
 			if (conn != null) try { conn.close(); } catch(SQLException e) {System.out.println(e.getMessage() + "conn");}
 		}
-		employeeDao.deleteEmployee(employeeAddressNo);
-	}
-		
-	public void deleteOnlyEmployeeAddress(int employeeNo) {
+		employeeDao.deleteEmployee(employeeNo);
+	}*/
+	
+	
+	//employee의 주소정보를 삭제하기 위한 메서드
+	public void deleteOnlyEmployeeAddress(int employeeAddressNo) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -176,14 +187,12 @@ public class EmployeeAddressDao {
 			//db에 접속하기 위한 데이터를 conn객체에 대입한다
 			conn = DriverManager.getConnection(dbUrl, dbUser, dbPw);
 			
-			
-			//pstmt객체에 db접속하기위한 conn객체와 select문을 대입
-			//employee의 no를 구하기 위해 employee_no의 max값을 select (auto_increment 대신사용)
-			pstmt = conn.prepareStatement("DELETE FROM employee_address WHERE employee_no=?");
-			System.out.println("test - >" + employeeNo);
-			pstmt.setInt(1, employeeNo);
-			System.out.println("result!! ->" + pstmt.executeUpdate());
-					
+			//DELETE쿼리문 작성 employee_address테이블의 컬럼 employee_address_no가 받아온 값과 같은 행을 지운다
+			pstmt = conn.prepareStatement("DELETE FROM employee_address WHERE employee_address_no=?");
+			//deleteEmployeeAction.jsp에서 받아온 employeeAddressNo의 값을 ?에 대입
+			pstmt.setInt(1, employeeAddressNo);
+			//쿼리 실행
+			pstmt.executeUpdate();				
 		} catch(ClassNotFoundException x) {
 			System.out.println("DB Driver 클래스를 찾을 수 없습니다 ");		
 		//sql에서 문제 발생시 아래 실행
@@ -197,11 +206,15 @@ public class EmployeeAddressDao {
 	}
 	
 	
+	//employee의 주소 리스트를 받아오기 위한 메서드
+	//ArrayList의 list타입은 EmployeeAddress
 	public ArrayList<EmployeeAddress> selectEmployeeAddress(int employeeNo) {
 		Connection conn = null;
-		PreparedStatement pstmtSelectEmployeeAddr = null;
-		ResultSet rsSelectEmployeeAddr = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		//EmployeeAddress클래스 데이터 타입으로 employeeAddress객체 생성
 		EmployeeAddress employeeAddress = null;
+		//ArrayList<EmployeeAddress> 데이터 타입으로 arrayListEmployeeAddress 객체 생성하고 생성자메서드를 통해 ArrayList<EmployeeAddress>의 주소값 생성하고 객체에 대입
 		ArrayList<EmployeeAddress> arrayListEmployeeAddress = new ArrayList<EmployeeAddress>();
 		
 		try {
@@ -215,16 +228,20 @@ public class EmployeeAddressDao {
 			//db에 접속하기 위한 데이터를 conn객체에 대입한다
 			conn = DriverManager.getConnection(dbUrl, dbUser, dbPw);
 			
-			//pstmt객체에 db접속하기위한 conn객체와 select문을 대입
-			//employee의 no를 구하기 위해 employee_no의 max값을 select (auto_increment 대신사용)
-			pstmtSelectEmployeeAddr = conn.prepareStatement("SELECT employee_address_no, employee_no, employee_address_content FROM employee_address WHERE employee_no=?");
-			pstmtSelectEmployeeAddr.setInt(1, employeeNo);
-			rsSelectEmployeeAddr = pstmtSelectEmployeeAddr.executeQuery();
-			if(rsSelectEmployeeAddr.next()) {
+			//employee_address테이블의 컬럼 employee_no의 값이 받아온 값과 같은 테이블을 SELECT한다
+			pstmt = conn.prepareStatement("SELECT employee_address_no, employee_no, employee_address_content FROM employee_address WHERE employee_no=?");
+			//employeeAddressList.jsp에서 받아온 employeeNo값을 WHERE절의 employee_no에 대입 
+			pstmt.setInt(1, employeeNo);
+			//쿼리 실행
+			rs = pstmt.executeQuery();
+			//다음 행이 있다면 행의 숫자만큼 세팅
+			while(rs.next()) {
+				//employeeAddress객체에 생성자 메서드를 통해 EmployeeAddress의 주소값을 대입
 				employeeAddress = new EmployeeAddress();
-				employeeAddress.setEmployeeAddressNo(rsSelectEmployeeAddr.getInt("employee_address_no"));
-				employeeAddress.setEmployeeNo(rsSelectEmployeeAddr.getInt("employee_no"));
-				employeeAddress.setEmployeeAddressContent(rsSelectEmployeeAddr.getString("employee_address_content"));
+				//employeeAddress객체에 담긴 주소값을 찾아가 세팅
+				employeeAddress.setEmployeeAddressNo(rs.getInt("employee_address_no"));
+				employeeAddress.setEmployeeNo(rs.getInt("employee_no"));
+				employeeAddress.setEmployeeAddressContent(rs.getString("employee_address_content"));
 				
 				arrayListEmployeeAddress.add(employeeAddress);
 			}
@@ -234,10 +251,11 @@ public class EmployeeAddressDao {
 		} catch(SQLException ex) {
 			System.out.println(ex.getMessage());
 		} finally {
-			if(rsSelectEmployeeAddr != null) { try{rsSelectEmployeeAddr.close();} catch (SQLException ex) {System.out.println(ex); ex.printStackTrace();}}
-			if(pstmtSelectEmployeeAddr != null) { try{pstmtSelectEmployeeAddr.close();} catch (SQLException ex) {System.out.println(ex); ex.printStackTrace();}}
+			if(rs != null) { try{rs.close();} catch (SQLException ex) {System.out.println(ex); ex.printStackTrace();}}
+			if(pstmt != null) { try{pstmt.close();} catch (SQLException ex) {System.out.println(ex); ex.printStackTrace();}}
 			if(conn != null) { try{conn.close();} catch (SQLException ex) {System.out.println(ex); ex.printStackTrace();}}
 		}
+		//employeeAddrssList.jsp에 arrayListEmployeeAddress 반환
 		return arrayListEmployeeAddress;
 	} 
 }

@@ -1,13 +1,13 @@
-<!-- 2018-07-11 서연문 -->
+<!-- 2018-07-12 서연문 -->
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="service.*" %>
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 		<link rel="stylesheet" href="<%= request.getContextPath() %>/style/indexCss.css">
 		<link rel="stylesheet" href="<%= request.getContextPath() %>/style/entityList.css">
+		<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 		<title>Employee List</title>
 	</head>
 	<body>
@@ -54,14 +54,14 @@
 				<table id="entityListTable">
 					<thead>
 						<tr>
-							<th>직원 번호</th>
+							<th style="width:70px">직원 번호</th>
 							<th>직원 이름</th>
 							<th>직원 나이</th>
 							<th>주소 입력</th>
 							<th>점수 입력</th>
 							<th>점수 보기 </th>
-							<th>수  정</th>
-							<th>삭  제</th>
+							<th>직원 정보 수정</th>
+							<th>직원 정보 삭제</th>
 						</tr>
 					</thead>
 					<%
@@ -73,7 +73,7 @@
 					<tr>
 						<td><%= employee.getEmployeeNo() %></td>
 						<%
-							if(arrayListEmployeeAddress != null) {
+							if(arrayListEmployeeAddress.size() != 0) {
 						%>
 								<td><a title="주소 보기" class="buttonToShowAddress" href="./employeeAddressList.jsp?employeeNo=<%= employee.getEmployeeNo() %>"><%= employee.getEmployeeName() %></a></td>
 						<%
@@ -87,8 +87,8 @@
 								<td><%= employee.getEmployeeAge() %></td>
 								<td><a title="주소 추가" class="buttonToInsertAddress" href="./insertEmployeeAddressForm.jsp?employeeNo=<%= employee.getEmployeeNo() %>">+ ADDRESS</a></td>
 						<%
-							EmployeeAndScore employeeAndScore = employeeScoreDao.selectEmployeeScore(employee.getEmployeeNo());
-							if(employeeAndScore == null) {
+							EmployeeScore employeeScore = employeeScoreDao.selectEmployeeScore(employee.getEmployeeNo());
+							if(employeeScore == null) {
 						%>
 								<td><a title="점수 입력" class="buttonToInsertScore" href="./insertEmployeeScoreForm.jsp?employeeNo=<%= employee.getEmployeeNo() %>">+ SCORE</a></td>
 								<td></td>
@@ -101,7 +101,7 @@
 							}
 						%>
 						<td><a title="직원 정보 수정" class="buttonToUpdateEntity" href="./updateEmployeeForm.jsp?employeeNo=<%= employee.getEmployeeNo() %>">UPDATE</a></td>
-						<td><a title="직원 정보 삭제" class="buttonToDeleteEntity" href="./deletEmployeeAction.jsp?employeeNo=<%= employee.getEmployeeNo() %>">DELETE</a></td>			
+						<td><a title="직원 정보 삭제" class="buttonToDeleteEntity" href="./deleteEmployeeAction.jsp?employeeNo=<%= employee.getEmployeeNo() %>">DELETE</a></td>			
 					</tr>
 					<%
 						}
@@ -137,6 +137,9 @@
 					<%
 						}
 					%>
+					<div id="listButton">
+						<a id="buttonToList" href="<%= request.getContextPath() %>/index.jsp">처음 화면으로</a>
+					</div>
 				</div>			
 			</div>
 		</div>
