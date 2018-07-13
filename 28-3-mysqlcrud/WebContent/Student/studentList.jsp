@@ -138,6 +138,10 @@
 					STUDENT</a>
 			</div>
 			<br> <br>
+			<div id="page">
+				<span>1 / 1</span>
+			</div>
+			<br>
 			<div id="buttonForAnotherPage">
 				<span
 					style="text-decoration: none; border: 1px solid gray; font-size: 13px; border-radius: 3px; padding: 4px 6px 4px 6px; font-weight: bold; color: #d7d7d7">&lt;
@@ -209,7 +213,7 @@
 									<td><a class="buttonToShowScore"
 										href="<%=request.getContextPath()%>/Student/updateStudentForm.jsp?send_no=<%=send_no%>">UPDATE</a></td>
 									<td><a class="buttonToDeleteEntity"
-										href="<%=request.getContextPath()%>/Student/deleteStudent.jsp?send_no=<%=send_no%>">DELETE</a></td>
+										href="<%=request.getContextPath()%>/Student/deleteStudentAction.jsp?send_no=<%=send_no%>">DELETE</a></td>
 						<%
 								}else{
 							%>
@@ -220,7 +224,7 @@
 						<td><a class="buttonToShowScore"
 							href="<%=request.getContextPath()%>/Student/updateStudentForm.jsp?send_no=<%=send_no%>">UPDATE</a></td>
 						<td><a class="buttonToDeleteEntity"
-							href="<%=request.getContextPath()%>/Student/deleteStudent.jsp?send_no=<%=send_no%>">DELETE</a></td>
+							href="<%=request.getContextPath()%>/Student/deleteStudentAction.jsp?send_no=<%=send_no%>">DELETE</a></td>
 							<%
 								}
 							%>
@@ -248,6 +252,10 @@
 					STUDENT</a>
 			</div>
 			<br> <br>
+			<div id="page">
+				<span><%= currentPage %> / <%= lastPage %></span>
+			</div>
+			<br>
 			<div id="buttonForAnotherPage">
 				<%
 						if (currentPage > 1) {

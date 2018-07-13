@@ -7,6 +7,73 @@ import service.*;
 
 public class StudentScoreDao {
 	
+	public void updateStudentScore(int studentNo, int reScore) {
+		Connection conn =null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		
+		
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
+	
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+			
+			pstmt = conn.prepareStatement("UPDATE student_score SET score=? where student_no=?");
+			pstmt.setInt(1, reScore);
+			pstmt.setInt(2, studentNo);
+			
+			pstmt.executeUpdate();
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
+			if (conn != null) try { conn.close(); } catch(SQLException e) {}
+		}
+	}
+	
+	public StudentScore updateStudentScoreSelect(String sendNo) {
+		Connection conn =null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StudentScore studentScore = new StudentScore();
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
+	
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+			
+			pstmt = conn.prepareStatement("SELECT * FROM student_score where student_no = ?");
+			pstmt.setString(1, sendNo);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				studentScore.setStudentNo(rs.getInt("student_no"));
+				studentScore.setScore(rs.getInt("score"));
+			}
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			if (rs != null) try { rs.close(); } catch(SQLException e) {}
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
+			if (conn != null) try { conn.close(); } catch(SQLException e) {}
+		}
+		return studentScore;
+	}
+	
 	// 리턴 타입은 String 리터 타입. studentScoreCheck 메서드 선언. 매개변수는 int 데이터 타입인 변수 sendNo을 선언.
 	public String studentScoreCheck(int sendNo) {
 		

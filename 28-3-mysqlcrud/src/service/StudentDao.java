@@ -12,6 +12,45 @@ public class StudentDao {
 	
 	ArrayList<Student> list = null;
 	String xtest = null;
+	
+	
+	public String selectStudentName(String sendNo) {
+		Connection conn =null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String studentName = null;
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		
+			
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
+			
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+			
+			pstmt = conn.prepareStatement("select * from student where student_no = ?");
+			pstmt.setString(1, sendNo);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				studentName = rs.getString("student_name");
+			}
+		
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			if (rs != null) try { rs.close(); } catch(SQLException e) {}
+			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
+			if (conn != null) try { conn.close(); } catch(SQLException e) {}
+		}
+		return studentName;
+	}
+	
 	//ArrayList<Student> 리턴 타입으로 selectStudentMore를 선언. 매개변수는 두개로, 모두 int 데이터 타입인 변수 begin, rowPerPage를 선언.
 	public ArrayList<Student> selectStudentMore(int begin, int rowPerPage){
 		

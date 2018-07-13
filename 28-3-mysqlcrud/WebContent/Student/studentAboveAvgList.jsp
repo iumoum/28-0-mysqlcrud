@@ -8,8 +8,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <title>Insert title here</title>
+<link href="<%=request.getContextPath()%>/style/indexCss.css" rel="stylesheet">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/style/entityList.css">
 </head>
 <body>
+<%@ include file="/module/header.jsp"%>
+	<div id="container">
+		<%@ include file="/module/nav.jsp"%>
+		<div id="article">
  <%
 	StudentScoreDao s = new StudentScoreDao();
 	
@@ -29,9 +35,9 @@
 	<table border="1">
 		<thead>
 			<tr>
-				<th>Student_NO</th>
-				<th>Student_NAME</th>
-				<th>Student_SCORE</th>
+				<th>학생 번호</th>
+				<th>학생 이름</th>
+				<th>점수</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -49,5 +55,8 @@
 			%>
 		</tbody>
 	</table> 
+	</div>
+	</div>
+	<%@ include file="/module/footer.jsp"%>
 </body>
 </html>

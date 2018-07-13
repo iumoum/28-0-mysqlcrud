@@ -23,6 +23,7 @@
 				<th style="width:70px">학생 번호</th>
 				<th style="width:120px">학생 이름</th>
 				<th style="width:120px">점수</th>
+				<th style="width:120px">수정</th>
 			</tr>
 		</thead>
 		<%
@@ -42,6 +43,7 @@
 						<td>-</td>
 						<td>-</td>
 						<td>-</td>
+						<td>-</td>
 					</tr>
 		<%
 				}else{
@@ -50,7 +52,8 @@
 					<tr>
 						<td><%=studentScore.getStudentNo() %></td>
 						<td><%=studentScore.getStudentName() %></td>
-						<td><%=studentScore.getScore()%></td>	
+						<td><%=studentScore.getScore()%></td>
+						<td><a class="buttonToUpdateEntity" href="<%=request.getContextPath() %>/Student/updateStudentScoreForm.jsp?send_no=<%=sendNo%>">수정</a></td>	
 					</tr>
 		<%
 				}

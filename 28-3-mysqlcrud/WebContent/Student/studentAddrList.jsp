@@ -26,6 +26,7 @@
 						<th style="width:70px">주소 번호</th>
 						<th>학생 번호</th>
 						<th>학생 주소</th>
+						<th>수정</th>
 						<th>삭제</th>
 					</tr>
 				</thead>
@@ -47,6 +48,7 @@
 					<td><%=sa.getStudentAddrNo() %></td>
 					<td><%=sa.getStudentNo() %></td>
 					<td><%=sa.getAddr() %></td>
+					<td><a class="buttonToUpdateEntity" href="<%= request.getContextPath() %>/Student/updateStudentAddrForm.jsp?send_no=<%= send_no %>">UPDATE</a></td>
 					<td><a class="buttonToDeleteEntity" href="<%= request.getContextPath() %>/Student/deleteStudentAddrAction.jsp?send_no=<%= send_no %>">DELETE</a></td>
 				</tr>
 			</table>
