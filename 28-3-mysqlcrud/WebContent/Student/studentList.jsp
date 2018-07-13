@@ -61,7 +61,7 @@
 							if (request.getParameter("currentPage") != null) {
 								currentPage = Integer.parseInt(request.getParameter("currentPage"));
 							}
-							int rowPerPage = 4;
+							int rowPerPage = 5;
 		
 							int begin = (currentPage - 1) * rowPerPage;
 		
@@ -81,7 +81,7 @@
 							href="<%=request.getContextPath()%>/Student/studentAddrList.jsp?send_no=<%=send_no%>"><%=s1.getName()%></a></td>
 						<td><%=s1.getAge()%></td>
 						<td><a class="buttonToInsertAddress"
-							href="<%=request.getContextPath()%>/Student/studentAddrInsertForm.jsp?send_no=<%=send_no%>">+address</a></td>
+							href="<%=request.getContextPath()%>/Student/studentAddrInsertForm.jsp?send_no=<%=send_no%>">+ADDRESS</a></td>
 						<%
 									StudentScoreDao sDao = new StudentScoreDao();
 									
@@ -89,22 +89,26 @@
 									
 									if(scoreCheck.equals("점수 있다")){
 								%>
-						<td>-</td>
+										<td>-</td>
+										<td><a class="buttonToUpdateEntity"
+											href="<%=request.getContextPath()%>/Student/studentAndScoreList.jsp?send_no=<%=send_no%>">VIEW SCORE</a></td>
+										<td><a class="buttonToShowScore"
+											href="<%=request.getContextPath()%>/Student/updateStudentForm.jsp?send_no=<%=send_no%>">UPDATE</a></td>
+										<td><a class="buttonToDeleteEntity"
+											href="<%=request.getContextPath()%>/Student/deleteStudentAction.jsp?send_no=<%=send_no%>">DELETE</a></td>
 						<%
 									}else{
 								%>
-						<td><a class="buttonToInsertScore"
-							href="<%=request.getContextPath()%>/Student/insertStudentScoreForm.jsp?send_no=<%=send_no%>">점수
-								입력!</a></td>
-						<%
+										<td><a class="buttonToInsertScore"
+											href="<%=request.getContextPath()%>/Student/insertStudentScoreForm.jsp?send_no=<%=send_no%>">+ SCORE</a></td>
+										<td>-</td>
+										<td><a class="buttonToShowScore"
+											href="<%=request.getContextPath()%>/Student/updateStudentForm.jsp?send_no=<%=send_no%>">UPDATE</a></td>
+										<td><a class="buttonToDeleteEntity"
+											href="<%=request.getContextPath()%>/Student/deleteStudentAction.jsp?send_no=<%=send_no%>">DELETE</a></td>
+							<%
 									}
 								%>
-						<td><a class="buttonToUpdateEntity"
-							href="<%=request.getContextPath()%>/Student/studentAndScoreList.jsp?send_no=<%=send_no%>">점수보기</a></td>
-						<td><a class="buttonToShowScore"
-							href="<%=request.getContextPath()%>/Student/updateStudentForm.jsp?send_no=<%=send_no%>">수정</a></td>
-						<td><a class="buttonToDeleteEntity"
-							href="<%=request.getContextPath()%>/Student/deleteStudent.jsp?send_no=<%=send_no%>">삭제</a></td>
 					</tr>
 				</tbody>
 				<%
@@ -115,13 +119,13 @@
 		
 							int lastPage = stu.getCountno();
 							//우선 레코드의 총갯수를 구한 메소드를 호출함과 동시에 int 데이터 타입인 lastPage로 담는다
-							if (lastPage % 4 == 0) {
+							if (lastPage % 5 == 0) {
 							//만약 라스트 페이지를 4로 나눴을때 나머지가 0이면.
-								lastPage = lastPage / 4;
+								lastPage = lastPage / 5;
 								//라스트 페이지는 라스트페이지 나누기 4.
 							} else {
 							//만약 그게 아니면.
-								lastPage = lastPage / 4 + 1;
+								lastPage = lastPage / 5 + 1;
 								//라스트 페이지는 라스트 페이지 나누기 4 더하기 1. 즉 소수점이 붙어있는 정수들이 여기로 넘어온다.
 							}
 							System.out.println(lastPage);
@@ -131,41 +135,20 @@
 			<div id="addEntity">
 				<a id="buttonToAddEntity"
 					href="<%=request.getContextPath()%>/Student/insertStudentForm.jsp">+
-					STUDENT</a>&nbsp;<a id="buttonToAddEntity"
-					href="<%=request.getContextPath() %>/Student/studentAboveAvgList.jsp">+SCORELIST</a>
+					STUDENT</a>
 			</div>
 			<br> <br>
 			<div id="buttonForAnotherPage">
-				<%
-							if (currentPage > 1) {
-						%>
-				<a id="buttonToPrevPage"
-					href="./studentList.jsp?currentPage=<%=currentPage - 1%>">&lt;
-					이전</a>
-				<%
-							} else {
-						%>
 				<span
 					style="text-decoration: none; border: 1px solid gray; font-size: 13px; border-radius: 3px; padding: 4px 6px 4px 6px; font-weight: bold; color: #d7d7d7">&lt;
 					이전</span>
 
-				<%
-							}
-						%>
-				<%
-							if (currentPage != lastPage) {
-						%>
-				<a id="buttonToNextPage"
-					href="./studentList.jsp?currentPage=<%=currentPage + 1%>">다음
-					&gt;</a>
-				<%
-							} else {
-						%>
+				
 				<span
 					style="text-decoration: none; border: 1px solid gray; font-size: 13px; border-radius: 3px; padding: 4px 6px 4px 6px; font-weight: bold; color: #d7d7d7;">다음
 					&gt;</span>
 				<%
-							}
+							
 						%>
 			</div>
 			<%
@@ -192,7 +175,7 @@
 						if (request.getParameter("currentPage") != null) {
 							currentPage = Integer.parseInt(request.getParameter("currentPage"));
 						}
-						int rowPerPage = 4;
+						int rowPerPage = 5;
 	
 						int begin = (currentPage - 1) * rowPerPage;
 	
@@ -212,7 +195,7 @@
 							href="<%=request.getContextPath()%>/Student/studentAddrList.jsp?send_no=<%=send_no%>"><%=s1.getName()%></a></td>
 						<td><%=s1.getAge()%></td>
 						<td><a class="buttonToInsertAddress"
-							href="<%=request.getContextPath()%>/Student/studentAddrInsertForm.jsp?send_no=<%=send_no%>">+address</a></td>
+							href="<%=request.getContextPath()%>/Student/studentAddrInsertForm.jsp?send_no=<%=send_no%>">+ADDRESS</a></td>
 						<%
 								StudentScoreDao sDao = new StudentScoreDao();
 								
@@ -220,22 +203,27 @@
 								
 								if(scoreCheck.equals("점수 있다")){
 							%>
-						<td>-</td>
+									<td>-</td>
+									<td><a class="buttonToUpdateEntity"
+										href="<%=request.getContextPath()%>/Student/studentAndScoreList.jsp?send_no=<%=send_no%>">VIEW SCORE</a></td>
+									<td><a class="buttonToShowScore"
+										href="<%=request.getContextPath()%>/Student/updateStudentForm.jsp?send_no=<%=send_no%>">UPDATE</a></td>
+									<td><a class="buttonToDeleteEntity"
+										href="<%=request.getContextPath()%>/Student/deleteStudent.jsp?send_no=<%=send_no%>">DELETE</a></td>
 						<%
 								}else{
 							%>
 						<td><a class="buttonToInsertScore"
-							href="<%=request.getContextPath()%>/Student/insertStudentScoreForm.jsp?send_no=<%=send_no%>">점수
-								입력!</a></td>
-						<%
+							href="<%=request.getContextPath()%>/Student/insertStudentScoreForm.jsp?send_no=<%=send_no%>">+ SCORE
+								</a></td>
+						<td>-</td>
+						<td><a class="buttonToShowScore"
+							href="<%=request.getContextPath()%>/Student/updateStudentForm.jsp?send_no=<%=send_no%>">UPDATE</a></td>
+						<td><a class="buttonToDeleteEntity"
+							href="<%=request.getContextPath()%>/Student/deleteStudent.jsp?send_no=<%=send_no%>">DELETE</a></td>
+							<%
 								}
 							%>
-						<td><a class="buttonToUpdateEntity"
-							href="<%=request.getContextPath()%>/Student/studentAndScoreList.jsp?send_no=<%=send_no%>">점수보기</a></td>
-						<td><a class="buttonToShowScore"
-							href="<%=request.getContextPath()%>/Student/updateStudentForm.jsp?send_no=<%=send_no%>">수정</a></td>
-						<td><a class="buttonToDeleteEntity"
-							href="<%=request.getContextPath()%>/Student/deleteStudent.jsp?send_no=<%=send_no%>">삭제</a></td>
 					</tr>
 				</tbody>
 				<%
@@ -245,10 +233,10 @@
 						dao.countNo(stu);
 	
 						int lastPage = stu.getCountno();
-						if (lastPage % 4 == 0) {
-							lastPage = lastPage / 4;
+						if (lastPage % 5 == 0) {
+							lastPage = lastPage / 5;
 						} else {
-							lastPage = lastPage / 4 + 1;
+							lastPage = lastPage / 5 + 1;
 						}
 						System.out.println(lastPage);
 					%>
@@ -257,8 +245,7 @@
 			<div id="addEntity">
 				<a id="buttonToAddEntity"
 					href="<%=request.getContextPath()%>/Student/insertStudentForm.jsp">+
-					STUDENT</a>&nbsp;<a id="buttonToAddEntity"
-					href="<%=request.getContextPath() %>/Student/studentAboveAvgList.jsp">+SCORELIST</a>
+					STUDENT</a>
 			</div>
 			<br> <br>
 			<div id="buttonForAnotherPage">

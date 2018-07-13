@@ -14,6 +14,9 @@
 	StudentScoreDao s = new StudentScoreDao();
 	
 	int scoreAvg = 0;
+	int avgCount = 0;
+	
+	avgCount = s.selectStudentListAboveAvgCount();
 	
 	scoreAvg = s.selectScoreAvg();
 	
@@ -21,7 +24,7 @@
 	list = s.selectStudentListAboveAvg();
 	%>
 	<div>
-		Æò±Õ :<%=scoreAvg %> 
+		Æò±Õ :<%=scoreAvg %> <br><br> Æò±ÕÀ» ³Ñ´Â ÇÐ»ý ¼ö :<%=avgCount %> <br><br>
 	</div>
 	<table border="1">
 		<thead>

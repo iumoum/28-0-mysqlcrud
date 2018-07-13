@@ -47,7 +47,7 @@
 					<td><%=sa.getStudentAddrNo() %></td>
 					<td><%=sa.getStudentNo() %></td>
 					<td><%=sa.getAddr() %></td>
-					<td><a class="buttonToDeleteEntity" href="<%= request.getContextPath() %>/Student/DeleteStudentAddr.jsp?send_no=<%= send_no %>">DELETE</a></td>
+					<td><a class="buttonToDeleteEntity" href="<%= request.getContextPath() %>/Student/deleteStudentAddrAction.jsp?send_no=<%= send_no %>">DELETE</a></td>
 				</tr>
 			</table>
 			<br><br>

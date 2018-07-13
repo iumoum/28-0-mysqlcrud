@@ -125,14 +125,44 @@ public class StudentScoreDao {
 		
 	}
 	
-	//리턴 타입은 ArrayList<StudentScore>로 하고 selectStudentListAboveAvg 메서드를 선언.
-	public ArrayList<StudentScore> selectStudentListAboveAvg(){
-		
-		//ArrayList<StudentScore> 객체참조변수인 list에 주소값 할당.
-		ArrayList<StudentScore> list = new ArrayList<StudentScore>();
+	public int selectStudentListAboveAvgCount() {
 		Connection conn =null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		int avgCount = 0;
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		
+			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPass = "java0000";
+		
+			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
+			pstmt = conn.prepareStatement("select COUNT(*) AS student_whose_score_is_above_average FROM student_score WHERE score >= (select AVG(score) from student_score)");
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				avgCount = rs.getInt("student_whose_score_is_above_average");
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return avgCount;
+		
+	}
+	
+	//리턴 타입은 ArrayList<StudentScore>로 하고 selectStudentListAboveAvg 메서드를 선언.
+	public ArrayList<StudentScore> selectStudentListAboveAvg(){
+		Connection conn =null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		//ArrayList<StudentScore> 객체참조변수인 list에 주소값 할당.
+		ArrayList<StudentScore> list = new ArrayList<StudentScore>();
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
