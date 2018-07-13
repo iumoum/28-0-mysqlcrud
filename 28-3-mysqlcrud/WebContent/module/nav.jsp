@@ -12,7 +12,7 @@
 		<li>
 			STUDENT
 			<ul class="subNav">
-				<li><a href="<%= request.getContextPath()%>/Student/selectStudentList.jsp">StudentList</a></li>
+				<li><a href="<%= request.getContextPath()%>/Student/studentList.jsp">StudentList</a></li>
 				<li><a href="<%=request.getContextPath() %>/Student/studentAboveAvgList.jsp">StudentAboveAvgList</a></li>
 			</ul>
 		</li>
