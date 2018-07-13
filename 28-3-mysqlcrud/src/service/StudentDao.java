@@ -51,64 +51,7 @@ public class StudentDao {
 		return studentName;
 	}
 	
-	//ArrayList<Student> 리턴 타입으로 selectStudentMore를 선언. 매개변수는 두개로, 모두 int 데이터 타입인 변수 begin, rowPerPage를 선언.
-	public ArrayList<Student> selectStudentMore(int begin, int rowPerPage){
-		
-		//초기값 지정.
-		Connection conn =null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		
-			//드라이버 로딩
-			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
-			String dbUser = "root";
-			String dbPass = "java0000";
-			
-			//db연결을 위한 데이터들을 각각의 String 변수들에 대입한다.
-			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
-			
-			//ArrayList 객체참조 변수인 list에 ArrayList<Student> 객체의 주소값을 할당.
-			list = new ArrayList<Student>();
-			
-			pstmt = conn.prepareStatement("select * from student order by student_no asc limit ?,?");
-			pstmt.setInt(1, begin);
-			pstmt.setInt(2,  rowPerPage);
-			System.out.println(pstmt +"<-sptmt");
-			rs = pstmt.executeQuery();
-			//쿼리 실행.
-			
-			
-			//쿼리에 입력된 조건에 따라 테이블을 불러온다.
-			while(rs.next()) {
-				
-				//객체 생성후 dto주소값 할당.
-				Student s = new Student();
-				
-				//rs 객체 내의 getString 메서드를 이용해서 dto에 값 셋팅.
-				s.setName(rs.getString("student_name"));
-				s.setAge(rs.getInt("student_age"));
-				s.setNo(rs.getInt("student_no"));
-				
-				//세팅된 하나의 dto마다 인덱스 번호 추가.
-				list.add(s);
-			}	
-		
-		}catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}finally {
-			if (rs != null) try { rs.close(); } catch(SQLException e) {}
-			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
-			if (conn != null) try { conn.close(); } catch(SQLException e) {}
-		//객체 종료.	
-		}
-		return list;
-		//리턴 list (인덱스 번호가 붙여져있는 dto 주소값들)
-				
-		
-	}
+	
 
 	
 	public Student studentScoreCheck(String sendNo) throws ClassNotFoundException, SQLException {
@@ -130,13 +73,106 @@ public class StudentDao {
 		
 		rs = pstmt.executeQuery();
 		if(rs.next()) {
-			stu.setName(rs.getString("student_name"));
+			stu.setStudentName(rs.getString("student_name"));
 		}
 		
 		return stu;
 		
 	}
 	
+	public ArrayList<Student> selectStudentByPage(int currentPage, int rowPerPage, String searchValue){
+		Connection conn = null;
+		PreparedStatement pstmtSelectStudentByPage = null;
+		ResultSet rsSelectStudentByPage = null;
+		ArrayList<Student> arrayListStudent = new ArrayList<Student>();
+		
+		int startPoint = (currentPage - 1) * rowPerPage;
+		try {
+			// mysql 드라이버 로딩
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			// DB 연결 
+			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUser = "root";
+			String dbPw = "java0000";
+			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
+		
+			// 검색 내용 부분이 공백일 경우(즉, 전체보기)
+			if(searchValue.equals("")) {
+				// student 테이블의 student_no, student_name, student_age 컬럼의 값을 LIMIT 옵션에 따라 조회하는 쿼리 
+				String sqlSelectStudentByPage = "SELECT student_no, student_name, student_age FROM student ORDER BY student_no DESC LIMIT ?, ?";
+				
+				pstmtSelectStudentByPage = conn.prepareStatement(sqlSelectStudentByPage);
+				
+				pstmtSelectStudentByPage.setInt(1, startPoint);
+				pstmtSelectStudentByPage.setInt(2, rowPerPage);
+			} else {
+				// 검색한 이름에 따라 student 테이블의 student_no, student_name, student_age 컬럼의 값을 LIMIT 옵션에 따라 조회하는 쿼리 
+				String sqlSelectStudentByPage = "SELECT student_no, student_name, student_age FROM student WHERE student_name LIKE ? ORDER BY student_no DESC LIMIT ?, ?";
+				
+				pstmtSelectStudentByPage = conn.prepareStatement(sqlSelectStudentByPage);
+				
+				// ?에 값 대입
+				pstmtSelectStudentByPage.setString(1, "%" + searchValue + "%");
+				pstmtSelectStudentByPage.setInt(2, startPoint);
+				pstmtSelectStudentByPage.setInt(3, rowPerPage);
+			}
+			
+			// 위의 쿼리 실행
+			rsSelectStudentByPage = pstmtSelectStudentByPage.executeQuery();
+			
+			// 다음 레코드가 존재한다면
+			while(rsSelectStudentByPage.next()) {
+				// student 객체 생성
+				Student student = new Student();
+				
+				// student 객체 내부 멤버변수에 값을 대입
+				student.setStudentNo(rsSelectStudentByPage.getInt("student_no"));
+				student.setStudentName(rsSelectStudentByPage.getString("student_name"));
+				student.setStudentAge(rsSelectStudentByPage.getInt("student_age"));
+				
+				arrayListStudent.add(student);
+			}
+		} catch (ClassNotFoundException classException) {
+			System.out.println("DB Driver 클래스를 찾을 수 없습니다. 커넥터가 존재하는지 확인 해주세요!");
+		} catch (SQLException sqlException) {
+			System.out.println("DB와 관련된 예외가 발생하였습니다!");
+			sqlException.printStackTrace();
+		} finally {
+			// 객체를 종료하는 부분
+			if(rsSelectStudentByPage != null) {
+				try {
+					rsSelectStudentByPage.close();
+				} catch (SQLException sqlException){
+					System.out.println("rsSelectForCount 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+			if(pstmtSelectStudentByPage != null) {
+				try {
+					pstmtSelectStudentByPage.close();
+				} catch (SQLException sqlException){
+					System.out.println("pstmt1 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException sqlException){
+					System.out.println("conn 객체 종료 중 예외 발생");
+					
+					// 예외가 발생한 부분을 출력해줌.
+					sqlException.printStackTrace();
+				}
+			}
+		}	
+		return arrayListStudent;
+	}
 	
 	//리턴타입은 void 로 하고 studentTbDelete 메서드 선언. 매개변수는 String 데이터 타입인 sendNo을 선언.
 	public void studentTbDelete(String sendNo) {
@@ -182,9 +218,9 @@ public class StudentDao {
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			
 			pstmt = conn.prepareStatement("UPDATE Student SET student_name = ?, student_age = ? WHERE student_no = ?");
-			pstmt.setString(1, stu.getName());
-			pstmt.setInt(2, stu.getAge());
-			pstmt.setInt(3, stu.getNo());
+			pstmt.setString(1, stu.getStudentName());
+			pstmt.setInt(2, stu.getStudentAge());
+			pstmt.setInt(3, stu.getStudentNo());
 			
 			pstmt.executeUpdate();
 			
@@ -225,9 +261,9 @@ public class StudentDao {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				s.setNo(rs.getInt("student_no"));
-				s.setName(rs.getString("student_name"));
-				s.setAge(rs.getInt("student_age"));
+				s.setStudentNo(rs.getInt("student_no"));
+				s.setStudentName(rs.getString("student_name"));
+				s.setStudentAge(rs.getInt("student_age"));
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -281,10 +317,11 @@ public class StudentDao {
 		}
 		return xtest;
 	}
-	public Student countNo(Student s){
+	public int countNo(Student s){
 		Connection conn =null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		int countNo = 0;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		
@@ -299,7 +336,7 @@ public class StudentDao {
 			pstmt = conn.prepareStatement("SELECT COUNT(*) as countNo  FROM student");
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-			s.setCountno(rs.getInt("countNo"));
+				countNo = rs.getInt("countNo");
 			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -314,52 +351,7 @@ public class StudentDao {
 		//객체 종료.	
 		}
 		
-		return s;
-		
-	}
-	public ArrayList<Student> selectStudent(int begin, int rowPerPage, String sk, String sv){
-		Connection conn =null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		
-			//드라이버 로딩
-			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
-			String dbUser = "root";
-			String dbPass = "java0000";
-			//db연결을 위한 데이터들을 각각의 String 변수들에 대입한다.
-			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
-			list = new ArrayList<Student>();
-			
-			pstmt = conn.prepareStatement("select * from student where "+sk+"= ? order by student_no asc limit ?,?");
-			pstmt.setString(1, sv);
-			pstmt.setInt(2, begin);
-			pstmt.setInt(3,  rowPerPage);
-			System.out.println(pstmt +"<-sptmt");
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				Student s = new Student();
-				s.setName(rs.getString("student_name"));
-				s.setAge(rs.getInt("student_age"));
-				s.setNo(rs.getInt("student_no"));
-				list.add(s);
-			}	
-		
-		}catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally {
-			if (rs != null) try { rs.close(); } catch(SQLException e) {}
-			if (pstmt != null) try { pstmt.close(); } catch(SQLException e) {}
-			if (conn != null) try { conn.close(); } catch(SQLException e) {}
-		//객체 종료.	
-		}
-		return list;
-		
-				
+		return countNo;
 		
 	}
 	
@@ -391,8 +383,8 @@ public class StudentDao {
 			
 			pstmt2 = conn.prepareStatement("INSERT INTO student(student_name, student_age) VALUES (?, ?)");
 			//prepareStatement 객체를 이용한 쿼리문......을 PreparedStatement 객체로 생성된 객체참조변수 pstmt2에 대입한다.
-			pstmt2.setString(1, stu.getName());
-			pstmt2.setInt(2, stu.getAge());
+			pstmt2.setString(1, stu.getStudentName());
+			pstmt2.setInt(2, stu.getStudentAge());
 			//?가 있는곳에 각각 순서대로 세팅. 1=> countNo 2=> 입력된 name값 3=> 입력된 나이값
 			System.out.println(pstmt2);
 			pstmt2.executeUpdate();
@@ -416,4 +408,88 @@ public class StudentDao {
 		return stu;
 		//리턴 stu. finally 안에 있으면 경고가 발생해서 밖으로 빼두었다!
 	}
+	// studentList의 마지막 페이지를 구하기 위해 레코드의 총 갯수를 조회하는 메서드
+		// 매개변수는 검색어에 따라 총 레코드 수가 달라지기 때문에 searchValue를 입력 받음
+		// 리턴되는 데이터는 검색어에 따라 조회되는 총 레코드의 수 이다.
+		public int countTotalRecordsBySearchValue(String searchValue) {
+			Connection conn = null;
+			PreparedStatement pstmtCountTotalRecordsBySearchValue = null;
+			ResultSet rsCountTotalRecordsBySearchValue = null;
+			int totalRecordsBySelect = 0;
+			
+			try {
+				// mysql 드라이버 로딩
+				Class.forName("com.mysql.jdbc.Driver");
+				
+				// DB 연결 
+				String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+				String dbUser = "root";
+				String dbPw = "java0000";
+				conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
+				
+				// 검색어가 존재하지 않으면 전체보기
+				if(searchValue.equals("")) {
+					// student 테이블의 전체 레코드 갯수를 조회하는 쿼리
+					String sqlSelectForFindLastPage = "SELECT COUNT(*) as total_records FROM student";
+					
+					// 위의 쿼리 준비
+					pstmtCountTotalRecordsBySearchValue = conn.prepareStatement(sqlSelectForFindLastPage);
+				
+				// 검색어가 존재하면
+				} else {
+					// student_name 컬럼의 값에 searchValue의 값이 포함(LIKE)되어 있을 때 조회되는 레코드의 수를 구하는 쿼리
+					String sqlSelectForFindLastPage = "SELECT COUNT(*) as total_records FROM student WHERE student_name LIKE ?";
+					
+					// 위의 쿼리 준비
+					pstmtCountTotalRecordsBySearchValue = conn.prepareStatement(sqlSelectForFindLastPage);
+					
+					pstmtCountTotalRecordsBySearchValue.setString(1, "%" + searchValue + "%");
+				}
+				// 위의 쿼리 실행
+				rsCountTotalRecordsBySearchValue = pstmtCountTotalRecordsBySearchValue.executeQuery();
+				
+				// 다음 레코드가 존재한다면
+				if(rsCountTotalRecordsBySearchValue.next()) {
+					totalRecordsBySelect = rsCountTotalRecordsBySearchValue.getInt("total_records");
+				}
+			} catch (ClassNotFoundException classException) {
+				System.out.println("DB Driver 클래스를 찾을 수 없습니다. 커넥터가 존재하는지 확인 해주세요!");
+			} catch (SQLException sqlException) {
+				System.out.println("DB와 관련된 예외가 발생하였습니다!");
+				sqlException.printStackTrace();
+			} finally {
+				// 객체를 종료하는 부분
+				if(rsCountTotalRecordsBySearchValue != null) {
+					try {
+						rsCountTotalRecordsBySearchValue.close();
+					} catch (SQLException sqlException){
+						System.out.println("rsSelectForCount 객체 종료 중 예외 발생");
+						
+						// 예외가 발생한 부분을 출력해줌.
+						sqlException.printStackTrace();
+					}
+				}
+				if(pstmtCountTotalRecordsBySearchValue != null) {
+					try {
+						pstmtCountTotalRecordsBySearchValue.close();
+					} catch (SQLException sqlException){
+						System.out.println("pstmt1 객체 종료 중 예외 발생");
+						
+						// 예외가 발생한 부분을 출력해줌.
+						sqlException.printStackTrace();
+					}
+				}
+				if(conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException sqlException){
+						System.out.println("conn 객체 종료 중 예외 발생");
+						
+						// 예외가 발생한 부분을 출력해줌.
+						sqlException.printStackTrace();
+					}
+				}
+			}	
+			return totalRecordsBySelect;
+		}
 }

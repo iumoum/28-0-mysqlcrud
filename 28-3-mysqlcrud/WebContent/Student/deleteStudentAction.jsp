@@ -11,19 +11,19 @@
 	<%
 		request.setCharacterEncoding("euc-kr");
 		
-		String sendNo = request.getParameter("send_no");
+		String studentNo = request.getParameter("studentNo");
 		
 		StudentAddrDao dao = new StudentAddrDao();
 		
-		dao.studentAddrTbDelete(sendNo);
+		dao.studentAddrTbDelete(studentNo);
 		
 		StudentScoreDao dao2 = new StudentScoreDao();
 		
-		dao2.studentScoreTbDelete(sendNo);
+		dao2.studentScoreTbDelete(studentNo);
 		
 		StudentDao dao3 = new StudentDao();
 		
-		dao3.studentTbDelete(sendNo);
+		dao3.studentTbDelete(studentNo);
 		
 		response.sendRedirect(request.getContextPath()+"/Student/studentList.jsp");
 		

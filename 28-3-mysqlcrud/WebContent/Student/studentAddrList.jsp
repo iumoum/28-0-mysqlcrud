@@ -33,7 +33,7 @@
 				<%
 				request.setCharacterEncoding("euc-kr");
 				
-				int send_no = Integer.parseInt(request.getParameter("send_no"));
+				int send_no = Integer.parseInt(request.getParameter("studentNo"));
 				
 				
 				StudentAddrDao aDao = new StudentAddrDao();
@@ -47,7 +47,7 @@
 				<tr>
 					<td><%=sa.getStudentAddrNo() %></td>
 					<td><%=sa.getStudentNo() %></td>
-					<td><%=sa.getAddr() %></td>
+					<td><%=sa.getStudentAddrContent() %></td>
 					<td><a class="buttonToUpdateEntity" href="<%= request.getContextPath() %>/Student/updateStudentAddrForm.jsp?send_no=<%= send_no %>">UPDATE</a></td>
 					<td><a class="buttonToDeleteEntity" href="<%= request.getContextPath() %>/Student/deleteStudentAddrAction.jsp?send_no=<%= send_no %>">DELETE</a></td>
 				</tr>

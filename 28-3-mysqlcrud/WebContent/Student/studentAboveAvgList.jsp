@@ -29,10 +29,11 @@
 	ArrayList<StudentScore> list = new ArrayList<StudentScore>();
 	list = s.selectStudentListAboveAvg();
 	%>
+	<h1>StudentScore Above Average</h1><br>
 	<div>
 		평균 :<%=scoreAvg %> <br><br> 평균을 넘는 학생 수 :<%=avgCount %> <br><br>
 	</div>
-	<table border="1">
+	<table id="entityListTable">
 		<thead>
 			<tr>
 				<th>학생 번호</th>

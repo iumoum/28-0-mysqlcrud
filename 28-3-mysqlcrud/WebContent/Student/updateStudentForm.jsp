@@ -23,20 +23,17 @@
 					</tr>
 					<tr>
 					<%
-						String sendNo = request.getParameter("send_no");
-						System.out.println(sendNo);
+						String studentNo = request.getParameter("studentNo");
+						System.out.println(studentNo);
 						Student s = null;
 						StudentDao dao = new StudentDao();
-						s = dao.studentUpdate(sendNo); 
-						
-						int studentNo = s.getNo();
-						String studentName = s.getName();
-						int studentAge = s.getAge();
+						s = dao.studentUpdate(studentNo); 
+					
 					%>
 						
-						<td><input type="text" name="reNo" value="<%=studentNo%>" readonly></td>
-						<td><input type="text" name="reName" value="<%=studentName%>"></td>
-						<td><input type="text" name="reAge" value="<%=studentAge%>"></td>
+						<td><input type="text" name="reNo" value="<%=s.getStudentNo()%>" readonly></td>
+						<td><input type="text" name="reName" value="<%=s.getStudentName()%>"></td>
+						<td><input type="text" name="reAge" value="<%=s.getStudentAge()%>"></td>
 					</tr>
 					<tr><td><input type="submit" value="¼öÁ¤"></td></tr>
 				</table>

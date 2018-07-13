@@ -1,45 +1,26 @@
 package service;
 
 public class Student {
-	private String name;
-	private int age;
-	private int countno;
-	private int no;
-	private String text;
+	private int studentNo;
+	private String studentName;
+	private int studentAge;
 	
-	public String getName() {
-		return name;
+	public int getStudentNo() {
+		return studentNo;
 	}
-	public void setName(String name) {
-		System.out.println(name +"<=setName");
-		this.name = name;
+	public void setStudentNo(int studentNo) {
+		this.studentNo = studentNo;
 	}
-	public int getAge() {
-		return age;
+	public String getStudentName() {
+		return studentName;
 	}
-	public void setAge(int age) {
-		System.out.println(age +"<=setage");
-		this.age = age;
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
 	}
-	public int getCountno() {
-		return countno;
+	public int getStudentAge() {
+		return studentAge;
 	}
-	public void setCountno(int countno) {
-		this.countno = countno;
+	public void setStudentAge(int studentAge) {
+		this.studentAge = studentAge;
 	}
-	public int getNo() {
-		return no;
-	}
-	public void setNo(int no) {
-		System.out.println(no);
-		this.no = no;
-	}
-	public String getText() {
-		return text;
-	}
-	public void setText(String text) {
-		this.text = text;
-	}
-	
-
 }

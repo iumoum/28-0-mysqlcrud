@@ -37,6 +37,96 @@ public class StudentScoreDao {
 		}
 	}
 	
+	// 특정 교사의 student 테이블과 student_score 테이블을 조인하여 조회하는 메서드
+		// 교사를 특정하기 위해 매개변수로 교사 번호를 입력받음
+		// VO를 통해 studentScoreList.jsp로 전달하기 위해 studentAndStudentScore VO를 리턴
+		public StudentAndStudentScore selectStudentAndStudentScore(int studentNo) {
+			Connection conn = null;
+			PreparedStatement pstmtSelectStudentAndStudentScore = null;
+			ResultSet rsSelectStudentAndStudentScore = null;
+			StudentAndStudentScore studentAndStudentScore = null;
+			
+			// studentScoreList.jsp로 부터 studentNo값을 잘 전달 받았는지 테스트
+			System.out.println("studentNo, studentScoreList.jsp => StudentScoreDao.java " + studentNo);
+			
+			// student와 student_score 테이블에서  WHERE 조건에 해당하는 레코드를 내부 조인하여 조회하는 쿼리 
+			String sqlSelectStudentAndStudentScore = "SELECT t.student_no,t.student_name,ts.score FROM student t INNER JOIN student_score ts on t.student_no = ts.student_no WHERE t.student_no = ?";
+			
+			try {
+				// mysql 드라이버 로딩
+				Class.forName("com.mysql.jdbc.Driver");
+				
+				// DB 연결 
+				String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+				String dbUser = "root";
+				String dbPw = "java0000";
+				conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
+				
+				// 위의 쿼리 실행 준비
+				pstmtSelectStudentAndStudentScore = conn.prepareStatement(sqlSelectStudentAndStudentScore);
+				
+				// ? 에 값 대입
+				pstmtSelectStudentAndStudentScore.setInt(1,studentNo);
+				
+				// 쿼리 실행
+				rsSelectStudentAndStudentScore = pstmtSelectStudentAndStudentScore.executeQuery();
+				
+				while(rsSelectStudentAndStudentScore.next()) {
+					Student student = new Student();
+					student.setStudentNo(rsSelectStudentAndStudentScore.getInt("student_no"));
+					student.setStudentName(rsSelectStudentAndStudentScore.getString("student_name"));
+					
+					StudentScore studentScore = new StudentScore();
+					
+					studentScore.setScore(rsSelectStudentAndStudentScore.getInt("score"));
+					
+					studentAndStudentScore = new StudentAndStudentScore();
+					
+					studentAndStudentScore.setStudent(student);
+					studentAndStudentScore.setStudentScore(studentScore);
+				}
+		
+			} catch (ClassNotFoundException classException) {
+				System.out.println("DB Driver 클래스를 찾을 수 없습니다. 커넥터가 있는지 확인하세요!");
+			} catch (SQLException sqlException) {
+				System.out.println("DB와 관련된 예외가 발생하였습니다!");
+				sqlException.printStackTrace();
+			} finally {
+				// 객체를 종료하는 부분
+				if(rsSelectStudentAndStudentScore != null) {
+					try {
+						rsSelectStudentAndStudentScore.close();
+					} catch (SQLException sqlException){
+						System.out.println("pstmtInsertStudentAddress 객체 종료 중 예외 발생");
+						
+						// 예외가 발생한 부분을 출력해줌.
+						sqlException.printStackTrace();
+					}
+				}
+				if(pstmtSelectStudentAndStudentScore != null) {
+					try {
+						pstmtSelectStudentAndStudentScore.close();
+					} catch (SQLException sqlException){
+						System.out.println("pstmtInsertStudentAddress 객체 종료 중 예외 발생");
+						
+						// 예외가 발생한 부분을 출력해줌.
+						sqlException.printStackTrace();
+					}
+				}
+				if(conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException sqlException){
+						System.out.println("conn 객체 종료 중 예외 발생");
+						
+						// 예외가 발생한 부분을 출력해줌.
+						sqlException.printStackTrace();
+					}
+				}
+			}
+			return studentAndStudentScore;
+		}
+	
 	public StudentScore updateStudentScoreSelect(String sendNo) {
 		Connection conn =null;
 		PreparedStatement pstmt = null;
