@@ -1,3 +1,4 @@
+// 2018.7.13 김지완(정규룡 예비군으로 인한 업무대행) 
 package service;
 
 public class MemberAddr {
@@ -23,4 +24,6 @@ public class MemberAddr {
 	public void setMemberAddrContent(String memberAddrContent) {
 		this.memberAddrContent = memberAddrContent;
 	}
+	
+	
 }

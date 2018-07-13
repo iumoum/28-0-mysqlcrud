@@ -15,7 +15,7 @@ public class StudentScoreDao {
 			Class.forName("com.mysql.jdbc.Driver");
 		
 		
-			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPass = "java0000";
 	
@@ -57,7 +57,7 @@ public class StudentScoreDao {
 				Class.forName("com.mysql.jdbc.Driver");
 				
 				// DB 연결 
-				String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+				String dbUrl = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 				String dbUser = "root";
 				String dbPw = "java0000";
 				conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
@@ -136,7 +136,7 @@ public class StudentScoreDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		
-			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPass = "java0000";
 	
@@ -178,7 +178,7 @@ public class StudentScoreDao {
 			Class.forName("com.mysql.jdbc.Driver");
 		
 			//db연결 준비
-			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPass = "java0000";
 	
@@ -223,7 +223,7 @@ public class StudentScoreDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		
-			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPass = "java0000";
 	
@@ -252,7 +252,7 @@ public class StudentScoreDao {
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPass = "java0000";
 	
@@ -291,7 +291,7 @@ public class StudentScoreDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		
-			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPass = "java0000";
 		
@@ -324,7 +324,7 @@ public class StudentScoreDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 
-			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPass = "java0000";
 		
@@ -369,7 +369,7 @@ public class StudentScoreDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		
-			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPass = "java0000";
 			
@@ -403,7 +403,7 @@ public class StudentScoreDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		
-			String jdbcDriver = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String jdbcDriver = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPass = "java0000";
 			

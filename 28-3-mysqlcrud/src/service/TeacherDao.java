@@ -35,7 +35,7 @@ public class TeacherDao {
 			Class.forName("com.mysql.jdbc.Driver");
 			
 			// DB 연결 
-			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUrl = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPw = "java0000";
 			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
@@ -101,7 +101,7 @@ public class TeacherDao {
 			Class.forName("com.mysql.jdbc.Driver");
 			
 			// DB 연결 
-			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUrl = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPw = "java0000";
 			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
@@ -185,7 +185,7 @@ public class TeacherDao {
 			Class.forName("com.mysql.jdbc.Driver");
 			
 			// DB 연결 
-			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUrl = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPw = "java0000";
 			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
@@ -242,7 +242,7 @@ public class TeacherDao {
 			Class.forName("com.mysql.jdbc.Driver");
 			
 			// DB 연결 
-			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUrl = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPw = "java0000";
 			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
@@ -328,7 +328,7 @@ public class TeacherDao {
 			Class.forName("com.mysql.jdbc.Driver");
 			
 			// DB 연결 
-			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUrl = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPw = "java0000";
 			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
@@ -425,7 +425,7 @@ public class TeacherDao {
 			
 			// DB 연결 
 			// 이부분을 클래스를 통해 객체로 만들어서 구현 할 수도 있지 않을까 ?
-			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUrl = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPw = "java0000";
 			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);

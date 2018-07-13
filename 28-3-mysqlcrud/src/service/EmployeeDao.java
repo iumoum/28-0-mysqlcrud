@@ -22,8 +22,8 @@ public class EmployeeDao {
 			Class.forName("com.mysql.jdbc.Driver");
 			
 			//mysql의 db베이스에 연결하기 위해
-			//DB명:jjdev2 ip:localhost 포트번호:3306 접속아이디:root 접속비밀번호:java0000을  String 타입의 객체에 대입
-			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			//DB명:stemcrud ip:localhost 포트번호:3306 접속아이디:root 접속비밀번호:java0000을  String 타입의 객체에 대입
+			String dbUrl = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPw = "java0000";
 		
@@ -61,7 +61,7 @@ public class EmployeeDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 
-			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUrl = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPw = "java0000";
 			
@@ -98,7 +98,7 @@ public class EmployeeDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			
-			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUrl = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPw = "java0000";
 			
@@ -144,7 +144,7 @@ public class EmployeeDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			
-			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUrl = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPw = "java0000";
 			
@@ -202,7 +202,7 @@ public class EmployeeDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			
-			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUrl = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPw = "java0000";
 			
@@ -264,7 +264,7 @@ public class EmployeeDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			
-			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUrl = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPw = "java0000";
 			

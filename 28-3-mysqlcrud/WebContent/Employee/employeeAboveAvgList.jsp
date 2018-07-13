@@ -19,7 +19,7 @@
 					request.setCharacterEncoding("euc-kr");
 				
 					int currentPage = 1;
-					int rowPerPage = 5;
+					int rowPerPage = 10;
 							
 					if(request.getParameter("currentPage") != null) {
 						currentPage = Integer.parseInt(request.getParameter("currentPage"));
@@ -38,7 +38,10 @@
 					
 				%>
 				<h1>Employee Above Avg List</h1>
+				<br><br>
 				<div>평균 : <%= scoreAvg %></div>
+				<div>평균 이상인 직원의 수 : <%= employeeScoreDao.countEmployeeAboveAvgTable() %></div>
+				<br><br>
 				<table id="entityListTable">
 					<thead>
 						<tr>

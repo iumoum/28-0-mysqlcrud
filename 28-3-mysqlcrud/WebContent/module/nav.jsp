@@ -3,31 +3,31 @@
 	<ul id="titleNav">
 		<li id="home" style="margin-bottom:50px"><a href="<%= request.getContextPath()%>/index.jsp">HOME<br></a></li>
 		<li>
-			EMPLOYEE
+			EMPLOYEE (¼­¿¬¹®)
 			<ul class="subNav">
 				<li><a href="<%= request.getContextPath()%>/Employee/employeeList.jsp">EmployeeList</a></li>
-				<li><a href="<%= request.getContextPath()%>/Employee/employeeListAboveAvg.jsp">EmployeeAboveAvgList</a></li>
+				<li><a href="<%= request.getContextPath()%>/Employee/employeeAboveAvgList.jsp">EmployeeAboveAvgList</a></li>
 			</ul>
 		</li>
 		<li>
-			STUDENT
+			STUDENT (±èÁ¤¿¬)
 			<ul class="subNav">
 				<li><a href="<%= request.getContextPath()%>/Student/studentList.jsp">StudentList</a></li>
-				<li><a href="<%=request.getContextPath() %>/Student/studentAboveAvgList.jsp">StudentAboveAvgList</a></li>
+				<li><a href="<%= request.getContextPath() %>/Student/studentAboveAvgList.jsp">StudentAboveAvgList</a></li>
 			</ul>
 		</li>
 		<li>
-			MEMBER
+			MEMBER (Á¤±Ô·æ)
 			<ul class="subNav">
 				<li><a href="<%= request.getContextPath()%>/Member/memberList.jsp">MemberList</a></li>
-				<li>MemberAboveAvgList</li>
+				<li><a href="<%= request.getContextPath() %>/Member/memberAboveAvgList.jsp">MemberAboveAvgList</a></li>
 			</ul>
 		</li>
 		<li>
-			TEACHER
+			TEACHER (±èÁö¿Ï)
 			<ul class="subNav">
 				<li><a href="<%= request.getContextPath()%>/Teacher/teacherList.jsp">TeacherList</a></li>
-				<li><a href="<%=request.getContextPath() %>/Teacher/teacherAboveAvgList.jsp">TeacherAboveAvgList</a></li>
+				<li><a href="<%= request.getContextPath() %>/Teacher/teacherAboveAvgList.jsp">TeacherAboveAvgList</a></li>
 			</ul>
 		</li>
 	</ul>

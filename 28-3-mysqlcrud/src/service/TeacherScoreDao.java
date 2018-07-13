@@ -22,7 +22,7 @@ public class TeacherScoreDao {
 			Class.forName("com.mysql.jdbc.Driver");
 			
 			// DB 연결 
-			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUrl = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPw = "java0000";
 			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
@@ -93,7 +93,7 @@ public class TeacherScoreDao {
 			Class.forName("com.mysql.jdbc.Driver");
 			
 			// DB 연결 
-			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUrl = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPw = "java0000";
 			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
@@ -168,7 +168,7 @@ public class TeacherScoreDao {
 			Class.forName("com.mysql.jdbc.Driver");
 			
 			// DB 연결 
-			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUrl = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPw = "java0000";
 			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
@@ -251,7 +251,7 @@ public class TeacherScoreDao {
 			Class.forName("com.mysql.jdbc.Driver");
 			
 			// DB 연결 
-			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUrl = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPw = "java0000";
 			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
@@ -316,7 +316,7 @@ public class TeacherScoreDao {
 			Class.forName("com.mysql.jdbc.Driver");
 			
 			// DB 연결 
-			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUrl = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPw = "java0000";
 			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);
@@ -407,7 +407,7 @@ public class TeacherScoreDao {
 			Class.forName("com.mysql.jdbc.Driver");
 			
 			// DB 연결 
-			String dbUrl = "jdbc:mysql://localhost:3306/jjdev2?useUnicode=true&characterEncoding=euckr";
+			String dbUrl = "jdbc:mysql://localhost:3306/stemcrud?useUnicode=true&characterEncoding=euckr";
 			String dbUser = "root";
 			String dbPw = "java0000";
 			conn = DriverManager.getConnection(dbUrl,dbUser,dbPw);

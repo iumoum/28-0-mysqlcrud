@@ -1,32 +1,38 @@
-<!-- 18.07.03 28기 정규룡 -->
+<!-- 2018-07-13 김지완(정규룡 예비군으로 인한 업무대행) -->
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
-<%@ page import="service.MemberAddrDao" %>
-<%@ page import="service.MemberAddr" %>
-
+<%@ page import="service.*" %>
 <!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>memberAddrInsertAction Page</title>
-</head>
-<body>
-	<% 
-		request.setCharacterEncoding("euc-kr");  
-		MemberAddr insertMemberAddr = new MemberAddr();
-		// MeberAddr 클래스타입인 insertMemberAddr변수에 생성자메서드로 객체를 만들어서 주소값을 만들고 그 주소값을 할당한다
-		int memberNo = Integer.parseInt(request.getParameter("memberNo"));
-		// memberNo변수에 memberAddrInsertForm.jsp에서 넘어온 memberNo값을 int형으로 바꾸고 담는다.
-		String memberAddrContent = request.getParameter("memberAddrContent");
-		// memberAddrContent변수에 memberAddrInsertForm.jsp에서 넘어온 memberAddrContent값을 담는다.
-		insertMemberAddr.setMemberNo(memberNo);
-		insertMemberAddr.setMemberAddrContent(memberAddrContent);
-		// insertMemberAddr변수에 담긴 주소값에 있는 set메서드를 입력변수에 담긴 값을 이용하여 실행한다.
-		MemberAddrDao memberAddrdao = new MemberAddrDao();
-		// MemberAddrDao 클레스타입인 memberAddrdao변수에 생성자메서드로 객체를 만들어서 주소값을 만들고 그 주소값을 할당한다.
-		memberAddrdao.insertMemberAddr(insertMemberAddr);
-		// memberAddrdao주소에 있는 insertMemberAddr메서드를 insertMemberAddr주소에 있는 memberAddr클래스를 사용하여 실행한다.
-		response.sendRedirect(request.getContextPath() + "/Member/memberList.jsp");
-		// memberList.jsp로 페이지를 이동한다.
-	%>
-</body>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+		<title>Insert Member Address Action</title>
+	</head>
+	<body>
+		<%
+			// 인코딩 방식 설정
+			request.setCharacterEncoding("euc-kr");
+		
+			//MemberAddr, MemberAddrDao 객체 생성 
+			MemberAddr memberAddr = new MemberAddr();
+			MemberAddrDao memberAddrDao = new MemberAddrDao();
+			
+			// insertMemberAddrForm.jsp로 부터 받아온 memberNo, memberAddressContent값을 각각의 변수에 대입
+			int memberNo = Integer.parseInt(request.getParameter("memberNo"));
+			String memberAddressContent = request.getParameter("memberAddressContent");
+			
+			// memberNo 변수 안의 값을 테스트
+			System.out.println("memberNo, insertMemberAddrForm.jsp = > insertMemberAddrAction.jsp : " + memberNo);
+			System.out.println("memberAddressContent, insertMemberAddrForm.jsp = > insertMemberAddrAction.jsp : " + memberAddressContent);
+			
+			// memberAddr 객체 내부의 멤버 변수에 각각의 값을 셋팅
+			memberAddr.setMemberNo(memberNo);
+			memberAddr.setMemberAddrContent(memberAddressContent);
+			
+			// insertMemberAddress 메서드를 통해 레코드 삽입
+			memberAddrDao.insertMemberAddress(memberAddr);
+			
+			// 페이지 이동
+			response.sendRedirect(request.getContextPath() + "/Member/memberAddrList.jsp?memberNo=" + memberNo);
+		%>
+	</body>
 </html>

@@ -1,50 +1,66 @@
-<!-- 18.07.09 28기 정규룡 -->
+<!-- 2018-07-13 김지완(정규룡 예비군으로 인한 업무대행) -->
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
-<%@ page import="service.MemberAddrDao" %>
-<%@ page import="service.MemberAddr" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="service.*" %>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-		<title>memberAddrList Page</title>
+		<link rel="stylesheet" href="<%= request.getContextPath() %>/style/indexCss.css">
+		<link rel="stylesheet" href="<%= request.getContextPath() %>/style/entityList.css">
+		<title>Member Address List</title>		
 	</head>
 	<body>
-		<table border="1">
-			<tr>
-				<td colspan="7"><a href="<%=request.getContextPath()%>/Member/memberIndex.jsp">MemberAddress 데이터</a></td>
-			</tr>
-			<tr>
-				<td>주소번호</td>
-				<td>회원번호</td>
-				<td>주소</td>
-				<td>수정하기</td>
-				<td>삭제하기</td>
-			</tr>
+		<%@ include file="/module/header.jsp" %>
+		<div id="container">
+			<%@ include file="/module/nav.jsp" %>
+			<div id="article">
 				<%
-					request.setCharacterEncoding("euc-kr");
-					
-					int memberNo = Integer.parseInt(request.getParameter("sendNo"));
+					// MemberAddrDao 객체 생성
 					MemberAddrDao memberAddrDao = new MemberAddrDao();
-					ArrayList<MemberAddr> list = memberAddrDao.selectMemberAddrAll(memberNo);
 					
-					for (int i=0;i<list.size();i++) {
-						MemberAddr memberaddr = list.get(i);
-				%>	
-						<tr>
-							<td><%= memberaddr.getMemberAddrNo() %></td>
-							<td><%= memberaddr.getMemberNo()%></td>
-							<td><%= memberaddr.getMemberAddrContent()%></td>
-							<td>
-								<a href="<%= request.getContextPath() %>/Member/memberAddrUpdateForm.jsp?sendNo=<%= memberaddr.getMemberNo() %>">수정</a>			
-							</td>
-							<td>
-								<a href="<%= request.getContextPath() %>/Member/memberAddrDeleteAction.jsp?sendNo=<%= memberaddr.getMemberNo() %>">삭제</a>			
-							</td>
-						</tr>
-				<%
-					}
+					// memberList.jsp로 부터 전달 받은 memberNo 값을 변수에 대입
+					int memberNo = Integer.parseInt(request.getParameter("memberNo"));
+					
+					// memberNo 변수 안의 값을 테스트
+					System.out.println("memberNo, memberList.jsp => memberAddrList.jsp : " + memberNo);
+						
+					// selectMemberAddress 메서드를 호출하고 리턴받은 MemberAddr객체의 참조 값을 memberAddr 객체 참조변수에 대입 
+					ArrayList<MemberAddr> arrayListMemberAddr = memberAddrDao.selectMemberAddress(memberNo);		
 				%>
-		</table>
+				<h1>Member Address</h1>
+				<br><br><br>
+				<table id="entityListTable" >
+					<thead>
+						<tr>
+							<th style="width:70px">주소 번호</th>
+							<th>교사 번호</th>
+							<th>교사 주소</th>
+							<th>수정</th>
+							<th>삭제</th>
+						</tr>
+					</thead>
+						<%
+							System.out.println(arrayListMemberAddr.size() + "<== size");
+							for(int i = 0; i < arrayListMemberAddr.size(); i++){
+						%>
+							<tr>
+								<td><%= arrayListMemberAddr.get(i).getMemberAddrNo() %></td>
+							<td><%= arrayListMemberAddr.get(i).getMemberNo() %></td>
+							<td><%= arrayListMemberAddr.get(i).getMemberAddrContent() %></td>
+							<td><a class="buttonToUpdateEntity" href="<%= request.getContextPath() %>/Member/updateMemberAddrForm.jsp?memberAddressNo=<%= arrayListMemberAddr.get(i).getMemberAddrNo() %>">UPDATE</a></td>
+							<td><a class="buttonToDeleteEntity" href="<%= request.getContextPath() %>/Member/deleteMemberAddrAction.jsp?memberAddressNo=<%= arrayListMemberAddr.get(i).getMemberAddrNo() %>">DELETE</a></td>
+						</tr>
+					<%
+						}
+					%>
+				</table>
+				<br>
+				<div id="listButton">
+					<a id="buttonToList" href="<%= request.getContextPath() %>/Member/memberList.jsp">목록으로</a>
+				</div>
+			</div>
+		</div>
+		<%@ include file="/module/footer.jsp" %>
 	</body>
 </html>
