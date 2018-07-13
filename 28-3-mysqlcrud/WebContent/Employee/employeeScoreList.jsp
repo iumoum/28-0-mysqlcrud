@@ -31,18 +31,16 @@
 						<tr>
 							<th style="width:70px">직원 번호</th>
 							<th style="width:120px">직원 이름</th>
-							<th style="width:70px">점수 번호</th>
-							<th style="width:120px">점 수</th>
-							<th style="width:120px">점수 수정</th>
+							<th style="width:120px">점수</th>
+							<th style="width:120px">수정</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
 							<td><%= employeeAndScore.getEmployee().getEmployeeNo() %></td>
 							<td><%= employeeAndScore.getEmployee().getEmployeeName() %></td>
-							<td><%= employeeAndScore.getEmployeeScore().getEmployeeScoreNo() %></td>
 							<td><%= employeeAndScore.getEmployeeScore().getScore() %></td>
-							<td><a href="<%= request.getContextPath() %>/Employee/updateEmployeeScoreForm.jsp?employeeNo=<%= employeeAndScore.getEmployee().getEmployeeNo() %>">점수 수정</a>
+							<td><a title="점수 정보 수정" class="buttonToUpdateEntity" href="<%= request.getContextPath() %>/Employee/updateEmployeeScoreForm.jsp?employeeNo=<%= employeeAndScore.getEmployee().getEmployeeNo() %>">UPDATE</a></td>
 						</tr>
 					</tbody>	
 				</table>

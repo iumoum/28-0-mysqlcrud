@@ -1,4 +1,4 @@
-<!-- 2018-07-12 서연문 -->
+<!-- 2018-07-13 서연문 -->
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="service.*" %>
@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="<%= request.getContextPath() %>/style/indexCss.css">
 		<link rel="stylesheet" href="<%= request.getContextPath() %>/style/entityList.css">
 		<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-		<title>Employee List Above Avg</title>
+		<title>Employee Above Avg List</title>
 	</head>
 	<body>
 		<%@ include file="/module/header.jsp" %>
@@ -18,20 +18,32 @@
 				<%
 					request.setCharacterEncoding("euc-kr");
 				
+					int currentPage = 1;
+					int rowPerPage = 5;
+							
+					if(request.getParameter("currentPage") != null) {
+						currentPage = Integer.parseInt(request.getParameter("currentPage"));
+					}
+					
 					EmployeeScoreDao employeeScoreDao = new EmployeeScoreDao();
 					int scoreAvg = employeeScoreDao.selectScoreAvg();
 					
 					ArrayList<EmployeeAndScore> arrayListEmployeeAndScore = new ArrayList<EmployeeAndScore>();
-					arrayListEmployeeAndScore = employeeScoreDao.selectEmployeeListAboveAvg();
+					arrayListEmployeeAndScore = employeeScoreDao.selectEmployeeAboveAvg(currentPage, rowPerPage);
+					
+					int lastPage = employeeScoreDao.countEmployeeAboveAvgTable() / rowPerPage;
+					if ((employeeScoreDao.countEmployeeAboveAvgTable() % rowPerPage) != 0) {
+						lastPage++;
+					}
+					
 				%>
-				<h1>Employee List Above Avg</h1>
+				<h1>Employee Above Avg List</h1>
 				<div>평균 : <%= scoreAvg %></div>
 				<table id="entityListTable">
 					<thead>
 						<tr>
 							<th style="width:70px">직원 번호</th>
 							<th style="width:120px">직원 이름</th>
-							<th style="width:70px">점수 번호</th>
 							<th style="width:120px">점 수</th>
 						</tr>
 					</thead>
@@ -44,7 +56,6 @@
 							<tr>
 								<td><%= arrayListEmployeeAndScore.get(i).getEmployee().getEmployeeNo() %></td>
 								<td><%= arrayListEmployeeAndScore.get(i).getEmployee().getEmployeeName() %></td>
-								<td><%= arrayListEmployeeAndScore.get(i).getEmployeeScore().getEmployeeScoreNo() %></td>
 								<td><%= arrayListEmployeeAndScore.get(i).getEmployeeScore().getScore() %></td>
 							</tr>
 					<%
@@ -53,6 +64,36 @@
 					</tbody>
 				</table>
 				<br>
+				<div id="addEntity">
+					<a id="buttonToAddEntity" href="<%= request.getContextPath() %>/Employee/insertEmployeeForm.jsp">+ EMPLOYEE</a>
+				</div>
+				<br><br>
+				<div id="page">
+					<span><%= currentPage %> / <%= lastPage %></span>
+				</div>
+				<br>
+				<div id="buttonForAnotherPage">
+					<%
+						if(currentPage > 1){
+					%>
+							<a id="buttonToPrevPage" href="<%= request.getContextPath() %>/Employee/employeeAboveAvgList.jsp?currentPage=<%= currentPage - 1 %>">&lt; 이전</a>
+					<%
+						} else {
+					%>
+							<span style="text-decoration: none;border: 1px solid gray;font-size: 13px;border-radius: 3px;padding: 4px 6px 4px 6px;font-weight: bold;color:#d7d7d7">&lt; 이전</span>
+					<%
+						}
+						if(currentPage < lastPage){
+					%>
+							<a id="buttonToNextPage" href="<%= request.getContextPath() %>/Employee/employeeAboveAvgList.jsp?currentPage=<%= currentPage + 1 %>">다음 &gt;</a>
+					<%
+						} else {
+					%>
+							<span style="text-decoration: none;border: 1px solid gray;font-size: 13px;border-radius: 3px;padding: 4px 6px 4px 6px;font-weight: bold;color:#d7d7d7;">다음 &gt;</span>
+					<%
+						}
+					%>
+				</div>	
 				<div id="listButton">
 					<a id="buttonToList" href="<%= request.getContextPath() %>/Employee/employeeList.jsp">목록으로</a>
 				</div>

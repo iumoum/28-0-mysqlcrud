@@ -15,32 +15,31 @@
 		<div id="container">
 			<%@ include file="/module/nav.jsp" %>
 			<div id="article">
-				<%	
+				<%
 					request.setCharacterEncoding("euc-kr");
-				
+						
 					String searchValue = "";
 					if(request.getParameter("searchValue") != null){
 						searchValue = request.getParameter("searchValue");
 					}
-							
+									
 					int currentPage = 1;
 					int rowPerPage = 5;
-					
+							
 					if(request.getParameter("currentPage") != null) {
 						currentPage = Integer.parseInt(request.getParameter("currentPage"));
 					}
-					EmployeeAddressDao employeeAddressDao = new EmployeeAddressDao();
 					
-					EmployeeScoreDao employeeScoreDao = new EmployeeScoreDao();
-					
+					EmployeeAddrDao employeeAddrDao = new EmployeeAddrDao();
+					EmployeeScoreDao employeeScoreDao = new EmployeeScoreDao();					
 					EmployeeDao employeeDao = new EmployeeDao();
-					
+				
 					ArrayList<Employee> arrayListEmployee = employeeDao.selectEmployeeByPage(currentPage, rowPerPage, searchValue);
 					
 					int lastPage = employeeDao.countEmployeeTable(searchValue) / rowPerPage;
 					if ((employeeDao.countEmployeeTable(searchValue) % rowPerPage) != 0) {
 						lastPage++;
-					}		
+					}
 				%>
 				<h1>Employee List</h1><br>
 				<div id="buttonForSearch">
@@ -60,51 +59,51 @@
 							<th>주소 입력</th>
 							<th>점수 입력</th>
 							<th>점수 보기 </th>
-							<th>직원 정보 수정</th>
-							<th>직원 정보 삭제</th>
+							<th>수정</th>
+							<th>삭제</th>
 						</tr>
 					</thead>
 					<%
 						for(int i=0; i<arrayListEmployee.size(); i++) {
-							Employee employee = arrayListEmployee.get(i);
-							
-							ArrayList<EmployeeAddress> arrayListEmployeeAddress = employeeAddressDao.selectEmployeeAddress(employee.getEmployeeNo());
+							Employee employee = arrayListEmployee.get(i);			
+							ArrayList<EmployeeAddr> arrayListEmployeeAddr = employeeAddrDao.selectEmployeeAddr(employee.getEmployeeNo());
 					%>
-					<tr>
-						<td><%= employee.getEmployeeNo() %></td>
-						<%
-							if(arrayListEmployeeAddress.size() != 0) {
-						%>
-								<td><a title="주소 보기" class="buttonToShowAddress" href="./employeeAddressList.jsp?employeeNo=<%= employee.getEmployeeNo() %>"><%= employee.getEmployeeName() %></a></td>
-						<%
-							} else {
-						%>
-								<td><%= employee.getEmployeeName() %></td>
-								
-						<%
-							}
-						%>		
-								<td><%= employee.getEmployeeAge() %></td>
-								<td><a title="주소 추가" class="buttonToInsertAddress" href="./insertEmployeeAddressForm.jsp?employeeNo=<%= employee.getEmployeeNo() %>">+ ADDRESS</a></td>
-						<%
-							EmployeeScore employeeScore = employeeScoreDao.selectEmployeeScore(employee.getEmployeeNo());
-							if(employeeScore == null) {
-						%>
-								<td><a title="점수 입력" class="buttonToInsertScore" href="./insertEmployeeScoreForm.jsp?employeeNo=<%= employee.getEmployeeNo() %>">+ SCORE</a></td>
-								<td></td>
-						<%
-							} else {
-						%>
-								<td></td>
-								<td><a title="점수 확인" class="buttonToShowScore" href="./employeeScoreList.jsp?employeeNo=<%= employee.getEmployeeNo() %>">VIEW SCORE</a></td>	
-						<%
-							}
-						%>
-						<td><a title="직원 정보 수정" class="buttonToUpdateEntity" href="./updateEmployeeForm.jsp?employeeNo=<%= employee.getEmployeeNo() %>">UPDATE</a></td>
-						<td><a title="직원 정보 삭제" class="buttonToDeleteEntity" href="./deleteEmployeeAction.jsp?employeeNo=<%= employee.getEmployeeNo() %>">DELETE</a></td>			
-					</tr>
+							<tbody>
+								<tr>
+									<td><%= employee.getEmployeeNo() %></td>
+									<%
+										if(arrayListEmployeeAddr.size() != 0) {
+									%>
+											<td><a title="주소 보기" class="buttonToShowAddress" href="./employeeAddrList.jsp?employeeNo=<%= employee.getEmployeeNo() %>"><%= employee.getEmployeeName() %></a></td>
+									<%
+										} else {
+									%>
+											<td><%= employee.getEmployeeName() %></td>
+									<%
+										}
+									%>		
+									<td><%= employee.getEmployeeAge() %></td>
+									<td><a title="주소 추가" class="buttonToInsertAddress" href="./insertEmployeeAddrForm.jsp?employeeNo=<%= employee.getEmployeeNo() %>">+ ADDRESS</a></td>
+									<%
+										EmployeeScore employeeScore = employeeScoreDao.selectEmployeeScore(employee.getEmployeeNo());
+										if(employeeScore == null) {
+									%>
+											<td><a title="점수 입력" class="buttonToInsertScore" href="./insertEmployeeScoreForm.jsp?employeeNo=<%= employee.getEmployeeNo() %>">+ SCORE</a></td>
+											<td></td>
+									<%
+										} else {
+									%>
+											<td></td>
+											<td><a title="점수 확인" class="buttonToShowScore" href="./employeeScoreList.jsp?employeeNo=<%= employee.getEmployeeNo() %>">VIEW SCORE</a></td>	
+									<%
+										}
+									%>
+									<td><a title="직원 정보 수정" class="buttonToUpdateEntity" href="./updateEmployeeForm.jsp?employeeNo=<%= employee.getEmployeeNo() %>">UPDATE</a></td>
+									<td><a title="직원 정보 삭제" class="buttonToDeleteEntity" href="./deleteEmployeeAction.jsp?employeeNo=<%= employee.getEmployeeNo() %>">DELETE</a></td>			
+								</tr>
+							</tbody>	
 					<%
-						}
+						} 
 					%>
 				</table>
 				<br>
@@ -137,9 +136,6 @@
 					<%
 						}
 					%>
-					<div id="listButton">
-						<a id="buttonToList" href="<%= request.getContextPath() %>/index.jsp">처음 화면으로</a>
-					</div>
 				</div>			
 			</div>
 		</div>
