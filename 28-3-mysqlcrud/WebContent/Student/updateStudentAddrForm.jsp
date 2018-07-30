@@ -37,7 +37,7 @@
 							<tr>
 								<td><input type="text" name="addrNo" value="<%=studentAddr.getStudentAddrNo() %>" readonly></td>
 								<td><input type="text" name="studentNo" value="<%=studentAddr.getStudentNo() %>" readonly></td>
-								<td><input type="text" name="reAddr" value="<%=studentAddr.getAddr() %>"></td>
+								<td><input type="text" name="reAddr" value="<%=studentAddr.getStudentAddrContent() %>"></td>
 								<td><input type="submit" value="수정 완료"></td>
 							</tr>
 					</form>

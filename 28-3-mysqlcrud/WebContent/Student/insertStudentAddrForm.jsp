@@ -12,7 +12,7 @@
 	<div id="container">
 		<%@ include file="/module/nav.jsp" %>
 		<div id="article">
-		<form action="./studentAddrInsertAction.jsp" method="post">
+		<form action="./insertStudentAddrAction.jsp" method="post">
 			<h3>Student</h3>
 			<table border="1">
 				<tr>
@@ -20,7 +20,7 @@
 					<td><input type="text" name="addr"></td>
 				</tr>
 				<tr>
-					<td><input type="submit" value="확인"><input type="hidden" name="studentNo" value= "<%=request.getParameter("send_no")%>"></td>
+					<td><input type="submit" value="확인"><input type="hidden" name="studentNo" value= "<%=request.getParameter("studentNo")%>"></td>
 				</tr>	
 			</table>
 		</form>

@@ -1,6 +1,5 @@
 <!-- 2018-07-03 ±èÁ¤¿¬ -->
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <%@ page import="service.Student"%>
 <%@ page import="service.StudentDao"%>
 <%@ page import="service.StudentAddr" %>

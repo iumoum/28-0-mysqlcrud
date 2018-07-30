@@ -14,7 +14,7 @@
 		StudentAddr studentAddr = new StudentAddr();
 		studentAddr.setStudentAddrNo(Integer.parseInt(request.getParameter("addrNo")));
 		studentAddr.setStudentNo(Integer.parseInt(request.getParameter("studentNo")));
-		studentAddr.setAddr(request.getParameter("reAddr"));
+		studentAddr.setStudentAddrContent(request.getParameter("reAddr"));
 		
 		StudentAddrDao studentAddrDao = new StudentAddrDao();
 		

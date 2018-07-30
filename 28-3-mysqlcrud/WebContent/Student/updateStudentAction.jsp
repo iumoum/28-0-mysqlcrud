@@ -11,9 +11,9 @@
 	<%
 		Student s = new Student();
 		request.setCharacterEncoding("euc-kr");
-		s.setNo(Integer.parseInt(request.getParameter("reNo")));
-		s.setName(request.getParameter("reName"));
-		s.setAge(Integer.parseInt(request.getParameter("reAge")));
+		s.setStudentNo(Integer.parseInt(request.getParameter("reNo")));
+		s.setStudentName(request.getParameter("reName"));
+		s.setStudentAge(Integer.parseInt(request.getParameter("reAge")));
 		
 		StudentDao dao = new StudentDao();
 		
